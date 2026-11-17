@@ -147,6 +147,16 @@
     return '<svg class="funnel" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="수익화 퍼널">' + paths + '</svg>';
   }
 
+
+  function revMini(d) {
+    var rows = (d.overview_revenue || []).map(function (r) {
+      return '<div class="rev-mini-row"><span class="rev-mini-label">' + esc(r.label) + '</span>' +
+        '<b>' + esc(r.value) + '</b><span class="rev-mini-note">' + esc(r.note) + '</span></div>';
+    }).join("");
+    if (!rows) return "";
+    return '<div class="rev-mini"><div class="rev-mini-head">수익 현황</div>' + rows + '</div>';
+  }
+
   /* ---------------- overview ---------------- */
   function renderOverview() {
     var d = state.data;
@@ -223,7 +233,8 @@
       '<div class="donut-wrap">' + donut(donutSegs, String(d.channels.length), "채널") +
       '<div class="legend">' + legend +
       '<div class="legend-item" style="border-top:1px solid #eef1f6;padding-top:9px;margin-top:2px">' +
-      '<span>평균 준비도</span><b>' + avg + '%</b></div></div></div></section>' +
+      '<span>평균 준비도</span><b>' + avg + '%</b></div></div></div>' +
+      revMini(d) + '</section>' +
       '</div>' +
       '<section class="panel" style="margin-bottom:18px"><div class="panel-head"><div><h2>수익화 퍼널</h2>' +
       '<p>' + esc(d.funnel.caption) + '</p></div></div>' +
