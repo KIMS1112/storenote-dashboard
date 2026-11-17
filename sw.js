@@ -1,7 +1,7 @@
 /* 매장경영노트 수익화 대시보드 — 서비스 워커
    앱 파일은 네트워크를 먼저 확인해 새 배포를 바로 받고, 오프라인일 때만 캐시를 씁니다.
    데이터(data.json)도 항상 네트워크 우선이라 갱신 내용이 즉시 반영됩니다. */
-const CACHE = "storenote-dash-v4";
+const CACHE = "storenote-dash-v5";
 const ASSETS = [
   "./",
   "./index.html",
@@ -48,6 +48,9 @@ self.addEventListener("fetch", (event) => {
 
   // 다른 도메인(폰트 CDN 등)은 그대로 둡니다.
   if (url.origin !== self.location.origin) return;
+
+  // 샘플 페이지(samples/)의 큰 이미지·GIF는 캐시에 담지 않고 그대로 엽니다.
+  if (url.pathname.indexOf("/samples/") !== -1) return;
 
   // 아이콘만 캐시 우선
   if (/\/icon-[a-z0-9-]+\.png$/.test(url.pathname)) {

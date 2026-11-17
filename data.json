@@ -2,10 +2,10 @@
   "meta": {
     "title": "매장경영노트 수익화 파이프라인",
     "subtitle": "블로그 · 클립 · 브랜드커넥트 · 쇼핑커넥트 · 인스타 · 스레드 · 쇼츠 · 모두의 숲",
-    "updated_at": "2026-11-18T05:58:00+09:00",
-    "updated_label": "2026-11-18 05:58",
+    "updated_at": "2026-11-18T06:20:00+09:00",
+    "updated_label": "2026-11-18 06:20",
     "updated_by": "파인",
-    "data_version": 2,
+    "data_version": 3,
     "note": "이 파일(data.json)만 수정해 배포하면 웹과 폰 앱에 같은 내용이 바로 반영됩니다. 수치는 실제 화면·기록에서 확인된 값만 담았습니다."
   },
   "kpis": [
@@ -1137,12 +1137,12 @@
           "url": "https://smartstore.naver.com/forest4us"
         },
         {
-          "label": "v6 상세페이지 (작업 폴더 파일)",
-          "url": ""
+          "label": "v6 상세페이지 샘플",
+          "url": "./samples/v6/"
         },
         {
-          "label": "표준 자동화 템플릿 (작업 폴더)",
-          "url": ""
+          "label": "표준 자동화 템플릿",
+          "url": "./samples/template/"
         }
       ],
       "notes": [
