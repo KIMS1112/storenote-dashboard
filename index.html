@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>매장경영노트 · 수익화 파이프라인</title>
+<meta name="description" content="매장경영노트의 수익화 파이프라인 통합 대시보드 — 채널별 진행 상황, 수익, 다음 액션" />
+<meta name="theme-color" content="#ffffff" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="매장노트" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="apple-touch-icon" href="./icon-180.png" />
+<link rel="icon" href="./icon-192.png" />
+<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <a class="brand" href="#/overview" aria-label="통합 대시보드로">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+            <rect x="4" y="12" width="3.2" height="8" rx="1.2" fill="currentColor" opacity=".55"/>
+            <rect x="10.4" y="7" width="3.2" height="13" rx="1.2" fill="currentColor" opacity=".8"/>
+            <rect x="16.8" y="3" width="3.2" height="17" rx="1.2" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="brand-text">
+          <strong id="brandTitle">매장경영노트</strong>
+          <span>수익화 파이프라인</span>
+        </span>
+      </a>
+      <div class="topbar-right">
+        <span class="updated" id="updatedAt">불러오는 중…</span>
+        <button class="icon-btn" id="installBtn" hidden aria-label="앱 설치">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v11m0 0 4-4m-4 4-4-4"/><path d="M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2"/></svg>
+          <span>앱 설치</span>
+        </button>
+        <button class="icon-btn icon-only" id="refreshBtn" aria-label="데이터 새로고침" title="데이터 새로고침">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 6"/><path d="M20 4v7h-7"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <nav class="mobile-nav" id="mobileNav" aria-label="채널 이동"></nav>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <nav id="nav" aria-label="대시보드 이동"></nav>
+        <div class="sidebar-foot">
+          <span class="dot-live"></span>
+          <div>
+            <strong>데이터 자동 반영</strong>
+            <p><code>data.json</code>만 갱신하면 웹과 앱에 같은 내용이 표시됩니다.</p>
+          </div>
+        </div>
+      </aside>
+      <main id="main" tabindex="-1"></main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <noscript><div class="noscript">이 대시보드를 보려면 자바스크립트를 켜 주세요.</div></noscript>
+  <script src="./app.js"></script>
+</body>
+</html>
