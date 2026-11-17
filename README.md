@@ -15,7 +15,9 @@ dashboard/
 ├─ app.js                  렌더링 · 라우팅(#/채널id) · 새로고침
 ├─ data.json               ← 유일한 데이터 소스 (수정 지점)
 ├─ manifest.webmanifest    PWA 설치 정보
-├─ sw.js                   서비스 워커 (data.json은 네트워크 우선)
+├─ sw.js                   서비스 워커 (data.json은 네트워크 우선, samples/는 캐시 제외)
+├─ samples/v6/             v6 상세페이지 샘플 (860px 뷰포트 · GIF 3종 실제 재생)
+├─ samples/template/       표준 자동화 템플릿 설명 + 실제 파일 4개 뷰어
 ├─ icon-*.png              앱 아이콘
 ├─ preview_desktop.png     검수용 미리보기 (1440×900)
 └─ preview_mobile.png      검수용 미리보기 (390×844)
@@ -29,6 +31,9 @@ dashboard/
    - `status`는 `operating` · `preparing` · `waiting` 중 하나입니다.
    - `next[].owner`는 `파인` 또는 `보현님`.
 3. push하면 GitHub Pages가 1~2분 안에 새로 배포합니다.
+
+채널의 `links[].url`에 `./samples/v6/`처럼 사이트 안 페이지를 넣으면 대시보드에서 새 탭으로 열립니다.
+`url`이 비어 있으면 '작업 폴더 파일' 비활성 칩으로 표시됩니다.
 
 ```bash
 cd dashboard
