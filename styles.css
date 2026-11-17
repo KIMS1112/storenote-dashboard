@@ -263,6 +263,7 @@ main {
 .bar { height: 7px; border-radius: 999px; background: #eef1f6; overflow: hidden; }
 .bar > i {
   display: block; height: 100%; border-radius: 999px;
+  background: var(--c, #2563eb);
   background: linear-gradient(90deg, var(--c, #2563eb), color-mix(in srgb, var(--c, #2563eb) 72%, #fff));
   transition: width .5s cubic-bezier(.2,.7,.2,1);
 }
@@ -293,7 +294,8 @@ main {
 .legend-item span { color: var(--muted); }
 
 /* ---------- funnel ---------- */
-.funnel { width: 100%; height: auto; display: block; }
+.funnel { width: 100%; height: auto; display: block; font-family: var(--font); }
+.funnel text { font-family: var(--font); }
 .funnel-legend {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 10px;
 }

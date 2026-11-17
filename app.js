@@ -91,7 +91,7 @@
     renderNav();
     if (r.view === "overview") renderOverview();
     else renderChannel(state.data.channels.filter(function (c) { return c.id === r.id; })[0]);
-    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+    window.scrollTo(0, 0);
   }
 
   /* ---------------- charts ---------------- */
@@ -279,7 +279,7 @@
 
     var cols = ch.collections ? (
       '<section class="panel" style="margin-bottom:18px"><div class="panel-head"><div><h2>컬렉션</h2>' +
-      '<p>홈에는 앞선 5개만 노출됩니다 · ' + ch.collections.length + '개 중</p></div></div>' +
+      '<p>' + esc(ch.collections_note || (ch.collections.length + '개')) + '</p></div></div>' +
       '<div class="col-list">' + ch.collections.map(function (c) {
         return '<a class="col-item" href="' + esc(c.url) + '" target="_blank" rel="noopener">' +
           '<span class="col-count">' + c.count + '</span>' +
