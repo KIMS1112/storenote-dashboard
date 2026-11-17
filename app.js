@@ -239,6 +239,12 @@
       '<section class="panel" style="margin-bottom:18px"><div class="panel-head"><div><h2>수익화 퍼널</h2>' +
       '<p>' + esc(d.funnel.caption) + '</p></div></div>' +
       funnelSvg(d.funnel.stages) +
+      '<div class="funnel-m">' + d.funnel.stages.map(function (s) {
+        return '<div class="fm-row"><div class="fm-top"><span class="fm-label">' + esc(s.label) + '</span>' +
+          '<span class="fm-value">' + esc(s.headline) + '<small>' + esc(s.unit) + '</small></span></div>' +
+          '<div class="fm-bar"><i style="width:' + s.width + '%;background:' + esc(s.accent) + '"></i></div>' +
+          '<p class="fm-desc">' + esc(s.desc) + '</p></div>';
+      }).join("") + '</div>' +
       '<div class="funnel-legend">' + funnelLegend + '</div></section>' +
       '<section class="panel" style="margin-bottom:18px"><div class="panel-head"><div><h2>오늘의 자동화 타임라인</h2>' +
       '<p>' + esc(d.timeline.date) + ' · 자동 실행과 예약</p></div>' +

@@ -312,6 +312,9 @@ main {
 .funnel-legend b { display: flex; align-items: center; gap: 6px; color: var(--ink-2); font-size: 12px; margin-bottom: 3px; }
 .funnel-legend b i { width: 7px; height: 7px; border-radius: 2px; }
 
+/* ---------- funnel (mobile) ---------- */
+.funnel-m { display: none; }
+
 /* ---------- timeline ---------- */
 .timeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; padding: 4px 0 0; }
 .tl-item { position: relative; padding: 0 12px 0 0; }
@@ -621,6 +624,18 @@ main {
   .row-item .bar { grid-column: 1 / -1; }
   .row-pct { grid-row: 1; grid-column: 2; }
   .funnel-legend { grid-template-columns: 1fr; gap: 8px; }
+  .funnel { display: none; }
+  .funnel-legend { display: none; }
+  .funnel-m { display: flex; flex-direction: column; gap: 2px; }
+  .fm-row { padding: 11px 0; }
+  .fm-row + .fm-row { border-top: 1px dashed #eef1f6; }
+  .fm-top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 7px; }
+  .fm-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; color: var(--muted); }
+  .fm-value { font-size: 21px; font-weight: 750; letter-spacing: -.03em; line-height: 1; }
+  .fm-value small { font-size: 11px; font-weight: 600; color: var(--muted); margin-left: 3px; letter-spacing: 0; }
+  .fm-bar { height: 9px; border-radius: 999px; background: #eef1f6; overflow: hidden; }
+  .fm-bar i { display: block; height: 100%; border-radius: 999px; }
+  .fm-desc { margin: 7px 0 0; font-size: 11.5px; color: var(--muted); line-height: 1.5; }
   .foot { flex-direction: column; }
 }
 @media (prefers-reduced-motion: reduce) {
