@@ -1,7 +1,7 @@
 /* 매장경영노트 수익화 대시보드 — 서비스 워커
    앱 파일은 네트워크를 먼저 확인해 새 배포를 바로 받고, 오프라인일 때만 캐시를 씁니다.
    데이터(data.json)도 항상 네트워크 우선이라 갱신 내용이 즉시 반영됩니다. */
-const CACHE = "storenote-dash-v6";
+const CACHE = "storenote-dash-v7";
 const ASSETS = [
   "./",
   "./index.html",
