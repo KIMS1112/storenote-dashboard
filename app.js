@@ -172,78 +172,91 @@
     return 10 * pow;
   }
 
-  var CH = { W: 700, H: 220, L: 40, R: 14, T: 16, B: 28 };
+  var CH = { W: 700, H: 220 };
 
-  function chartGrid(max) {
-    var ih = CH.H - CH.T - CH.B, out = "";
+  /* 좁은 화면에서는 글자·점을 viewBox 단위로 키워 축소해도 읽히게 합니다. */
+  function chartCfg() {
+    var compact = window.innerWidth <= 720;
+    return {
+      W: CH.W, H: CH.H,
+      L: compact ? 64 : 40, R: 14, T: 16, B: compact ? 44 : 28,
+      fs: compact ? 19 : 11,
+      stride: compact ? 3 : 2,
+      dot: compact ? 5 : 3.1,
+      stroke: compact ? 3.6 : 2.2
+    };
+  }
+
+  function chartGrid(c, max) {
+    var ih = c.H - c.T - c.B, out = "";
     [0, 0.25, 0.5, 0.75, 1].forEach(function (t) {
-      var y = CH.T + ih - ih * t;
-      out += '<line x1="' + CH.L + '" x2="' + (CH.W - CH.R) + '" y1="' + y + '" y2="' + y +
+      var y = c.T + ih - ih * t;
+      out += '<line x1="' + c.L + '" x2="' + (c.W - c.R) + '" y1="' + y + '" y2="' + y +
         '" stroke="' + (t === 0 ? "#dbe1ea" : "#eef1f6") + '" stroke-width="1"/>' +
-        '<text x="' + (CH.L - 7) + '" y="' + (y + 3.5) + '" text-anchor="end" font-size="9.5" fill="#9aa6b8">' +
+        '<text x="' + (c.L - 8) + '" y="' + (y + c.fs * 0.36) + '" text-anchor="end" font-size="' + c.fs + '" fill="#9aa6b8">' +
         won(Math.round(max * t)) + '</text>';
     });
     return out;
   }
 
-  function xLabels(labels, step) {
+  function xLabels(c, labels, stride) {
     return labels.map(function (l, i) {
-      if (labels.length > 8 && i % 2) return "";
-      return '<text x="' + (CH.L + step * i) + '" y="' + (CH.H - 8) + '" text-anchor="middle" font-size="9.5" fill="#8c99ab">' + esc(l) + '</text>';
+      if (i % stride) return "";
+      return '<text x="' + (c._x(i)).toFixed(1) + '" y="' + (c.H - c.fs * 0.6) + '" text-anchor="middle" font-size="' + c.fs + '" fill="#8c99ab">' + esc(l) + '</text>';
     }).join("");
   }
 
   function lineChart(cfg) {
+    var c = chartCfg();
     var vals = cfg.values.map(function (v) { return Number(v) || 0; });
     var max = niceMax(Math.max.apply(null, vals) * 1.12);
-    var iw = CH.W - CH.L - CH.R, ih = CH.H - CH.T - CH.B;
+    var iw = c.W - c.L - c.R, ih = c.H - c.T - c.B;
     var step = vals.length > 1 ? iw / (vals.length - 1) : 0;
+    c._x = function (i) { return c.L + step * i; };
     var pts = vals.map(function (v, i) {
-      return [CH.L + step * i, CH.T + ih - (v / max) * ih];
+      return [c.L + step * i, c.T + ih - (v / max) * ih];
     });
     var line = pts.map(function (p, i) { return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" ");
-    var area = line + " L" + (CH.L + iw).toFixed(1) + " " + (CH.T + ih) + " L" + CH.L + " " + (CH.T + ih) + " Z";
+    var area = line + " L" + (c.L + iw).toFixed(1) + " " + (c.T + ih) + " L" + c.L + " " + (c.T + ih) + " Z";
     var dots = pts.map(function (p, i) {
-      return '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3.1" fill="#fff" stroke="' + esc(cfg.color) + '" stroke-width="2">' +
+      return '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + c.dot + '" fill="#fff" stroke="' + esc(cfg.color) + '" stroke-width="' + (c.stroke * 0.75).toFixed(1) + '">' +
         '<title>' + esc(cfg.labels[i]) + " · " + won(vals[i]) + esc(cfg.unit || "") + '</title></circle>';
     }).join("");
-    return '<div class="chart-wrap"><svg class="chart" viewBox="0 0 ' + CH.W + ' ' + CH.H + '" role="img" aria-label="' + esc(cfg.title || "추이 그래프") + '">' +
-      chartGrid(max) +
+    return '<div class="chart-wrap"><svg class="chart" viewBox="0 0 ' + c.W + ' ' + c.H + '" role="img" aria-label="' + esc(cfg.title || "추이 그래프") + '">' +
+      chartGrid(c, max) +
       '<path d="' + area + '" fill="' + esc(cfg.color) + '" opacity="0.10"/>' +
-      '<path d="' + line + '" fill="none" stroke="' + esc(cfg.color) + '" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>' +
-      dots + xLabels(cfg.labels, step) + '</svg></div>';
+      '<path d="' + line + '" fill="none" stroke="' + esc(cfg.color) + '" stroke-width="' + c.stroke + '" stroke-linejoin="round" stroke-linecap="round"/>' +
+      dots + xLabels(c, cfg.labels, c.stride) + '</svg></div>';
   }
 
   function barChart(cfg) {
+    var c = chartCfg();
     var series = cfg.series || [];
     var all = [];
     series.forEach(function (s) { s.values.forEach(function (v) { if (v != null) all.push(Number(v)); }); });
     var max = niceMax((all.length ? Math.max.apply(null, all) : 0) * 1.15);
-    var iw = CH.W - CH.L - CH.R, ih = CH.H - CH.T - CH.B;
+    var iw = c.W - c.L - c.R, ih = c.H - c.T - c.B;
     var n = cfg.labels.length;
     var slot = iw / n;
+    c._x = function (i) { return c.L + slot * i + slot / 2; };
     var bw = Math.max(4, (slot * 0.62) / series.length);
     var bars = [];
     series.forEach(function (s, si) {
       s.values.forEach(function (v, i) {
         if (v == null) return;
         var h = (Number(v) / max) * ih;
-        var x = CH.L + slot * i + slot * 0.19 + bw * si;
+        var x = c.L + slot * i + slot * 0.19 + bw * si;
         if (Number(v) === 0) {
-          bars.push('<rect x="' + x.toFixed(1) + '" y="' + (CH.T + ih - 1.6).toFixed(1) + '" width="' + bw.toFixed(1) +
-            '" height="1.6" rx="0.8" fill="' + esc(s.color) + '" opacity="0.28"><title>' + esc(cfg.labels[i]) + " · " + esc(s.label) + " 0" + esc(cfg.unit || "") + '</title></rect>');
+          bars.push('<rect x="' + x.toFixed(1) + '" y="' + (c.T + ih - 2.4).toFixed(1) + '" width="' + bw.toFixed(1) +
+            '" height="2.4" rx="1" fill="' + esc(s.color) + '" opacity="0.28"><title>' + esc(cfg.labels[i]) + " · " + esc(s.label) + " 0" + esc(cfg.unit || "") + '</title></rect>');
           return;
         }
-        bars.push('<rect x="' + x.toFixed(1) + '" y="' + (CH.T + ih - h).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + Math.max(h, 0).toFixed(1) +
+        bars.push('<rect x="' + x.toFixed(1) + '" y="' + (c.T + ih - h).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) +
           '" rx="2" fill="' + esc(s.color) + '"><title>' + esc(cfg.labels[i]) + " · " + esc(s.label) + " " + won(v) + esc(cfg.unit || "") + '</title></rect>');
       });
     });
-    var labels = cfg.labels.map(function (l, i) {
-      if (n > 8 && i % 2) return "";
-      return '<text x="' + (CH.L + slot * i + slot / 2).toFixed(1) + '" y="' + (CH.H - 8) + '" text-anchor="middle" font-size="9.5" fill="#8c99ab">' + esc(l) + '</text>';
-    }).join("");
-    return '<div class="chart-wrap"><svg class="chart" viewBox="0 0 ' + CH.W + ' ' + CH.H + '" role="img" aria-label="' + esc(cfg.title || "수익 그래프") + '">' +
-      chartGrid(max) + bars + labels + '</svg></div>';
+    return '<div class="chart-wrap"><svg class="chart" viewBox="0 0 ' + c.W + ' ' + c.H + '" role="img" aria-label="' + esc(cfg.title || "수익 그래프") + '">' +
+      chartGrid(c, max) + bars.join("") + xLabels(c, cfg.labels, c.stride) + '</svg></div>';
   }
 
   function salesBadge(n) {

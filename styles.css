@@ -754,7 +754,6 @@ main {
   .sb-total { width: 100%; margin-left: 21px; }
   .acct { padding: 12px 11px 10px; }
   .acct-kpis b { font-size: 16px; }
-  .chart { min-width: 430px; }
   .upd-time { flex: 0 0 62px; font-size: 10.5px; }
 }
 
