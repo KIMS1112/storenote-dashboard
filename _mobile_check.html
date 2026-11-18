@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>모바일 렌더 확인</title>
+<style>body{margin:0;background:#dfe3e8;font:12px/1.4 sans-serif;padding:12px}
+iframe{border:0;background:#fff;width:390px;height:3200px;display:block;box-shadow:0 4px 18px rgba(0,0,0,.18)}</style></head>
+<body><iframe id="f" src="./index.html"></iframe>
+<script>var v=new URLSearchParams(location.search).get("view");if(v)document.getElementById("f").src="./index.html#/"+v;</script>
+</body></html>

@@ -229,7 +229,11 @@
         if (v == null) return;
         var h = (Number(v) / max) * ih;
         var x = CH.L + slot * i + slot * 0.19 + bw * si;
-        if (h < 0.6 && Number(v) === 0) h = 0;
+        if (Number(v) === 0) {
+          bars.push('<rect x="' + x.toFixed(1) + '" y="' + (CH.T + ih - 1.6).toFixed(1) + '" width="' + bw.toFixed(1) +
+            '" height="1.6" rx="0.8" fill="' + esc(s.color) + '" opacity="0.28"><title>' + esc(cfg.labels[i]) + " · " + esc(s.label) + " 0" + esc(cfg.unit || "") + '</title></rect>');
+          return;
+        }
         bars.push('<rect x="' + x.toFixed(1) + '" y="' + (CH.T + ih - h).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + Math.max(h, 0).toFixed(1) +
           '" rx="2" fill="' + esc(s.color) + '"><title>' + esc(cfg.labels[i]) + " · " + esc(s.label) + " " + won(v) + esc(cfg.unit || "") + '</title></rect>');
       });
