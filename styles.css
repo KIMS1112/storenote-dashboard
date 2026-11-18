@@ -757,3 +757,13 @@ main {
   .chart { min-width: 430px; }
   .upd-time { flex: 0 0 62px; font-size: 10.5px; }
 }
+
+/* 모바일: 패널 헤더가 칩에 밀려 좁아지지 않게 */
+@media (max-width: 720px) {
+  .panel-head { flex-wrap: wrap; }
+  .panel-head > div:first-child { flex: 1 1 100%; min-width: 0; }
+  .panel-head .panel-tools { flex: 1 1 100%; margin-top: 2px; }
+  .panel-head .panel-tools .chip { font-size: 10px; }
+  .acct-head { flex-wrap: wrap; }
+  .acct-id span { white-space: normal; }
+}
