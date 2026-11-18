@@ -1211,7 +1211,7 @@
     "last_synced_at": "2026-11-19T06:33:00+09:00",
     "last_synced_label": "2026-11-19 06:33",
     "by": "파인 (실계정 직접 조회)",
-    "schedule": "매일 10:40 · 14:40 · 18:40 · 22:40 자동 동기화",
+    "schedule": "매일 10:40 · 14:40 · 18:40 · 22:40 동기화",
     "sources": [
       "스마트스토어센터(sell.smartstore.naver.com) 06:27",
       "쿠팡 윙(wing.coupang.com) 06:28",
@@ -1290,7 +1290,7 @@
         "id": "coupang",
         "name": "디어러스",
         "platform": "쿠팡 윙",
-        "handle": "wing.coupang.com · 판매자 de‌arus",
+        "handle": "wing.coupang.com · 판매자 dearus",
         "accent": "#f97316",
         "synced_at": "2026-11-19 06:28",
         "orders": {
@@ -1512,5 +1512,10 @@
       "title": "스마트스토어·쿠팡 3종 판매 시작",
       "detail": "사과·감귤·고구마 6개 상품 모두 판매중·아이템위너. 상세페이지는 v7(가을 톤·GIF) 적용."
     }
-  ]
+  ],
+  "automation": {
+    "running": 6,
+    "label": "자동 6개 가동",
+    "detail": "클립 09:00 · 스레드 10:00/19:00 · 인스타 12:30 · 모두의 숲 11:00/16:00 · 쿠팡 문의 10:30 · 대시보드 10:40/14:40/18:40/22:40"
+  }
 }

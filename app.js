@@ -167,8 +167,9 @@
     if (!(v > 0)) return 1;
     var pow = Math.pow(10, Math.floor(Math.log10(v)));
     var n = v / pow;
-    var f = n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10;
-    return f * pow;
+    var steps = [1, 1.2, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10];
+    for (var i = 0; i < steps.length; i++) { if (n <= steps[i]) return steps[i] * pow; }
+    return 10 * pow;
   }
 
   var CH = { W: 700, H: 220, L: 40, R: 14, T: 16, B: 28 };
@@ -282,7 +283,7 @@
     return '<section class="panel panel-sales">' +
       '<div class="panel-head"><div><h2>판매계정 연동 · 판매 알림</h2><p>' + esc(s.caption) + '</p></div>' +
       '<div class="panel-tools"><span class="chip">마지막 동기화 ' + esc(sync.last_synced_label || "—") + '</span>' +
-      '<span class="chip">자동 ' + esc(sync.schedule || "주기 동기화") + '</span></div></div>' +
+      '<span class="chip">' + esc(sync.schedule || "주기 동기화") + '</span></div></div>' +
       '<div class="sale-banner ' + (live ? "is-live" : "is-idle") + '">' +
       '<span class="sb-dot"></span><div class="sb-body"><b>' + esc(s.alert.badge) + '</b><p>' + esc(s.alert.detail) + '</p></div>' +
       '<span class="sb-total">오늘 합계 <b>' + won(s.new_orders_total) + '건</b></span></div>' +
@@ -342,7 +343,8 @@
     var counts = { operating: 0, preparing: 0, waiting: 0 };
     d.channels.forEach(function (c) { counts[c.status] = (counts[c.status] || 0) + 1; });
     var avg = Math.round(sum(d.channels.map(function (c) { return c.progress; })) / d.channels.length);
-    var autoOn = sum(d.channels.map(function (c) { return (c.automation || []).filter(function (a) { return a.state === "on"; }).length; }));
+    var autoOn = (d.automation && d.automation.running) ||
+      sum(d.channels.map(function (c) { return (c.automation || []).filter(function (a) { return a.state === "on"; }).length; }));
 
     var kpis = d.kpis.map(function (k) {
       return '<div class="kpi" style="--kpi-accent:' + esc(k.accent) + '">' +
