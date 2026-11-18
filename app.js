@@ -157,12 +157,192 @@
     return '<div class="rev-mini"><div class="rev-mini-head">수익 현황</div>' + rows + '</div>';
   }
 
+  /* ---------------- live sales + blog charts ---------------- */
+  function won(n) {
+    var v = Number(n || 0);
+    return v.toLocaleString("ko-KR");
+  }
+
+  function niceMax(v) {
+    if (!(v > 0)) return 1;
+    var pow = Math.pow(10, Math.floor(Math.log10(v)));
+    var n = v / pow;
+    var f = n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10;
+    return f * pow;
+  }
+
+  var CH = { W: 700, H: 220, L: 40, R: 14, T: 16, B: 28 };
+
+  function chartGrid(max) {
+    var ih = CH.H - CH.T - CH.B, out = "";
+    [0, 0.25, 0.5, 0.75, 1].forEach(function (t) {
+      var y = CH.T + ih - ih * t;
+      out += '<line x1="' + CH.L + '" x2="' + (CH.W - CH.R) + '" y1="' + y + '" y2="' + y +
+        '" stroke="' + (t === 0 ? "#dbe1ea" : "#eef1f6") + '" stroke-width="1"/>' +
+        '<text x="' + (CH.L - 7) + '" y="' + (y + 3.5) + '" text-anchor="end" font-size="9.5" fill="#9aa6b8">' +
+        won(Math.round(max * t)) + '</text>';
+    });
+    return out;
+  }
+
+  function xLabels(labels, step) {
+    return labels.map(function (l, i) {
+      if (labels.length > 8 && i % 2) return "";
+      return '<text x="' + (CH.L + step * i) + '" y="' + (CH.H - 8) + '" text-anchor="middle" font-size="9.5" fill="#8c99ab">' + esc(l) + '</text>';
+    }).join("");
+  }
+
+  function lineChart(cfg) {
+    var vals = cfg.values.map(function (v) { return Number(v) || 0; });
+    var max = niceMax(Math.max.apply(null, vals) * 1.12);
+    var iw = CH.W - CH.L - CH.R, ih = CH.H - CH.T - CH.B;
+    var step = vals.length > 1 ? iw / (vals.length - 1) : 0;
+    var pts = vals.map(function (v, i) {
+      return [CH.L + step * i, CH.T + ih - (v / max) * ih];
+    });
+    var line = pts.map(function (p, i) { return (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join(" ");
+    var area = line + " L" + (CH.L + iw).toFixed(1) + " " + (CH.T + ih) + " L" + CH.L + " " + (CH.T + ih) + " Z";
+    var dots = pts.map(function (p, i) {
+      return '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3.1" fill="#fff" stroke="' + esc(cfg.color) + '" stroke-width="2">' +
+        '<title>' + esc(cfg.labels[i]) + " · " + won(vals[i]) + esc(cfg.unit || "") + '</title></circle>';
+    }).join("");
+    return '<div class="chart-wrap"><svg class="chart" viewBox="0 0 ' + CH.W + ' ' + CH.H + '" role="img" aria-label="' + esc(cfg.title || "추이 그래프") + '">' +
+      chartGrid(max) +
+      '<path d="' + area + '" fill="' + esc(cfg.color) + '" opacity="0.10"/>' +
+      '<path d="' + line + '" fill="none" stroke="' + esc(cfg.color) + '" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>' +
+      dots + xLabels(cfg.labels, step) + '</svg></div>';
+  }
+
+  function barChart(cfg) {
+    var series = cfg.series || [];
+    var all = [];
+    series.forEach(function (s) { s.values.forEach(function (v) { if (v != null) all.push(Number(v)); }); });
+    var max = niceMax((all.length ? Math.max.apply(null, all) : 0) * 1.15);
+    var iw = CH.W - CH.L - CH.R, ih = CH.H - CH.T - CH.B;
+    var n = cfg.labels.length;
+    var slot = iw / n;
+    var bw = Math.max(4, (slot * 0.62) / series.length);
+    var bars = [];
+    series.forEach(function (s, si) {
+      s.values.forEach(function (v, i) {
+        if (v == null) return;
+        var h = (Number(v) / max) * ih;
+        var x = CH.L + slot * i + slot * 0.19 + bw * si;
+        if (h < 0.6 && Number(v) === 0) h = 0;
+        bars.push('<rect x="' + x.toFixed(1) + '" y="' + (CH.T + ih - h).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + Math.max(h, 0).toFixed(1) +
+          '" rx="2" fill="' + esc(s.color) + '"><title>' + esc(cfg.labels[i]) + " · " + esc(s.label) + " " + won(v) + esc(cfg.unit || "") + '</title></rect>');
+      });
+    });
+    var labels = cfg.labels.map(function (l, i) {
+      if (n > 8 && i % 2) return "";
+      return '<text x="' + (CH.L + slot * i + slot / 2).toFixed(1) + '" y="' + (CH.H - 8) + '" text-anchor="middle" font-size="9.5" fill="#8c99ab">' + esc(l) + '</text>';
+    }).join("");
+    return '<div class="chart-wrap"><svg class="chart" viewBox="0 0 ' + CH.W + ' ' + CH.H + '" role="img" aria-label="' + esc(cfg.title || "수익 그래프") + '">' +
+      chartGrid(max) + bars + labels + '</svg></div>';
+  }
+
+  function salesBadge(n) {
+    return n > 0
+      ? '<span class="sale-badge live"><span class="bdot"></span>신규 주문 ' + n + '건</span>'
+      : '<span class="sale-badge idle"><span class="bdot"></span>신규 주문 0건</span>';
+  }
+
+  function salesCard(a) {
+    var rows = a.products.map(function (p) {
+      var on = p.status === "판매중";
+      return '<tr><td class="p-name"><b>' + esc(p.name) + '</b>' + (p.badge ? '<span class="p-tag">' + esc(p.badge) + '</span>' : '') + '</td>' +
+        '<td>' + esc(p.spec || "-") + '</td>' +
+        '<td class="p-price">' + won(p.price) + '원' + (p.list_price ? '<small>' + won(p.list_price) + '</small>' : '') + '</td>' +
+        '<td><span class="p-state ' + (on ? "on" : "off") + '">' + esc(p.status) + '</span></td>' +
+        '<td class="p-stock">' + won(p.stock) + '</td></tr>';
+    }).join("");
+    return '<div class="acct" style="--c:' + esc(a.accent) + '">' +
+      '<div class="acct-head">' +
+      '<span class="acct-mark" style="background:' + esc(a.accent) + '">' + esc(a.name.slice(0, 1)) + '</span>' +
+      '<div class="acct-id"><b>' + esc(a.name) + '</b><span>' + esc(a.platform) + ' · ' + esc(a.handle) + '</span></div>' +
+      salesBadge(a.orders.new_today) + '</div>' +
+      '<div class="acct-kpis">' +
+      '<div><span>신규 주문</span><b>' + won(a.orders.new_today) + '<small>건</small></b></div>' +
+      '<div><span>오늘 매출</span><b>' + won(a.revenue.today) + '<small>원</small></b></div>' +
+      '<div><span>누적 매출</span><b>' + won(a.revenue.total) + '<small>원</small></b></div>' +
+      '</div>' +
+      '<div class="acct-flow">배송준비 ' + a.orders.prepare + ' · 배송중 ' + a.orders.shipping + ' · 배송완료 ' + a.orders.done +
+      '<span class="acct-stamp">' + esc(a.synced_at) + ' 기준</span></div>' +
+      '<div class="p-table-wrap"><table class="p-table"><thead><tr><th>상품</th><th>규격</th><th>판매가</th><th>상태</th><th>재고</th></tr></thead><tbody>' +
+      rows + '</tbody></table></div>' +
+      (a.notes && a.notes.length ? '<ul class="acct-notes">' + a.notes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("") + '</ul>' : "") +
+      '</div>';
+  }
+
+  function salesSection(d) {
+    var s = d.sales;
+    if (!s) return "";
+    var sync = d.sync || {};
+    var live = s.new_orders_total > 0;
+    return '<section class="panel panel-sales">' +
+      '<div class="panel-head"><div><h2>판매계정 연동 · 판매 알림</h2><p>' + esc(s.caption) + '</p></div>' +
+      '<div class="panel-tools"><span class="chip">마지막 동기화 ' + esc(sync.last_synced_label || "—") + '</span>' +
+      '<span class="chip">자동 ' + esc(sync.schedule || "주기 동기화") + '</span></div></div>' +
+      '<div class="sale-banner ' + (live ? "is-live" : "is-idle") + '">' +
+      '<span class="sb-dot"></span><div class="sb-body"><b>' + esc(s.alert.badge) + '</b><p>' + esc(s.alert.detail) + '</p></div>' +
+      '<span class="sb-total">오늘 합계 <b>' + won(s.new_orders_total) + '건</b></span></div>' +
+      '<div class="acct-grid">' + s.accounts.map(salesCard).join("") + '</div>' +
+      '<div class="sync-line">조회: ' + esc((sync.sources || []).join(" · ")) + '</div>' +
+      '</section>';
+  }
+
+  function blogStatsSection(d, opts) {
+    var bs = d.blog_stats;
+    if (!bs) return "";
+    var rev = bs.revenue;
+    var revSeries = rev.sources.map(function (s) { return { label: s.label, color: s.color, values: s.values }; });
+    var legend = rev.sources.map(function (s) {
+      return '<span class="lg"><i style="background:' + esc(s.color) + '"></i>' + esc(s.label) + ' <b>' + won(s.total) + '원</b></span>';
+    }).join("");
+    var v = bs.visitors, w = bs.views;
+    return '<div class="grid grid-2 chart-pair">' +
+      '<section class="panel"><div class="panel-head"><div><h2>블로그 방문자 추이</h2>' +
+      '<p>순방문자수 일별 · ' + esc(bs.period) + '</p></div>' +
+      '<div class="panel-tools"><span class="chip">14일 ' + won(v.sum) + '명</span><span class="chip">일평균 ' + v.avg + '명</span><span class="chip">최근 ' + won(v.last) + '명</span></div></div>' +
+      lineChart({ labels: bs.labels, values: v.values, color: v.color, unit: v.unit, title: "블로그 순방문자수 추이" }) +
+      '<div class="chart-foot"><span>최고 ' + won(v.max) + '명</span><span>조회수 14일 ' + won(w.sum) + '회 · 최근 ' + won(w.last) + '회</span>' +
+      '<span>오늘 실시간 조회 ' + won((bs.live || {}).realtime_views) + '회 (' + esc((bs.live || {}).at) + ')</span></div>' +
+      '<p class="chart-note">' + esc(v.note) + '</p></section>' +
+      '<section class="panel"><div class="panel-head"><div><h2>예상수익 추이</h2>' +
+      '<p>애드포스트 · 쇼핑커넥트 일별 실측 · 합계 ' + won(rev.total) + '원</p></div></div>' +
+      barChart({ labels: bs.labels, series: revSeries, unit: "원", title: "수익원별 일별 수입" }) +
+      '<div class="chart-legend">' + legend + '</div>' +
+      '<div class="chart-foot"><span>잔액 ' + won(rev.balance) + '원</span><span>' + esc(rev.sources[0].note) + '</span></div>' +
+      '<p class="chart-note">' + esc(rev.period_note) + '</p></section>' +
+      '</div>';
+  }
+
+  function updatesSection(d) {
+    var list = d.updates || [];
+    if (!list.length) return "";
+    var chip = { done: ['완료', 'done'], waiting: ['대기', 'waiting'], scheduled: ['예약', 'scheduled'] };
+    return '<section class="panel" style="margin-bottom:18px"><div class="panel-head"><div><h2>최신 진행 현황</h2>' +
+      '<p>어젯밤~오늘 완료·대기 중인 작업 (동기화 ' + esc((d.sync || {}).last_synced_label || "—") + ')</p></div>' +
+      '<div class="panel-tools"><span class="chip">' + list.length + '건</span></div></div>' +
+      '<div class="upd-list">' + list.map(function (u) {
+        var c = chip[u.state] || ['완료', 'done'];
+        var ch = d.channels.filter(function (x) { return x.id === u.channel; })[0] || {};
+        return '<div class="upd-item" style="--c:' + esc(ch.accent || "#94a3b8") + '">' +
+          '<div class="upd-time">' + esc(u.time) + '</div>' +
+          '<div class="upd-body"><div class="upd-top"><h4>' + esc(u.title) + '</h4>' +
+          '<span class="upd-state ' + c[1] + '">' + c[0] + '</span>' +
+          '<span class="upd-ch">' + esc(ch.name || u.channel) + '</span></div>' +
+          '<p>' + esc(u.detail) + '</p></div></div>';
+      }).join("") + '</div></section>';
+  }
+
   /* ---------------- overview ---------------- */
   function renderOverview() {
     var d = state.data;
     var counts = { operating: 0, preparing: 0, waiting: 0 };
     d.channels.forEach(function (c) { counts[c.status] = (counts[c.status] || 0) + 1; });
     var avg = Math.round(sum(d.channels.map(function (c) { return c.progress; })) / d.channels.length);
+    var autoOn = sum(d.channels.map(function (c) { return (c.automation || []).filter(function (a) { return a.state === "on"; }).length; }));
 
     var kpis = d.kpis.map(function (k) {
       return '<div class="kpi" style="--kpi-accent:' + esc(k.accent) + '">' +
@@ -224,6 +404,7 @@
       '<p>' + esc(d.meta.subtitle) + ' — 채널 8개의 진행 상황과 수익, 지금 해야 할 일을 한 화면에 모았습니다.</p>' +
       '</div>' +
       '<div class="kpi-grid">' + kpis + '</div>' +
+      salesSection(d) +
       '<div class="grid grid-3">' +
       '<section class="panel span-2"><div class="panel-head"><div><h2>채널별 파이프라인</h2>' +
       '<p>각 채널이 수익화까지 얼마나 준비됐는지 (막대를 누르면 세부 대시보드)</p></div></div>' +
@@ -246,9 +427,11 @@
           '<p class="fm-desc">' + esc(s.desc) + '</p></div>';
       }).join("") + '</div>' +
       '<div class="funnel-legend">' + funnelLegend + '</div></section>' +
+      blogStatsSection(d) +
+      updatesSection(d) +
       '<section class="panel" style="margin-bottom:18px"><div class="panel-head"><div><h2>오늘의 자동화 타임라인</h2>' +
       '<p>' + esc(d.timeline.date) + ' · 자동 실행과 예약</p></div>' +
-      '<div class="panel-tools"><span class="chip operating"><span class="d" style="background:#0f9d58"></span>자동 3개 가동</span></div></div>' +
+      '<div class="panel-tools"><span class="chip operating"><span class="d" style="background:#0f9d58"></span>자동 ' + autoOn + '개 가동</span></div></div>' +
       '<div class="timeline">' + tl + '</div></section>' +
       '<section class="panel"><div class="panel-head"><div><h2>지금 확인이 필요한 일</h2>' +
       '<p>보현님 결정이나 확인이 있어야 다음 단계로 넘어가는 항목</p></div>' +
@@ -333,6 +516,8 @@
       '<div class="rev-cell"><div class="rev-label">실현 수익</div><div class="rev-value">' + esc(ch.revenue.confirmed) + '</div></div>' +
       '<div class="rev-cell"><div class="rev-label">' + esc(ch.revenue.pending_label) + '</div><div class="rev-value pending-num">' + esc(ch.revenue.pending) + '</div></div>' +
       '<div class="rev-cell"><p class="rev-note">' + esc(ch.revenue.note) + '</p></div></div>' +
+      (ch.id === "forest" ? salesSection(d) : "") +
+      (ch.id === "blog" ? blogStatsSection(d) : "") +
       cols +
       '<div class="duo">' +
       '<section class="panel"><div class="panel-head"><div><h2>완료된 진행상황</h2>' +
