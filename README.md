@@ -32,7 +32,7 @@ dashboard/
    - `next[].owner`는 `파인` 또는 `보현님`.
 3. push하면 GitHub Pages가 1~2분 안에 새로 배포합니다.
 
-### 판매 연동 · 방문자/수익 블록 (2026-11-19 추가)
+### 판매 연동 · 방문자/수익 · 제철 족보 블록 (2026-11-19 추가)
 
 | 블록 | 쓰는 곳 | 규칙 |
 |---|---|---|
@@ -40,6 +40,7 @@ dashboard/
 | `sales` | 통합·과일 채널의 **판매계정 연동 · 판매 알림** 패널 | `new_orders_total`, `alert.level`(`idle`/`live`), `alert.badge`, `accounts[]`(주문·매출·상품상태) |
 | `blog_stats` | **블로그 방문자 추이 · 예상수익 추이** 차트 | `labels`(14일), `visitors.values`, `views.values`, `revenue.sources[]`(애드포스트·쇼핑커넥트 일별, 집계 전 날은 `null`) |
 | `updates` | **최신 진행 현황** 목록 | `time`, `channel`, `state`(`done`/`waiting`/`scheduled`), `title`, `detail` |
+| `fruit_calendar` | **1년 제철 과일 족보 · 시기별 소싱 추천** (통합·과일 채널) | `months[]`(1~12월: `items`·`supply`·`peak`·`todo`·`prep`·`watch`), `rule`, `supplier_note`, `basis`. 강조 월은 화면을 연 날짜로 자동 계산 |
 
 - 신규 주문이 1건 이상이면 `sales.new_orders_total`을 올리고 `alert.level`을 `live`로 바꿉니다. 배너가 붉은 알림 배지(펄스)로 바뀌고 채널별 '신규 주문 N건' 배지가 표시됩니다. 0건이면 `idle`로 두고 "신규 주문 0건 · 대기중"으로 표시합니다.
 - 차트는 외부 라이브러리 없이 `app.js`가 SVG로 그립니다(폭 700 기준 viewBox, 좁은 화면은 글자·점을 키워 축소 대응). 값이 없으면 `0` 또는 `null`로 두고 **숫자를 지어내지 않습니다.**

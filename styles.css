@@ -766,3 +766,78 @@ main {
   .acct-head { flex-wrap: wrap; }
   .acct-id span { white-space: normal; }
 }
+
+/* ===== 1년 제철 과일 족보 · 시기별 소싱 추천 (2026-11-19 추가) ===== */
+.panel-season { margin-bottom: var(--gap); }
+.season-cards {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px; margin-bottom: 16px;
+}
+.season-card {
+  position: relative; min-width: 0;
+  border: 1px solid var(--line); border-top: 3px solid var(--c, #94a3b8);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px 13px;
+  background: var(--surface-2);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--c, #94a3b8) 6%, #fff), #fff);
+}
+.sc-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.sc-when { font-size: 10.8px; font-weight: 700; letter-spacing: .05em; color: var(--muted); }
+.sc-tag {
+  font-size: 10px; font-weight: 750; padding: 2px 8px; border-radius: 999px; white-space: nowrap;
+  background: color-mix(in srgb, var(--c, #94a3b8) 14%, #fff);
+  color: var(--c, #475569);
+}
+.season-card h3 {
+  margin: 0 0 8px; font-size: 15px; font-weight: 750; letter-spacing: -.015em; line-height: 1.35;
+}
+.sc-meta { font-size: 11.3px; color: var(--ink-2); line-height: 1.5; margin-bottom: 2px; }
+.sc-meta span {
+  display: inline-block; min-width: 50px; margin-right: 2px;
+  font-size: 10.3px; font-weight: 700; color: var(--muted-2);
+}
+.sc-act {
+  margin: 9px 0 0; padding-top: 9px; border-top: 1px dashed var(--line-strong);
+  font-size: 11.8px; color: var(--ink-2); line-height: 1.55;
+}
+
+.season-months {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px; margin: 2px 0 4px;
+}
+.sm-cell {
+  min-width: 0; padding: 9px 10px 10px;
+  border: 1px solid var(--line); border-radius: 10px; background: #fff;
+}
+.sm-top { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 3px; }
+.sm-top b { font-size: 12px; font-weight: 750; letter-spacing: .02em; color: var(--ink-2); }
+.sm-badge {
+  font-size: 9.3px; font-weight: 750; padding: 1px 6px; border-radius: 999px;
+  background: #eef2f7; color: var(--muted); white-space: nowrap;
+}
+.sm-items { display: block; font-size: 11px; color: var(--muted); line-height: 1.45; }
+.sm-todo { display: block; margin-top: 5px; font-size: 10.4px; color: var(--ink-2); line-height: 1.45; }
+.sm-cell.is-now { border-color: #bbf7d0; background: #f2fdf6; }
+.sm-cell.is-now .sm-badge { background: #16a34a; color: #fff; }
+.sm-cell.is-next { border-color: #fde68a; background: #fffdf3; }
+.sm-cell.is-next .sm-badge { background: #f59e0b; color: #fff; }
+.sm-cell.is-watch { border-color: #bfdbfe; background: #f5f9ff; }
+.sm-cell.is-watch .sm-badge { background: #3b82f6; color: #fff; }
+.season-note { margin: 9px 0 0; font-size: 11.4px; color: var(--muted); line-height: 1.6; }
+.season-note b { color: var(--ink-2); font-weight: 700; }
+.season-note.muted { color: var(--muted-2); font-size: 10.8px; }
+.season-more { text-decoration: none; }
+.season-more:hover { background: #e8eef7; }
+.panel-season-compact .season-cards { margin-bottom: 10px; }
+
+@media (max-width: 1080px) {
+  .season-months { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 720px) {
+  .season-cards { grid-template-columns: minmax(0, 1fr); gap: 9px; }
+  .season-card { padding: 11px 12px 12px; }
+  .season-card h3 { font-size: 14px; }
+  .season-months { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+  .sm-todo { display: none; }
+  .sc-meta span { min-width: 46px; }
+}

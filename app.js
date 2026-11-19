@@ -335,6 +335,68 @@
       '</div>';
   }
 
+  /* ---------------- 1년 제철 과일 족보 ---------------- */
+  var SEASON_RANK = [
+    { key: "now", tag: "지금 주력 판매", accent: "#16a34a", when: "지금" },
+    { key: "next", tag: "소싱·등록 준비", accent: "#f59e0b", when: "다음 달" },
+    { key: "watch", tag: "미리 체크", accent: "#3b82f6", when: "다다음 달" }
+  ];
+
+  /* 오늘 날짜의 월을 기준으로 '지금 / 다음 달 / 다다음 달'을 자동 계산합니다. */
+  function seasonSection(d, opts) {
+    var fc = d.fruit_calendar;
+    if (!fc || !fc.months || !fc.months.length) return "";
+    var compact = !!(opts && opts.compact);
+    var nowMonth = new Date().getMonth() + 1;
+    var byMonth = {};
+    fc.months.forEach(function (m) { byMonth[m.month] = m; });
+    function shift(off) { return ((nowMonth - 1 + off) % 12) + 1; }
+
+    var cards = SEASON_RANK.map(function (r, off) {
+      var mm = shift(off);
+      var m = byMonth[mm] || { items: [] };
+      var body = off === 0 ? m.todo : off === 1 ? m.prep : (m.watch || m.prep);
+      return '<article class="season-card is-' + r.key + '" style="--c:' + r.accent + '">' +
+        '<div class="sc-top"><span class="sc-when">' + mm + '월 · ' + r.when + '</span>' +
+        '<span class="sc-tag">' + r.tag + '</span></div>' +
+        '<h3>' + esc((m.items || []).join(" · ")) + '</h3>' +
+        '<div class="sc-meta"><span>출하</span>' + esc(m.supply || "—") + '</div>' +
+        '<div class="sc-meta"><span>검색 정점</span>' + esc(m.peak || "—") + '</div>' +
+        '<p class="sc-act">' + esc(body || "") + '</p></article>';
+    }).join("");
+
+    if (compact) {
+      return '<section class="panel panel-season panel-season-compact">' +
+        '<div class="panel-head"><div><h2>이번 달 제철 과일 · 소싱 추천</h2>' +
+        '<p>' + nowMonth + '월 기준 자동 계산 — 지금 주력 / 다음 달 준비 / 다다음 달 체크</p></div>' +
+        '<div class="panel-tools"><a class="chip season-more" href="#/forest" data-nav="forest">1년 족보 전체 →</a></div></div>' +
+        '<div class="season-cards">' + cards + '</div>' +
+        '<p class="season-note">' + esc(fc.rule) + '</p></section>';
+    }
+
+    var cells = fc.months.map(function (m) {
+      var off = (m.month - nowMonth + 12) % 12;
+      var cls = off === 0 ? "is-now" : off === 1 ? "is-next" : off === 2 ? "is-watch" : "";
+      var badge = off === 0 ? "지금" : off === 1 ? "준비" : off === 2 ? "체크" : "";
+      var tip = (m.supply || "") + " · 검색 정점 " + (m.peak || "-") + " · " + (m.todo || "");
+      return '<div class="sm-cell ' + cls + '" title="' + esc(tip) + '">' +
+        '<div class="sm-top"><b>' + m.month + '월</b>' + (badge ? '<span class="sm-badge">' + badge + '</span>' : '') + '</div>' +
+        '<span class="sm-items">' + esc((m.items || []).join(" · ")) + '</span>' +
+        (cls ? '<span class="sm-todo">' + esc(m.todo || "") + '</span>' : '') + '</div>';
+    }).join("");
+
+    return '<section class="panel panel-season">' +
+      '<div class="panel-head"><div><h2>1년 제철 과일 족보 · 시기별 소싱 추천</h2>' +
+      '<p>' + esc(fc.caption) + '</p></div>' +
+      '<div class="panel-tools"><span class="chip">기준 ' + nowMonth + '월</span>' +
+      '<span class="chip">검색 정점 · 데이터랩 주간</span></div></div>' +
+      '<div class="season-cards">' + cards + '</div>' +
+      '<div class="season-months">' + cells + '</div>' +
+      '<p class="season-note"><b>실행 규칙</b> ' + esc(fc.rule) + '</p>' +
+      '<p class="season-note">' + esc(fc.supplier_note) + '</p>' +
+      '<p class="season-note muted">' + esc(fc.basis) + '</p></section>';
+  }
+
   function updatesSection(d) {
     var list = d.updates || [];
     if (!list.length) return "";
@@ -424,6 +486,7 @@
       '</div>' +
       '<div class="kpi-grid">' + kpis + '</div>' +
       salesSection(d) +
+      seasonSection(d, { compact: true }) +
       '<div class="grid grid-3">' +
       '<section class="panel span-2"><div class="panel-head"><div><h2>채널별 파이프라인</h2>' +
       '<p>각 채널이 수익화까지 얼마나 준비됐는지 (막대를 누르면 세부 대시보드)</p></div></div>' +
@@ -536,6 +599,7 @@
       '<div class="rev-cell"><div class="rev-label">' + esc(ch.revenue.pending_label) + '</div><div class="rev-value pending-num">' + esc(ch.revenue.pending) + '</div></div>' +
       '<div class="rev-cell"><p class="rev-note">' + esc(ch.revenue.note) + '</p></div></div>' +
       (ch.id === "forest" ? salesSection(d) : "") +
+      (ch.id === "forest" ? seasonSection(d) : "") +
       (ch.id === "blog" ? blogStatsSection(d) : "") +
       cols +
       '<div class="duo">' +
