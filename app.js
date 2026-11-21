@@ -4,7 +4,7 @@
 (function () {
   "use strict";
 
-  var state = { data: null, view: "overview", channel: null };
+  var state = { data: null, view: "overview", channel: null, radarFilter: "all" };
   var STATUS = {
     operating: { label: "운영 중", color: "#0f9d58" },
     preparing: { label: "준비 중", color: "#f59e0b" },
@@ -65,11 +65,25 @@
         '<span class="nav-name">' + esc(ch.name) + '</span>' +
         '<span class="nav-state" style="background:' + st.color + '"></span></a>';
     }).join("");
+    var radarN = radarOpenCount(d);
+    var tools = '<div class="nav-label">도구</div>' +
+      '<a class="nav-item' + (state.view === "radar" ? " is-active" : "") + '" href="#/radar">' +
+      '<span class="nav-dot" style="background:#e11d48"></span><span class="nav-name">수익화 레이더</span>' +
+      (radarN ? '<span class="nav-count">' + radarN + '</span>' : '') + '</a>' +
+      '<a class="nav-item' + (state.view === "board" ? " is-active" : "") + '" href="#/board">' +
+      '<span class="nav-dot" style="background:#2563eb"></span><span class="nav-name">진행 작업 보드</span>' +
+      (boardCount(d, "doing") ? '<span class="nav-count">' + boardCount(d, "doing") + '</span>' : '') + '</a>' +
+      '<a class="nav-item" href="./generator.html">' +
+      '<span class="nav-dot" style="background:#f97316"></span><span class="nav-name">상세·마진 생성기</span>' +
+      '<span class="nav-ext">↗</span></a>';
     nav.innerHTML = '<div class="nav-label">통합</div>' + overview +
-      '<div class="nav-label">채널</div>' + items;
+      '<div class="nav-label">채널</div>' + items + tools;
 
     mobileNav.innerHTML =
       '<a class="m-pill' + (state.view === "overview" ? " is-active" : "") + '" href="#/overview">통합</a>' +
+      '<a class="m-pill' + (state.view === "radar" ? " is-active" : "") + '" href="#/radar">레이더</a>' +
+      '<a class="m-pill' + (state.view === "board" ? " is-active" : "") + '" href="#/board">작업 보드</a>' +
+      '<a class="m-pill" href="./generator.html">마진 생성기</a>' +
       d.channels.map(function (ch) {
         return '<a class="m-pill' + (state.view === "channel" && state.channel === ch.id ? " is-active" : "") +
           '" href="#/' + esc(ch.id) + '"><span class="nav-dot" style="background:' + esc(ch.accent) + '"></span>' +
@@ -80,6 +94,8 @@
   function parseHash() {
     var h = (location.hash || "#/overview").replace(/^#\/?/, "");
     if (!h || h === "overview") return { view: "overview", id: null };
+    if (h === "radar") return { view: "radar", id: null };
+    if (h === "board") return { view: "board", id: null };
     var found = state.data.channels.some(function (c) { return c.id === h; });
     return found ? { view: "channel", id: h } : { view: "overview", id: null };
   }
@@ -90,6 +106,8 @@
     state.channel = r.id;
     renderNav();
     if (r.view === "overview") renderOverview();
+    else if (r.view === "radar") renderRadar();
+    else if (r.view === "board") renderBoard();
     else renderChannel(state.data.channels.filter(function (c) { return c.id === r.id; })[0]);
     window.scrollTo(0, 0);
   }
@@ -397,6 +415,222 @@
       '<p class="season-note muted">' + esc(fc.basis) + '</p></section>';
   }
 
+  /* ---------------- 수익화 레이더 · 진행 작업 보드 ---------------- */
+  var TYPE_COLOR = { brand: "#0ea5e9", cpa: "#7c3aed", clip: "#6d5efc", fruit: "#16a34a", support: "#f59e0b" };
+  var OWNER_CLS = { "파인": "me", "보현님": "user" };
+
+  function todayStart() {
+    var n = new Date();
+    return new Date(n.getFullYear(), n.getMonth(), n.getDate());
+  }
+
+  /* 마감일은 날짜만 저장하고 D-day는 화면을 연 날짜로 계산합니다. */
+  function ddayOf(deadline) {
+    if (!deadline) return null;
+    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(deadline));
+    if (!m) return null;
+    return Math.round((new Date(+m[1], +m[2] - 1, +m[3]) - todayStart()) / 86400000);
+  }
+
+  function ddayLabel(dd) {
+    if (dd == null) return "상시";
+    if (dd < 0) return "마감";
+    if (dd === 0) return "D-DAY";
+    return "D-" + dd;
+  }
+
+  function ddayClass(dd) {
+    if (dd == null) return "dd-none";
+    if (dd < 0) return "dd-past";
+    if (dd <= 2) return "dd-urgent";
+    if (dd <= 7) return "dd-soon";
+    return "dd-ok";
+  }
+
+  function shortDate(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(s || ""));
+    return m ? (+m[2]) + "/" + (+m[3]) : "";
+  }
+
+  function radarItems(d) {
+    var r = d.radar;
+    if (!r || !r.items || !r.items.length) return [];
+    return r.items.slice().sort(function (a, b) {
+      var da = ddayOf(a.deadline), db = ddayOf(b.deadline);
+      var ka = da == null ? 9999 : (da < 0 ? 9000 : da);
+      var kb = db == null ? 9999 : (db < 0 ? 9000 : db);
+      if (ka !== kb) return ka - kb;
+      return (a.priority || 9) - (b.priority || 9);
+    });
+  }
+
+  function radarOpenCount(d) {
+    return radarItems(d).filter(function (it) {
+      var dd = ddayOf(it.deadline);
+      return dd == null || dd >= 0;
+    }).length;
+  }
+
+  function boardCount(d, key) {
+    var b = d.board;
+    if (!b || !b.tasks) return 0;
+    return b.tasks.filter(function (t) { return t.status === key; }).length;
+  }
+
+  function radarCard(it) {
+    var dd = ddayOf(it.deadline);
+    var color = TYPE_COLOR[it.type] || "#64748b";
+    var isPast = dd != null && dd < 0;
+    var openState = { decide: "결정 필요", running: "진행 중", open: "검토", soon: "곧 시작", waiting: "대기" }[it.state] || "열림";
+    var meta = [];
+    meta.push('<div><span>마감</span><b>' + (it.deadline ? shortDate(it.deadline) + ' <i class="dd ' + ddayClass(dd) + '">' + ddayLabel(dd) + '</i>' : (it.window || "상시")) + '</b></div>');
+    if (it.reward) meta.push('<div><span>리워드</span><b>' + esc(it.reward) + '</b></div>');
+    if (it.window && it.deadline) meta.push('<div><span>기간</span><b>' + esc(it.window) + '</b></div>');
+    meta.push('<div><span>상태</span><b>' + esc(it.status || openState) + '</b></div>');
+    return '<article class="radar-card' + (isPast ? " is-past" : "") + '" style="--c:' + esc(color) + '">' +
+      '<div class="rc-top"><span class="rc-type">' + esc(it.type_label || "기회") + '</span>' +
+      (it.deadline ? '<span class="dd big ' + ddayClass(dd) + '">' + ddayLabel(dd) + '</span>' : '<span class="dd big dd-none">상시</span>') + '</div>' +
+      '<h3>' + esc(it.title) + '</h3>' +
+      '<p class="rc-org">' + esc(it.org || "") + '</p>' +
+      '<div class="rc-meta">' + meta.join("") + '</div>' +
+      (it.note ? '<p class="rc-note">' + esc(it.note) + '</p>' : "") +
+      '<div class="rc-foot">' +
+      '<div class="rc-action"><span>다음 액션</span>' + esc(it.action || "—") + '</div>' +
+      '<span class="owner ' + (OWNER_CLS[it.owner] || "") + '">' + esc(it.owner || "") + '</span></div>' +
+      (it.link ? '<a class="rc-link" href="' + esc(it.link) + '" target="_blank" rel="noopener">' + esc(it.link_label || "열기") + ' ↗</a>' : "") +
+      '</article>';
+  }
+
+  /* 통합 화면에서는 마감이 가까운 4건만 요약해서 보여 줍니다. */
+  function radarSection(d, opts) {
+    var r = d.radar;
+    var items = radarItems(d);
+    if (!r || !items.length) return "";
+    var compact = !!(opts && opts.compact);
+    var soon = items.filter(function (it) { var dd = ddayOf(it.deadline); return dd != null && dd >= 0 && dd <= 3; }).length;
+    var boardDoing = boardCount(d, "doing");
+    var doing = r.caption ? '<p>' + esc(r.caption) + '</p>' : '<p>지금 열린 기회</p>';
+
+    if (!compact) {
+      return '<section class="panel panel-radar"><div class="panel-head"><div><h2>수익화 레이더</h2>' + doing + '</div>' +
+        '<div class="panel-tools"><span class="chip">열린 기회 ' + radarOpenCount(d) + '</span>' +
+        '<span class="chip">마감 3일 이내 ' + soon + '</span></div></div>' +
+        '<div class="radar-grid">' + items.map(radarCard).join("") + '</div>' +
+        '<p class="radar-note">' + esc(r.note || "") + '</p></section>';
+    }
+
+    var top = items.slice(0, 4);
+    var rows = top.map(function (it) {
+      var dd = ddayOf(it.deadline);
+      return '<a class="radar-row" href="#/radar" style="--c:' + esc(TYPE_COLOR[it.type] || "#64748b") + '">' +
+        '<span class="dd ' + ddayClass(dd) + '">' + (it.deadline ? ddayLabel(dd) : "상시") + '</span>' +
+        '<span class="rr-body"><b>' + esc(it.title) + '</b><span>' + esc(it.org || "") + ' · ' + esc(it.status || "") + '</span></span>' +
+        '<span class="rr-reward">' + esc(it.reward || "") + '</span></a>';
+    }).join("");
+    return '<section class="panel panel-radar panel-radar-compact">' +
+      '<div class="panel-head"><div><h2>수익화 레이더 · 마감 임박</h2>' +
+      '<p>브랜드커넥트·CPA·클립·제철 과일 마감을 D-day로 자동 정렬</p></div>' +
+      '<div class="panel-tools"><span class="chip">열린 기회 ' + radarOpenCount(d) + '</span>' +
+      '<a class="chip season-more" href="#/radar" data-nav="radar">레이더 전체 →</a>' +
+      '<a class="chip season-more" href="#/board" data-nav="board">작업 ' + boardDoing + '건 →</a></div></div>' +
+      '<div class="radar-rows">' + rows + '</div></section>';
+  }
+
+  function renderRadar() {
+    var d = state.data;
+    var r = d.radar;
+    var items = radarItems(d);
+    var soon = items.filter(function (it) { var dd = ddayOf(it.deadline); return dd != null && dd >= 0 && dd <= 3; }).length;
+    var rewards = items.reduce(function (s, it) {
+      var dd = ddayOf(it.deadline);
+      if (dd != null && dd < 0) return s;
+      return s + (Number(it.reward_value) || 0);
+    }, 0);
+    var decision = items.filter(function (it) { return it.state === "decide"; }).length;
+
+    if (!r || !items.length) {
+      main.innerHTML = '<div class="page-head"><h1>수익화 레이더</h1>' +
+        '<p>아직 <code>data.json</code>에 <code>radar</code> 블록이 없습니다.</p></div>' + foot();
+      return;
+    }
+
+    var filters = (r.filters || [{ key: "all", label: "전체" }]).map(function (f) {
+      var n = f.key === "all" ? items.length : items.filter(function (it) { return it.type === f.key; }).length;
+      return '<button class="rf-chip' + (state.radarFilter === f.key ? " is-active" : "") + '" type="button" data-filter="' + esc(f.key) + '">' +
+        esc(f.label) + '<span>' + n + '</span></button>';
+    }).join("");
+
+    var list = items.filter(function (it) { return state.radarFilter === "all" || it.type === state.radarFilter; });
+
+    main.innerHTML =
+      '<div class="page-head">' +
+      '<div class="page-eyebrow"><span class="live"></span>도구 · 수익화 레이더</div>' +
+      '<h1>지금 열린 돈벌이 기회</h1>' +
+      '<p>마감·리워드·다음 액션을 한 화면에 모았습니다. D-day는 화면을 연 날짜로 자동 계산됩니다.</p></div>' +
+      '<div class="radar-stats">' +
+      '<div class="rs-card" style="--c:#e11d48"><span>마감 3일 이내</span><b>' + soon + '<small>건</small></b></div>' +
+      '<div class="rs-card" style="--c:#2563eb"><span>결정만 하면 되는 일</span><b>' + decision + '<small>건</small></b></div>' +
+      '<div class="rs-card" style="--c:#0d9488"><span>확인된 리워드 합계</span><b>' + won(rewards) + '<small>원</small></b></div>' +
+      '<div class="rs-card" style="--c:#7c3aed"><span>열린 기회</span><b>' + radarOpenCount(d) + '<small>건</small></b></div>' +
+      '</div>' +
+      '<div class="radar-filters" role="group" aria-label="기회 종류">' + filters + '</div>' +
+      (list.length ? '<div class="radar-grid">' + list.map(radarCard).join("") + '</div>'
+        : '<div class="radar-empty">이 종류에 열린 기회가 없습니다.</div>') +
+      '<p class="radar-note">' + esc(r.note || "") + '</p>' +
+      '<div class="tool-links">' +
+      '<a class="tool-card" href="#/board" data-nav="board"><strong>진행 작업 보드</strong><span>진행중 ' + boardCount(d, "doing") + ' · 대기중 ' + boardCount(d, "waiting") + ' · 완료 ' + boardCount(d, "done") + '</span></a>' +
+      '<a class="tool-card" href="./generator.html"><strong>과일 상세·마진 생성기 ↗</strong><span>공급가·판매가만 넣으면 마진표와 이미지 3장</span></a>' +
+      '</div>' + foot();
+
+    Array.prototype.forEach.call(main.querySelectorAll("[data-filter]"), function (b) {
+      b.addEventListener("click", function () {
+        state.radarFilter = b.getAttribute("data-filter");
+        renderRadar();
+      });
+    });
+    bindLinks();
+  }
+
+  function boardCard(t, d) {
+    var ch = d.channels.filter(function (c) { return c.id === t.channel; })[0] || {};
+    var cls = t.status === "doing" ? "doing" : t.status === "waiting" ? "waiting" : "done";
+    return '<article class="task-card is-' + cls + '" style="--c:' + esc(ch.accent || "#94a3b8") + '">' +
+      '<div class="tc-top"><span class="tc-ch">' + esc(ch.name || t.channel || "") + '</span>' +
+      (t.due_label ? '<span class="tc-due">' + esc(t.due_label) + '</span>' : '') + '</div>' +
+      '<h4>' + esc(t.title) + '</h4>' +
+      (t.detail ? '<p>' + esc(t.detail) + '</p>' : "") +
+      (typeof t.progress === "number" ? '<div class="tc-bar"><i style="width:' + Math.max(0, Math.min(100, t.progress)) + '%"></i><span>' + t.progress + '%</span></div>' : "") +
+      '<div class="tc-foot"><span class="owner ' + (OWNER_CLS[t.owner] || "") + '">' + esc(t.owner || "") + '</span>' +
+      (t.scheduled ? '<span class="tc-sched">🔁 ' + esc(t.scheduled) + '</span>' : '') + '</div></article>';
+  }
+
+  function renderBoard() {
+    var d = state.data;
+    var b = d.board;
+    if (!b || !b.tasks) {
+      main.innerHTML = '<div class="page-head"><h1>진행 작업 보드</h1>' +
+        '<p>아직 <code>data.json</code>에 <code>board</code> 블록이 없습니다.</p></div>' + foot();
+      return;
+    }
+    var cols = (b.columns || []).map(function (c) {
+      var list = b.tasks.filter(function (t) { return t.status === c.key; });
+      return '<section class="board-col" style="--c:' + esc(c.accent) + '">' +
+        '<div class="bc-head"><span class="bc-dot"></span><h3>' + esc(c.label) + '</h3>' +
+        '<span class="bc-count">' + list.length + '</span></div>' +
+        '<div class="bc-body">' + (list.length ? list.map(function (t) { return boardCard(t, d); }).join("") : '<p class="bc-empty">비어 있습니다</p>') + '</div></section>';
+    }).join("");
+
+    main.innerHTML =
+      '<div class="page-head">' +
+      '<div class="page-eyebrow"><span class="live"></span>도구 · 진행 작업 보드</div>' +
+      '<h1>진행중 · 대기중 · 완료</h1>' +
+      '<p>' + esc(b.caption || "") + '</p></div>' +
+      '<div class="board">' + cols + '</div>' +
+      '<p class="radar-note">' + esc(b.note || "") + ' <a href="#/radar" data-nav="radar" style="color:#1d4ed8;font-weight:650">수익화 레이더로 →</a></p>' +
+      foot();
+    bindLinks();
+  }
+
   function updatesSection(d) {
     var list = d.updates || [];
     if (!list.length) return "";
@@ -486,6 +720,7 @@
       '</div>' +
       '<div class="kpi-grid">' + kpis + '</div>' +
       salesSection(d) +
+      radarSection(d, { compact: true }) +
       seasonSection(d, { compact: true }) +
       '<div class="grid grid-3">' +
       '<section class="panel span-2"><div class="panel-head"><div><h2>채널별 파이프라인</h2>' +

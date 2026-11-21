@@ -12,7 +12,8 @@
 dashboard/
 ├─ index.html              화면 껍데기 (데이터 없음)
 ├─ styles.css              디자인 시스템 · 반응형
-├─ app.js                  렌더링 · 라우팅(#/채널id) · 새로고침
+├─ app.js                  렌더링 · 라우팅(#/채널id · #/radar · #/board) · 새로고침
+├─ generator.html          과일 상세·마진 원클릭 생성기 (100% 브라우저, 서버 전송 없음)
 ├─ data.json               ← 유일한 데이터 소스 (수정 지점)
 ├─ manifest.webmanifest    PWA 설치 정보
 ├─ sw.js                   서비스 워커 (data.json은 네트워크 우선, samples/는 캐시 제외)
@@ -41,10 +42,23 @@ dashboard/
 | `blog_stats` | **블로그 방문자 추이 · 예상수익 추이** 차트 | `labels`(14일), `visitors.values`, `views.values`, `revenue.sources[]`(애드포스트·쇼핑커넥트 일별, 집계 전 날은 `null`) |
 | `updates` | **최신 진행 현황** 목록 | `time`, `channel`, `state`(`done`/`waiting`/`scheduled`), `title`, `detail` |
 | `fruit_calendar` | **1년 제철 과일 족보 · 시기별 소싱 추천** (통합·과일 채널) | `months[]`(1~12월: `items`·`supply`·`peak`·`todo`·`prep`·`watch`), `rule`, `supplier_note`, `basis`. 강조 월은 화면을 연 날짜로 자동 계산 |
+| `radar` | **수익화 레이더** (`#/radar`, 통합 화면 요약) | `items[]`: `type`(`brand`/`cpa`/`clip`/`fruit`/`support`)·`title`·`org`·`deadline`(YYYY-MM-DD, 없으면 상시)·`window`·`reward`·`reward_value`·`state`(`decide`/`running`/`open`/`soon`)·`status`·`owner`·`action`·`note`·`link`·`priority`. D-day는 저장하지 않고 **화면을 연 날짜로 자동 계산** |
+| `board` | **진행 작업 보드** (`#/board`) | `columns[]`(`doing`/`waiting`/`done`)와 `tasks[]`: `status`·`title`·`owner`·`channel`(채널 id)·`due`·`due_label`·`detail`·`progress`(0~100, 선택)·`scheduled`(예약 작업 이름) |
 
 - 신규 주문이 1건 이상이면 `sales.new_orders_total`을 올리고 `alert.level`을 `live`로 바꿉니다. 배너가 붉은 알림 배지(펄스)로 바뀌고 채널별 '신규 주문 N건' 배지가 표시됩니다. 0건이면 `idle`로 두고 "신규 주문 0건 · 대기중"으로 표시합니다.
 - 차트는 외부 라이브러리 없이 `app.js`가 SVG로 그립니다(폭 700 기준 viewBox, 좁은 화면은 글자·점을 키워 축소 대응). 값이 없으면 `0` 또는 `null`로 두고 **숫자를 지어내지 않습니다.**
 - 정기 갱신은 예약 작업 `📊-대시보드-실데이터-동기화-및-판매알림`(매일 10:40·14:40·18:40·22:40)이 이 블록들을 직접 고쳐 push합니다.
+- `radar`·`board`는 동기화 작업이 손대지 않는 별도 블록입니다. 마감이 지난 기회도 지우지 말고 두면 D-day가 `마감`으로 바뀌며 흐리게 표시됩니다.
+- 화면에 새 섹션을 넣을 때는 `app.js`에서 `d.radar`·`d.board`가 없는 경우를 먼저 처리해, 블록이 빠진 `data.json`으로도 대시보드 전체가 깨지지 않게 합니다.
+
+### 과일 상세·마진 원클릭 생성기 (`generator.html`)
+
+상품명·옵션별 공급가/판매가·실사 사진을 넣으면 ① 쿠팡(11.66%+CS 2%)·스마트스토어(4.95%+CS 2%)·마케팅링크(2.95%+CS 2%) 건당 마진·마진율·손익분기 ROAS 표, ② 1000×1000 대표이미지, ③ v7 가을 톤 상세 섹션 2장(헤드라인·옵션가 / 규격·배송·보관)을 브라우저에서 만들고 PNG로 저장합니다.
+
+- 모든 계산·합성은 클라이언트에서만 돕니다(사진 업로드 포함, 서버 전송 0). 입력값은 같은 브라우저의 `localStorage`(`storenote-generator-v1`)에만 남습니다.
+- 마진 = 판매가 − 공급가 − 수수료(플랫폼+CS) − 배송·포장 원가. 부가세·반품·쿠폰 비용은 미포함입니다.
+- 수수료율은 화면의 '수수료율 설정'에서 고칠 수 있고, 바꾸면 표 전체가 다시 계산됩니다.
+- 이미지 문구는 입력한 값(상품명·배지·배송·보관·안내)만 사용합니다. 없는 문구를 지어내지 않습니다.
 
 채널의 `links[].url`에 `./samples/v6/`처럼 사이트 안 페이지를 넣으면 대시보드에서 새 탭으로 열립니다.
 `url`이 비어 있으면 '작업 폴더 파일' 비활성 칩으로 표시됩니다.

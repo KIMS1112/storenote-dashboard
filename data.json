@@ -2,10 +2,10 @@
   "meta": {
     "title": "매장경영노트 수익화 파이프라인",
     "subtitle": "블로그 · 클립 · 브랜드커넥트 · 쇼핑커넥트 · 인스타 · 스레드 · 쇼츠 · 모두의 숲",
-    "updated_at": "2026-11-21T18:49:00+09:00",
-    "updated_label": "2026-11-21 18:49",
+    "updated_at": "2026-11-21T21:00:00+09:00",
+    "updated_label": "2026-11-21 21:00",
     "updated_by": "파인",
-    "data_version": 14,
+    "data_version": 15,
     "note": "이 파일(data.json)만 수정해 배포하면 웹과 폰 앱에 같은 내용이 바로 반영됩니다. 수치는 스마트스토어센터·쿠팡 윙·블로그 통계·애드포스트·크리에이터샵 화면에서 직접 확인한 값만 담았습니다."
   },
   "kpis": [
@@ -1895,6 +1895,438 @@
         "todo": "딸기 판매 개시(공급처 오픈 즉시) · 타이벡·석류는 막바지 소진",
         "prep": "11월 말까지 딸기 상세페이지·옵션·사진 완료",
         "watch": "레드향·한라봉 등록(12월 중순) · 딸기 세부키워드(설향·논산)"
+      }
+    ]
+  },
+  "radar": {
+    "caption": "지금 열려 있는 수익화 기회 — 마감·리워드·다음 액션을 한 화면에서",
+    "updated_label": "2026-11-21 21:00",
+    "note": "마감일은 날짜로만 저장하고 D-day는 화면을 연 날짜로 자동 계산합니다. 금액은 확인된 값만 적었습니다.",
+    "filters": [
+      {
+        "key": "all",
+        "label": "전체"
+      },
+      {
+        "key": "brand",
+        "label": "브랜드커넥트"
+      },
+      {
+        "key": "cpa",
+        "label": "CPA·제휴"
+      },
+      {
+        "key": "clip",
+        "label": "클립·콘텐츠"
+      },
+      {
+        "key": "fruit",
+        "label": "제철 과일"
+      },
+      {
+        "key": "support",
+        "label": "지원·프로모션"
+      }
+    ],
+    "items": [
+      {
+        "id": "bc-samsung-8",
+        "type": "brand",
+        "type_label": "브랜드커넥트",
+        "title": "삼성 뚜껑형 김치냉장고 8차",
+        "org": "삼성전자 · 브랜드커넥트",
+        "deadline": "2026-11-23",
+        "window": "11/23~25 블로그 1건 의무",
+        "reward": "리워드 10,000원",
+        "reward_value": 10000,
+        "state": "decide",
+        "status": "신청 결정 대기",
+        "owner": "보현님",
+        "action": "신청 여부 결정 → 브랜드커넥트에서 신청",
+        "note": "7차는 미선정 종료(15/147). 8차 모집 10명·현재 86명 신청, 수락 후 취소 불가.",
+        "link": "https://brandconnect.naver.com",
+        "link_label": "브랜드커넥트",
+        "priority": 1
+      },
+      {
+        "id": "clip-w4",
+        "type": "clip",
+        "type_label": "클립·콘텐츠",
+        "title": "오늘 클립 챌린지 4주차",
+        "org": "네이버 클립 · @storenote",
+        "deadline": "2026-11-28",
+        "window": "11/22~28",
+        "reward": "챌린지 인센티브",
+        "reward_value": null,
+        "state": "soon",
+        "status": "내일 시작",
+        "owner": "보현님",
+        "action": "실사 동영상 3 + 게시물 4 업로드 (촬영 필요)",
+        "note": "쇼핑커넥트 태그 부착 시 제외 · 일반 정보태그 + #오늘클립챌린지 + 전체공개 · AI 생성물 제외.",
+        "link": null,
+        "link_label": null,
+        "priority": 1
+      },
+      {
+        "id": "fruit-taipek",
+        "type": "fruit",
+        "type_label": "제철 과일",
+        "title": "타이벡 노지감귤 조생",
+        "org": "행운프레시 · 모두의 숲",
+        "deadline": null,
+        "window": "지금 출하 중",
+        "reward": "쿠팡 21~25% · 스토어 30~33% 마진",
+        "reward_value": null,
+        "state": "running",
+        "status": "제작·등록 중",
+        "owner": "파인",
+        "action": "3kg 대과 9,900 · 중과 11,900 구간으로 상세·등록",
+        "note": "재고 있음 · 전 옵션 '맛없으면 환불'. 11/21 v7 상세 제작 착수, 스토어·쿠팡 동시 등록.",
+        "link": null,
+        "link_label": null,
+        "priority": 1
+      },
+      {
+        "id": "support-sme",
+        "type": "support",
+        "type_label": "지원·프로모션",
+        "title": "스마트스토어 SME 성장 지원",
+        "org": "네이버 스마트스토어",
+        "deadline": "2026-11-30",
+        "window": "신청 후 쿠폰 지급",
+        "reward": "광고비 100% · 최대 50만 원 쿠폰",
+        "reward_value": 500000,
+        "state": "decide",
+        "status": "서류 준비",
+        "owner": "보현님",
+        "action": "사업자등록증 업로드 → 신청 + 일 10,000원 테스트 집행",
+        "note": "네이버 광고 집행 이력 0원이라 대상 가능성 높음. 11/30 마감.",
+        "link": "https://sell.smartstore.naver.com",
+        "link_label": "판매자센터",
+        "priority": 1
+      },
+      {
+        "id": "bc-hanafilter",
+        "type": "brand",
+        "type_label": "브랜드커넥트",
+        "title": "하나필터 유망 캠페인 2건",
+        "org": "하나필터 · 브랜드커넥트",
+        "deadline": "2026-11-23",
+        "window": "냉장고 탈취제 · KF94 마스크",
+        "reward": "제품 제공",
+        "reward_value": null,
+        "state": "decide",
+        "status": "신청 결정 대기",
+        "owner": "보현님",
+        "action": "2건 신청 여부 결정",
+        "note": "11/23 마감. 체험단은 제품 수령·콘텐츠 작성 의무를 확인하고 신청.",
+        "link": "https://brandconnect.naver.com",
+        "link_label": "브랜드커넥트",
+        "priority": 2
+      },
+      {
+        "id": "fruit-seolhyang",
+        "type": "fruit",
+        "type_label": "제철 과일",
+        "title": "논산 설향딸기 예약판매",
+        "org": "캄므 · 모두의 숲",
+        "deadline": "2026-11-25",
+        "window": "11/25~26 순차출고",
+        "reward": "겨울 시즌 선점",
+        "reward_value": null,
+        "state": "decide",
+        "status": "가입·등록 전",
+        "owner": "보현님",
+        "action": "캄므 가입(사업자등록증) → 예약판매 상품 등록",
+        "note": "캄므에 (예약판매) 논산 설향딸기 열림. 휘프레시는 카드 일시중단·계좌이체만. 간이사업자 영수증·과면세 처리 확인 필요.",
+        "link": null,
+        "link_label": null,
+        "priority": 2
+      },
+      {
+        "id": "bc-newb",
+        "type": "brand",
+        "type_label": "브랜드커넥트",
+        "title": "뉴브 필로우미스트",
+        "org": "뉴브 · 브랜드커넥트",
+        "deadline": "2026-11-27",
+        "window": "구매 후 제출 2건",
+        "reward": "33,780원 페이백",
+        "reward_value": 33780,
+        "state": "running",
+        "status": "선정 · 제출 0/2",
+        "owner": "보현님",
+        "action": "공식몰 구매 → 블로그 + 리뷰 캡처 제출",
+        "note": "선정·진행 중이나 제출이 0건. 11/27 마감이니 구매·작성 순서를 먼저 잡아야 함.",
+        "link": "https://brandconnect.naver.com",
+        "link_label": "브랜드커넥트",
+        "priority": 2
+      },
+      {
+        "id": "cpa-dbd",
+        "type": "cpa",
+        "type_label": "CPA·제휴",
+        "title": "디비디비딥",
+        "org": "국내 CPA 1순위",
+        "deadline": null,
+        "window": "상시",
+        "reward": "건당 정산",
+        "reward_value": null,
+        "state": "open",
+        "status": "검토",
+        "owner": "파인",
+        "action": "가입 후 캠페인 단가·정산 조건 비교",
+        "note": "국내 CPA 실측 1순위. 당근 채널 2단 구조로 굴릴 수 있는지 확인.",
+        "link": null,
+        "link_label": null,
+        "priority": 3
+      },
+      {
+        "id": "bc-motsan",
+        "type": "brand",
+        "type_label": "브랜드커넥트",
+        "title": "크리에이터샵 못산템 1회차",
+        "org": "네이버 크리에이터샵",
+        "deadline": "2026-12-10",
+        "window": "타인 구매 1건 조건",
+        "reward": "5억 프로모션 +2%p",
+        "reward_value": null,
+        "state": "running",
+        "status": "진행 중",
+        "owner": "파인",
+        "action": "타인 구매 1건 달성 · 오픈 크루 미션 유지",
+        "note": "오픈 크루 미션: 신규 컬렉션 월 4개 · 상품 30개 유지 · 샵 링크 게시 · 추천 콘텐츠 월 1회.",
+        "link": "https://brandconnect.naver.com/creatorshop_campaign",
+        "link_label": "크리에이터샵 캠페인",
+        "priority": 3
+      },
+      {
+        "id": "cpa-adrix",
+        "type": "cpa",
+        "type_label": "CPA·제휴",
+        "title": "애드릭스",
+        "org": "국내 CPA 2순위",
+        "deadline": null,
+        "window": "상시",
+        "reward": "건당 정산",
+        "reward_value": null,
+        "state": "open",
+        "status": "검토",
+        "owner": "파인",
+        "action": "1순위 정산 조건 확인 후 병행 여부 결정",
+        "note": "2순위 비교군. 단가·정산 주기만 보고 1순위와 택일.",
+        "link": null,
+        "link_label": null,
+        "priority": 4
+      }
+    ]
+  },
+  "board": {
+    "caption": "진행중 · 대기중 · 완료 — 손에서 놓치지 않게 상태별로",
+    "updated_label": "2026-11-21 21:00",
+    "note": "상태는 이 파일에서 직접 고칩니다(doing·waiting·done). 예약 작업은 이름을 적어 두면 대시보드에서 그대로 추적됩니다.",
+    "columns": [
+      {
+        "key": "doing",
+        "label": "진행중",
+        "accent": "#2563eb"
+      },
+      {
+        "key": "waiting",
+        "label": "대기중",
+        "accent": "#f59e0b"
+      },
+      {
+        "key": "done",
+        "label": "완료",
+        "accent": "#0f9d58"
+      }
+    ],
+    "tasks": [
+      {
+        "id": "t-taipek-detail",
+        "status": "doing",
+        "title": "타이벡 노지감귤 조생 상세·등록",
+        "owner": "파인",
+        "channel": "forest",
+        "due": "2026-11-22",
+        "due_label": "11/22",
+        "detail": "행운프레시 실사 기반 v7 상세 → 스마트스토어·쿠팡 동시 등록. 3kg 대과 9,900 · 중과 11,900.",
+        "progress": 40
+      },
+      {
+        "id": "t-coupang-seo",
+        "status": "doing",
+        "title": "쿠팡·스토어 2026 신규 SEO 적용",
+        "owner": "파인",
+        "channel": "forest",
+        "due": "2026-11-21",
+        "due_label": "11/21",
+        "detail": "쿠팡 상품명 3종 교체 + 검색어 태그 0개 정리, 스토어 태그 10개·Page Title/Meta 입력.",
+        "progress": 90
+      },
+      {
+        "id": "t-exposure",
+        "status": "doing",
+        "title": "쿠팡 노출제한 3건 재확인",
+        "owner": "파인",
+        "channel": "forest",
+        "due": "2026-11-23",
+        "due_label": "11/23 09:00",
+        "detail": "재문의 636500425(사과 5kg 중대과)·636501310(감귤 5kg 중대과)·636502150(고구마 3kg 한입) 답변·노출제한 카운터 확인.",
+        "scheduled": "🔁 쿠팡 노출제한 재문의 답변 추적"
+      },
+      {
+        "id": "t-clip-w4",
+        "status": "doing",
+        "title": "오늘 클립 챌린지 4주차 미션",
+        "owner": "보현님",
+        "channel": "clip",
+        "due": "2026-11-28",
+        "due_label": "11/22~28",
+        "detail": "실사 동영상 3 + 게시물 4. 촬영 원본이 있어야 올릴 수 있어 보현님 손이 필요함.",
+        "progress": 0
+      },
+      {
+        "id": "t-newb",
+        "status": "doing",
+        "title": "뉴브 필로우미스트 제출 2건",
+        "owner": "보현님",
+        "channel": "brandconnect",
+        "due": "2026-11-27",
+        "due_label": "11/27",
+        "detail": "공식몰 구매 → 블로그 + 리뷰 캡처 제출. 제출 0/2건.",
+        "progress": 10
+      },
+      {
+        "id": "t-sme",
+        "status": "waiting",
+        "title": "SME 성장 지원 신청 (최대 50만 원 쿠폰)",
+        "owner": "보현님",
+        "channel": "shopping",
+        "due": "2026-11-30",
+        "due_label": "11/30 마감",
+        "detail": "사업자등록증 업로드가 선행 조건. 승인되면 일 10,000원 테스트 집행으로 바로 연결."
+      },
+      {
+        "id": "t-naver-ad",
+        "status": "waiting",
+        "title": "네이버 광고 일 10,000원 테스트",
+        "owner": "파인",
+        "channel": "forest",
+        "due": null,
+        "due_label": null,
+        "detail": "SME 쿠폰 승인 후 집행. 광고 전 노출→클릭→전환부터 확인한다는 원칙 유지."
+      },
+      {
+        "id": "t-samsung-8",
+        "status": "waiting",
+        "title": "삼성 김치냉장고 8차 신청 여부",
+        "owner": "보현님",
+        "channel": "brandconnect",
+        "due": "2026-11-23",
+        "due_label": "11/23 마감",
+        "detail": "리워드 1만 원 · 11/23~25 블로그 1건 의무 · 수락 후 취소 불가."
+      },
+      {
+        "id": "t-hanafilter",
+        "status": "waiting",
+        "title": "하나필터 캠페인 2건 신청 여부",
+        "owner": "보현님",
+        "channel": "brandconnect",
+        "due": "2026-11-23",
+        "due_label": "11/23 마감",
+        "detail": "냉장고 탈취제·KF94 마스크. 체험단 의무(제품 수령·콘텐츠 작성) 확인 후 결정."
+      },
+      {
+        "id": "t-cammeu",
+        "status": "waiting",
+        "title": "캄므 가입 (설향딸기 예약판매)",
+        "owner": "보현님",
+        "channel": "forest",
+        "due": "2026-11-25",
+        "due_label": "11/25 출고 시작",
+        "detail": "사업자등록증 5MB 업로드로 가입 신청. 간이사업자라 첫 발주 전 영수증·과면세 처리 확인 필요."
+      },
+      {
+        "id": "t-threads",
+        "status": "waiting",
+        "title": "스레드 2/2 링크 답글 보류",
+        "owner": "파인",
+        "channel": "threads",
+        "due": null,
+        "due_label": "조회 100 미만",
+        "detail": "4일 연속 조회 100 미만이라 링크 답글 보류. 11/21 새 톤(자조·에피소드형)으로 반응 확인 후 재개 판단."
+      },
+      {
+        "id": "t-insta-storenote",
+        "status": "waiting",
+        "title": "인스타 @storenote_kr 셀카 인증",
+        "owner": "보현님",
+        "channel": "instagram",
+        "due": null,
+        "due_label": null,
+        "detail": "본인 확인(셀카 업로드) 단계에서 중단. 자동 홍보는 일시정지 상태로 유지."
+      },
+      {
+        "id": "t-return-carrier",
+        "status": "waiting",
+        "title": "쿠팡 반품 택배사 결정",
+        "owner": "보현님",
+        "channel": "forest",
+        "due": null,
+        "due_label": null,
+        "detail": "한진 유지 vs 롯데 굿스플로. 출고지는 하남 위례순환로 270(롯데택배)로 통일됨."
+      },
+      {
+        "id": "t-seo-done",
+        "status": "done",
+        "title": "쿠팡 3종 2026 SEO 상품명 적용",
+        "owner": "파인",
+        "channel": "forest",
+        "due": "2026-11-21",
+        "due_label": "11/21",
+        "detail": "사과·감귤·고구마 이름을 실제 자동완성 키워드로 교체, 검색 태그 20개→0개, 고시정보 3종 확인."
+      },
+      {
+        "id": "t-store-done",
+        "status": "done",
+        "title": "스마트스토어 표기·SEO 보강",
+        "owner": "파인",
+        "channel": "forest",
+        "due": "2026-11-21",
+        "due_label": "11/21",
+        "detail": "사과 상품명 소과·중과 통일, 고구마 제주 30,000원·배송불가 특이사항, 3종 태그 10개·Page Title/Meta."
+      },
+      {
+        "id": "t-taipek-margin",
+        "status": "done",
+        "title": "타이벡귤 마진 분석",
+        "owner": "파인",
+        "channel": "forest",
+        "due": "2026-11-21",
+        "due_label": "11/21",
+        "detail": "3kg 대과 9,900 · 중과 11,900 구간이 쿠팡 21~25%·스토어 30~33%로 가장 남는 조합."
+      },
+      {
+        "id": "t-inquiry",
+        "status": "done",
+        "title": "쿠팡 노출제한 캡처 재문의 3건 접수",
+        "owner": "파인",
+        "channel": "forest",
+        "due": "2026-11-21",
+        "due_label": "11/21 18:05",
+        "detail": "가격관리 재확인 결과 노출제한 3건 유지 → 캡처 첨부해 636500425·636501310·636502150 접수."
+      },
+      {
+        "id": "t-calendar",
+        "status": "done",
+        "title": "1년 제철 과일 족보 배포",
+        "owner": "파인",
+        "channel": "forest",
+        "due": "2026-11-19",
+        "due_label": "11/19",
+        "detail": "월별 품목·출하 시기·검색 정점·할 일을 data.json에 넣고 대시보드에 자동 강조 패널 추가."
       }
     ]
   }
