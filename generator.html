@@ -899,6 +899,7 @@
     ctx.fillRect(56, y + 14, 64, 3);
 
     y += 88;
+    setFont(ctx, L.size, 780);
     L.lines.forEach(function (ln, i) {
       if (i === L.lines.length - 1) {
         var w = ctx.measureText(ln).width;
