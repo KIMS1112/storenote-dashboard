@@ -775,37 +775,110 @@
     }
 
     var name = productName() || "상품명을 입력하세요";
-    setFont(ctx, 24, 600);
-    ctx.fillStyle = "rgba(255,255,255,.82)";
-    ctx.fillText(($("#brand").value || "").trim(), 60, H - 196);
-
-    var size = 66;
+    var size = 66, lh = size * 1.16;
     setFont(ctx, size, 750);
     var lines = wrapLines(ctx, name, 880).slice(0, 2);
-    var y = H - 132 - (lines.length - 1) * (size * 1.16);
+    var lastBaseline = H - 118;
+    var firstBaseline = lastBaseline - (lines.length - 1) * lh;
+
     ctx.fillStyle = "#fff";
-    lines.forEach(function (ln) { ctx.fillText(ln, 60, y); y += size * 1.16; });
+    lines.forEach(function (ln, i) { ctx.fillText(ln, 60, firstBaseline + i * lh); });
+
+    setFont(ctx, 24, 600);
+    ctx.fillStyle = "rgba(255,255,255,.82)";
+    ctx.fillText(($("#brand").value || "").trim(), 60, firstBaseline - 40);
 
     var r0 = rs()[0];
     if (r0 && r0.spec > 0) {
       setFont(ctx, 26, 600);
-      ctx.fillStyle = "rgba(255,255,255,.85)";
-      ctx.fillText(won(Math.round(r0.price / r0.spec * 1000)) + "원/kg · " + won(r0.price) + "원~", 60, H - 62);
-      ctx.fillStyle = "rgba(255,255,255,.22)";
-      ctx.fillRect(60, H - 96, 120, 1);
+      ctx.fillStyle = "rgba(255,255,255,.86)";
+      ctx.fillText(won(Math.round(r0.price / r0.spec * 1000)) + "원/kg · " + won(r0.price) + "원~", 60, H - 54);
+      ctx.fillStyle = "rgba(255,255,255,.26)";
+      ctx.fillRect(60, H - 84, 120, 1);
     }
   }
 
+  /* ---------------- 공통: 배지 칩 줄 ---------------- */
+  function drawChips(ctx, list, x, y, t, maxW) {
+    var size = 20;
+    setFont(ctx, size, 650);
+    var widths = list.map(function (b) { return ctx.measureText(b).width + 40; });
+    var total = widths.reduce(function (a, b) { return a + b; }, 0) + 12 * (list.length - 1);
+    if (total > maxW) {
+      size = 17;
+      setFont(ctx, size, 650);
+      widths = list.map(function (b) { return ctx.measureText(b).width + 34; });
+    }
+    var bx = x;
+    list.forEach(function (b, i) {
+      var w = widths[i];
+      ctx.fillStyle = t.cream2;
+      roundRect(ctx, bx, y, w, size + 26, (size + 26) / 2);
+      ctx.fill();
+      ctx.fillStyle = t.accent2;
+      ctx.fillText(b, bx + (i === 0 ? 20 : 17), y + size + 3);
+      bx += w + 12;
+    });
+    return size + 26;
+  }
+
+  function chipRowHeight() { return 48; }
+
+  /* 대표가 카드 폭 — 옵션이 적어도 카드가 과하게 늘어나지 않게 합니다. */
+  function cardGeom(n) {
+    var gap = 18, maxW = 1000 - 112;
+    var w = Math.min((maxW - gap * (n - 1)) / n, 300);
+    return { gap: gap, w: w, totalW: w * n + gap * (n - 1) };
+  }
+
   /* ---------------- 상세 섹션 1 ---------------- */
+  function sec1Layout(ctx, W, t) {
+    var maxW = W - 112;
+    var name = productName() || "상품명을 입력하세요";
+    var size = 76;
+    setFont(ctx, size, 780);
+    while (ctx.measureText(name).width > maxW && size > 44) { size -= 3; setFont(ctx, size, 780); }
+    var lines = wrapLines(ctx, name, maxW).slice(0, 3);
+
+    var opts = rs().slice(0, 3);
+    var sub = opts.length
+      ? (opts.length > 1 ? "오늘 선별한 원물을 " + opts.length + "가지 규격으로 보내드립니다." : "오늘 선별해 바로 보내드립니다.")
+      : "옵션을 입력하면 규격·가격이 표시됩니다.";
+    setFont(ctx, 26, 500);
+    var subLines = wrapLines(ctx, sub, maxW).slice(0, 2);
+
+    var bands = 84, photo = 470, gap1 = 74, kickerBlock = 88;
+    var head = lines.length * size * 1.14;
+    /* 그리는 순서와 똑같이 높이를 더합니다(헤드라인 뒤 6, 본문 뒤 30, 카드 앞 30). */
+    var subBlock = 6 + subLines.length * 38 + 30;
+    var cards = opts.length ? 250 : 0;
+    var list = badges();
+    var chips = list.length ? chipRowHeight() + 14 : 0;
+    var footer = 200;
+    var content = bands + photo + gap1 + kickerBlock + head + subBlock + cards + chips;
+    var H = Math.max(1180, Math.round(content + footer));
+
+    return {
+      W: W, H: H, maxW: maxW, lines: lines, size: size, subLines: subLines, opts: opts,
+      bands: bands, photo: photo, gap1: gap1, kickerBlock: kickerBlock, head: head,
+      cards: cards, chips: chips, footer: footer,
+      cardGeom: opts.length ? cardGeom(opts.length) : null
+    };
+  }
+
   function drawSec1() {
-    var cv = $("#cvSec1"), ctx = cv.getContext("2d");
-    var t = tone(), W = 1000, H = 1180;
+    var cv = $("#cvSec1");
+    var ctx = cv.getContext("2d");
+    var t = tone(), W = 1000;
+    var L = sec1Layout(ctx, W, t);
+    var H = L.H;
+    if (cv.height !== H) cv.height = H;
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = t.bg;
     ctx.fillRect(0, 0, W, H);
 
     ctx.fillStyle = t.cream2;
-    ctx.fillRect(0, 0, W, 84);
+    ctx.fillRect(0, 0, W, L.bands);
     setFont(ctx, 22, 700);
     ctx.fillStyle = t.accent2;
     ctx.fillText(($("#brand").value || "").trim() + " · 제철과일", 56, 52);
@@ -815,59 +888,47 @@
     ctx.fillText("SHEETMUCH 01", W - 56, 51);
     ctx.textAlign = "left";
 
-    var photoY = 84, photoH = 470;
-    if (state.images.main) drawCover(ctx, state.images.main, 0, photoY, W, photoH, 0);
-    else placeholder(ctx, 0, photoY, W, photoH, t);
+    var photoY = L.bands;
+    if (state.images.main) drawCover(ctx, state.images.main, 0, photoY, W, L.photo, 0);
+    else placeholder(ctx, 0, photoY, W, L.photo, t);
 
-    var y = photoY + photoH + 74;
+    var y = photoY + L.photo + L.gap1;
     setFont(ctx, 19, 700);
     ctx.fillStyle = t.accent;
     ctx.fillText("지 금 제 철 · 산 지 직 송", 56, y);
     ctx.fillRect(56, y + 14, 64, 3);
 
-    var name = productName() || "상품명을 입력하세요";
-    var size = 76;
-    setFont(ctx, size, 780);
-    var maxW = W - 112;
-    while (ctx.measureText(name).width > maxW && size > 44) { size -= 3; setFont(ctx, size, 780); }
-    var lines = wrapLines(ctx, name, maxW).slice(0, 3);
     y += 88;
-    lines.forEach(function (ln, i) {
-      if (i === lines.length - 1) {
+    L.lines.forEach(function (ln, i) {
+      if (i === L.lines.length - 1) {
         var w = ctx.measureText(ln).width;
-        ctx.fillStyle = "rgba(192,94,12,.16)";
-        if (t.name === "사과") ctx.fillStyle = "rgba(192,80,45,.16)";
-        if (t.name === "고구마") ctx.fillStyle = "rgba(164,94,40,.16)";
-        roundRect(ctx, 50, y - size * 0.82, w + 22, size * 1.06, 8);
+        ctx.fillStyle = t.cream2;
+        roundRect(ctx, 50, y - L.size * 0.82, w + 22, L.size * 1.06, 8);
         ctx.fill();
         ctx.fillStyle = t.accent2;
       } else {
         ctx.fillStyle = t.ink;
       }
       ctx.fillText(ln, 56, y);
-      y += size * 1.14;
+      y += L.size * 1.14;
     });
 
-    var r0 = rs()[0], count = rs().length;
-    var sub = r0
-      ? (count > 1 ? "오늘 선별한 원물을 " + count + "가지 규격으로 보내드립니다." : "오늘 선별해 바로 보내드립니다.")
-      : "옵션을 입력하면 규격·가격이 표시됩니다.";
+    y += 6;
     setFont(ctx, 26, 500);
     ctx.fillStyle = t.body;
-    wrapLines(ctx, sub, maxW).slice(0, 2).forEach(function (ln) {
+    L.subLines.forEach(function (ln) {
       ctx.fillText(ln, 56, y);
       y += 38;
     });
 
-    y += 26;
-    var opts = rs().slice(0, 3);
-    if (opts.length) {
-      var gap = 18, cw = (W - 112 - gap * (opts.length - 1)) / opts.length;
-      opts.forEach(function (r, i) {
-        var x = 56 + i * (cw + gap);
+    y += 30;
+    if (L.opts.length) {
+      var g = L.cardGeom;
+      L.opts.forEach(function (r, i) {
+        var x = 56 + i * (g.w + g.gap);
         var h = 210;
         ctx.fillStyle = t.cream;
-        roundRect(ctx, x, y, cw, h, 22);
+        roundRect(ctx, x, y, g.w, h, 22);
         ctx.fill();
         ctx.strokeStyle = t.line;
         ctx.lineWidth = 1.5;
@@ -875,63 +936,94 @@
 
         setFont(ctx, 21, 650);
         ctx.fillStyle = t.muted;
-        wrapLines(ctx, r.opt.name || "옵션", cw - 44).slice(0, 2).forEach(function (ln, li) {
-          ctx.fillText(ln, x + 22, y + 46 + li * 28);
-        });
+        var nl = wrapLines(ctx, r.opt.name || "옵션", g.w - 44).slice(0, 2);
+        nl.forEach(function (ln, li) { ctx.fillText(ln, x + 22, y + 46 + li * 28); });
 
-        setFont(ctx, 40, 800);
+        var priceSize = 40;
+        setFont(ctx, priceSize, 800);
+        var priceTxt = won(r.price) + "원";
+        while (ctx.measureText(priceTxt).width > g.w - 44 && priceSize > 24) {
+          priceSize -= 2;
+          setFont(ctx, priceSize, 800);
+        }
         ctx.fillStyle = t.ink;
-        ctx.fillText(won(r.price) + "원", x + 22, y + 132);
+        ctx.fillText(priceTxt, x + 22, y + 138);
 
         if (r.spec > 0) {
           setFont(ctx, 19, 600);
           ctx.fillStyle = t.accent;
-          ctx.fillText(won(Math.round(r.price / r.spec * 1000)) + "원/kg", x + 22, y + 172);
+          ctx.fillText(won(Math.round(r.price / r.spec * 1000)) + "원/kg", x + 22, y + 176);
         }
         if (i === 0) {
           setFont(ctx, 16, 700);
           var tag = "대표";
           var twd = ctx.measureText(tag).width;
           ctx.fillStyle = t.accent;
-          roundRect(ctx, x + cw - twd - 40, y + 20, twd + 24, 32, 16);
+          roundRect(ctx, x + g.w - twd - 40, y + 20, twd + 24, 32, 16);
           ctx.fill();
           ctx.fillStyle = "#fff";
-          ctx.fillText(tag, x + cw - twd - 28, y + 43);
+          ctx.fillText(tag, x + g.w - twd - 28, y + 43);
         }
       });
-      y += 210 + 40;
+      y += h + 40;
     }
 
     var list = badges();
     if (list.length) {
-      var bx = 56;
-      setFont(ctx, 20, 650);
-      list.forEach(function (b) {
-        var w = ctx.measureText(b).width + 40;
-        ctx.fillStyle = t.cream2;
-        roundRect(ctx, bx, y - 30, w, 48, 24);
-        ctx.fill();
-        ctx.fillStyle = t.accent2;
-        ctx.fillText(b, bx + 20, y + 2);
-        bx += w + 12;
-      });
-      y += 44;
+      var chH = drawChips(ctx, list, 56, y - 6, t, L.maxW);
+      y += chH;
     }
 
     ctx.fillStyle = t.line;
-    ctx.fillRect(56, H - 108, W - 112, 1);
+    ctx.fillRect(56, H - 92, W - 112, 1);
     setFont(ctx, 19, 600);
     ctx.fillStyle = t.muted;
-    ctx.fillText(($("#shipping").value || "").trim(), 56, H - 62);
+    ctx.fillText(($("#shipping").value || "").trim(), 56, H - 48);
     ctx.textAlign = "right";
-    ctx.fillText(($("#brand").value || "").trim(), W - 56, H - 62);
+    ctx.fillText(($("#brand").value || "").trim(), W - 56, H - 48);
     ctx.textAlign = "left";
   }
 
   /* ---------------- 상세 섹션 2 ---------------- */
+  function sec2Spec() {
+    var spec = [];
+    var origin = ($("#origin").value || "").trim();
+    var r0 = rs()[0];
+    if (origin) spec.push(["산지", origin]);
+    if (r0) {
+      var names = rs().map(function (r) { return r.opt.name; }).filter(Boolean);
+      spec.push(["규격", names.length ? names.join(" / ") : "-"]);
+      if (r0.spec > 0) spec.push(["중량", won(r0.spec) + "g 기준 · 100g당 " + won(Math.round(r0.price / r0.spec * 100)) + "원"]);
+      spec.push(["가격", rs().map(function (r) { return won(r.price) + "원"; }).join(" / ")]);
+    }
+    var shipping = ($("#shipping").value || "").trim();
+    var storage = ($("#storage").value || "").trim();
+    if (shipping) spec.push(["배송", shipping]);
+    if (storage) spec.push(["보관", storage]);
+    return spec;
+  }
+
+  function sec2Layout(ctx, W, t) {
+    var spec = sec2Spec();
+    var list = badges();
+    var notice = ($("#notice").value || "").trim();
+    var titleH = 200;
+    var rowsH = spec.length * 84;
+    var photoH = state.images.extra ? 324 : 0;
+    var noticeH = notice ? 140 : 0;
+    var chipsH = list.length ? 140 : 0;
+    var footer = 170;
+    var H = Math.max(1180, Math.round(titleH + rowsH + 18 + photoH + noticeH + chipsH + footer));
+    return { W: W, H: H, spec: spec, list: list, notice: notice, titleH: titleH, rowsH: rowsH, photoH: photoH, noticeH: noticeH, chipsH: chipsH, footer: footer };
+  }
+
   function drawSec2() {
-    var cv = $("#cvSec2"), ctx = cv.getContext("2d");
-    var t = tone(), W = 1000, H = 1180;
+    var cv = $("#cvSec2");
+    var ctx = cv.getContext("2d");
+    var t = tone(), W = 1000;
+    var L = sec2Layout(ctx, W, t);
+    var H = L.H;
+    if (cv.height !== H) cv.height = H;
     ctx.clearRect(0, 0, W, H);
     ctx.fillStyle = t.cream;
     ctx.fillRect(0, 0, W, H);
@@ -943,43 +1035,29 @@
     ctx.fillStyle = t.ink;
     ctx.fillText("이렇게 보내드립니다", 56, 146);
 
-    var r0 = rs()[0];
-    var spec = [];
-    var origin = ($("#origin").value || "").trim();
-    if (origin) spec.push(["산지", origin]);
-    if (r0) {
-      var names = rs().map(function (r) { return r.opt.name; }).filter(Boolean);
-      if (names.length) spec.push(["규격", names.join(" / ")]);
-      if (r0.spec > 0) spec.push(["중량", won(r0.spec) + "g 기준 · 100g당 " + won(Math.round(r0.price / r0.spec * 100)) + "원"]);
-      spec.push(["가격", rs().map(function (r) { return won(r.price) + "원"; }).join(" / ")]);
-    }
-    if (($("#shipping").value || "").trim()) spec.push(["배송", $("#shipping").value.trim()]);
-    if (($("#storage").value || "").trim()) spec.push(["보관", $("#storage").value.trim()]);
-
-    var y = 210;
-    spec.forEach(function (row) {
+    var y = L.titleH;
+    L.spec.forEach(function (row) {
       ctx.fillStyle = "#fff";
       roundRect(ctx, 56, y, W - 112, 74, 16);
       ctx.fill();
       setFont(ctx, 20, 650);
       ctx.fillStyle = t.muted;
       ctx.fillText(row[0], 84, y + 47);
-      fitText(ctx, row[1], W - 112 - 84 - 140, 24, 650, 15);
+      fitText(ctx, row[1], W - 112 - 84 - 130, 24, 650, 15);
       ctx.fillStyle = t.ink;
       ctx.textAlign = "right";
       ctx.fillText(row[1], W - 84, y + 48);
       ctx.textAlign = "left";
-      y += 74 + 10;
+      y += 84;
     });
 
     y += 18;
     if (state.images.extra) {
       drawCover(ctx, state.images.extra, 56, y, W - 112, 300, 20);
-      y += 300 + 24;
+      y += 324;
     }
 
-    var notice = ($("#notice").value || "").trim();
-    if (notice) {
+    if (L.notice) {
       ctx.fillStyle = t.bg;
       roundRect(ctx, 56, y, W - 112, 120, 18);
       ctx.fill();
@@ -988,16 +1066,15 @@
       ctx.fillText("주문 전 확인", 84, y + 42);
       setFont(ctx, 22, 600);
       ctx.fillStyle = t.body;
-      wrapLines(ctx, notice, W - 112 - 56).slice(0, 2).forEach(function (ln, i) {
+      wrapLines(ctx, L.notice, W - 112 - 56).slice(0, 2).forEach(function (ln, i) {
         ctx.fillText(ln, 84, y + 78 + i * 30);
       });
       y += 140;
     }
 
-    var list = badges();
-    if (list.length) {
-      var boxW = (W - 112 - 16 * (list.length - 1)) / list.length;
-      list.forEach(function (b, i) {
+    if (L.list.length) {
+      var boxW = (W - 112 - 16 * (L.list.length - 1)) / L.list.length;
+      L.list.forEach(function (b, i) {
         var x = 56 + i * (boxW + 16);
         ctx.fillStyle = "#fff";
         roundRect(ctx, x, y, boxW, 116, 16);
@@ -1011,10 +1088,8 @@
         fitText(ctx, b, boxW - 84, 20, 700, 13);
         ctx.fillStyle = t.ink;
         ctx.fillText(b, x + 70, y + 51);
-        setFont(ctx, 15, 500);
-        ctx.fillStyle = t.muted;
-        ctx.fillText("안내 기준", x + 70, y + 78);
       });
+      y += 140;
     }
 
     ctx.fillStyle = t.line;

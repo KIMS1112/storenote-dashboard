@@ -483,7 +483,7 @@
     var isPast = dd != null && dd < 0;
     var openState = { decide: "결정 필요", running: "진행 중", open: "검토", soon: "곧 시작", waiting: "대기" }[it.state] || "열림";
     var meta = [];
-    meta.push('<div><span>마감</span><b>' + (it.deadline ? shortDate(it.deadline) + ' <i class="dd ' + ddayClass(dd) + '">' + ddayLabel(dd) + '</i>' : (it.window || "상시")) + '</b></div>');
+    meta.push('<div><span>' + (it.deadline ? "마감" : "시기") + '</span><b>' + (it.deadline ? shortDate(it.deadline) : (it.window || "상시")) + '</b></div>');
     if (it.reward) meta.push('<div><span>리워드</span><b>' + esc(it.reward) + '</b></div>');
     if (it.window && it.deadline) meta.push('<div><span>기간</span><b>' + esc(it.window) + '</b></div>');
     meta.push('<div><span>상태</span><b>' + esc(it.status || openState) + '</b></div>');
@@ -599,9 +599,9 @@
       (t.due_label ? '<span class="tc-due">' + esc(t.due_label) + '</span>' : '') + '</div>' +
       '<h4>' + esc(t.title) + '</h4>' +
       (t.detail ? '<p>' + esc(t.detail) + '</p>' : "") +
-      (typeof t.progress === "number" ? '<div class="tc-bar"><i style="width:' + Math.max(0, Math.min(100, t.progress)) + '%"></i><span>' + t.progress + '%</span></div>' : "") +
+      (typeof t.progress === "number" ? '<div class="tc-bar-row"><div class="tc-bar"><i style="width:' + Math.max(0, Math.min(100, t.progress)) + '%"></i></div><span class="tc-pct">' + t.progress + '%</span></div>' : "") +
       '<div class="tc-foot"><span class="owner ' + (OWNER_CLS[t.owner] || "") + '">' + esc(t.owner || "") + '</span>' +
-      (t.scheduled ? '<span class="tc-sched">🔁 ' + esc(t.scheduled) + '</span>' : '') + '</div></article>';
+      (t.scheduled ? '<span class="tc-sched">🔁 ' + esc(String(t.scheduled).replace(/^🔁\s*/, "")) + '</span>' : '') + '</div></article>';
   }
 
   function renderBoard() {

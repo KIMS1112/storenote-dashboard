@@ -968,9 +968,10 @@ main {
 .tc-due { font-size: 10px; font-weight: 650; color: var(--muted-2); white-space: nowrap; }
 .task-card h4 { margin: 0; font-size: 12.8px; font-weight: 690; letter-spacing: -.01em; line-height: 1.4; }
 .task-card p { margin: 5px 0 0; font-size: 11.2px; color: var(--muted); line-height: 1.55; }
-.tc-bar { position: relative; height: 5px; border-radius: 999px; background: #eef1f6; margin-top: 9px; overflow: hidden; }
+.tc-bar-row { display: flex; align-items: center; gap: 7px; margin-top: 9px; }
+.tc-bar { flex: 1 1 auto; height: 5px; border-radius: 999px; background: #eef1f6; overflow: hidden; }
 .tc-bar i { display: block; height: 100%; border-radius: 999px; background: var(--c); opacity: .75; }
-.tc-bar span { position: absolute; right: 0; top: -15px; font-size: 9.5px; color: var(--muted-2); }
+.tc-pct { flex: none; font-size: 9.5px; color: var(--muted-2); font-variant-numeric: tabular-nums; }
 .tc-foot { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
 .tc-foot .owner { font-size: 9.8px; }
 .tc-sched { font-size: 9.8px; color: var(--muted-2); }
