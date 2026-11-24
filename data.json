@@ -2,10 +2,10 @@
   "meta": {
     "title": "매장경영노트 수익화 파이프라인",
     "subtitle": "블로그 · 클립 · 브랜드커넥트 · 쇼핑커넥트 · 인스타 · 스레드 · 쇼츠 · 모두의 숲",
-    "updated_at": "2026-11-25T06:25:45+09:00",
-    "updated_label": "2026-11-25 06:25",
+    "updated_at": "2026-11-25T06:28:36+09:00",
+    "updated_label": "2026-11-25 06:28",
     "updated_by": "파인",
-    "data_version": 26,
+    "data_version": 27,
     "note": "이 파일(data.json)만 수정해 배포하면 웹과 폰 앱에 같은 내용이 바로 반영됩니다. 수치는 스마트스토어센터·쿠팡 윙·블로그 통계·애드포스트·크리에이터샵 화면에서 직접 확인한 값만 담았습니다."
   },
   "kpis": [
@@ -2598,14 +2598,14 @@
     ]
   },
   "fruitAutomation": {
-    "updatedAt": "2026-11-25 06:25",
+    "updatedAt": "2026-11-25 06:28",
     "engine": {
       "script": "work/fruit_automation/sync_orders.py",
       "version": "2.0.0",
       "windowDays": 7,
       "windowLabel": "최근 7일",
       "catalogUpdatedAt": "2026-11-25",
-      "skuCount": 9,
+      "skuCount": 11,
       "fees": {
         "coupang": 0.1166,
         "smartstore": 0.0563
@@ -2621,7 +2621,7 @@
           "status": "blocked",
           "code": "FORBIDDEN",
           "detail": "HTTP 403 · Your ip address 54.191.54.14 is not allowed for this request. If you need service access, please contact the Coupang seller call center. (Tel: +82-1600-9879, Email: openapisupport@coupang.com) 호출 IP 가 허용 목록에 없습니다 — 쿠팡 윙 > 판매자정보 > OpenAPI 에서 이 서버 IP 를 등록해야 조회됩니다.",
-          "checkedAt": "2026-11-25 06:25"
+          "checkedAt": "2026-11-25 06:28"
         },
         {
           "channel": "smartstore",
@@ -2630,7 +2630,7 @@
           "status": "blocked",
           "code": "GW.IP_NOT_ALLOWED",
           "detail": "HTTP 403 · 호출이 허용되지 않은 IP입니다. 호출 IP 가 허용 목록에 없습니다 — 네이버 커머스 API 센터에서 이 서버 IP 를 등록해야 조회됩니다.",
-          "checkedAt": "2026-11-25 06:25"
+          "checkedAt": "2026-11-25 06:28"
         },
         {
           "channel": "manual",
@@ -2639,7 +2639,7 @@
           "status": "ok",
           "code": "local",
           "detail": "orders_manual.json 0건 (스마트스토어 0 · 쿠팡 0)",
-          "checkedAt": "2026-11-25 06:25",
+          "checkedAt": "2026-11-25 06:28",
           "orderLines": 0
         }
       ],
@@ -2664,6 +2664,42 @@
       "adSpendKnown": false
     },
     "suppliers": [
+      {
+        "name": "마니팜(허브온)",
+        "orders": 0,
+        "quantity": 0,
+        "revenue": 0,
+        "supplyCost": 0,
+        "fees": 0,
+        "adSpend": 0,
+        "netProfit": 0,
+        "matchedOrders": 0,
+        "cheapestSkus": [
+          "제주 타이벡 노지감귤 조생 3kg",
+          "제주 타이벡 노지감귤 로얄소과 3kg"
+        ],
+        "allSuppliers": [
+          "마니팜(허브온)",
+          "최고집(허브온)",
+          "행운프레시"
+        ],
+        "supplierInfo": [
+          {
+            "sku": "제주_타이벡감귤_3kg",
+            "skuName": "제주 타이벡 노지감귤 조생 3kg",
+            "cost": 5900,
+            "isCheapest": true
+          },
+          {
+            "sku": "제주_타이벡감귤_로얄_3kg",
+            "skuName": "제주 타이벡 노지감귤 로얄소과 3kg",
+            "cost": 6800,
+            "isCheapest": true
+          }
+        ],
+        "marginRate": 0.0,
+        "cheapestSkuCount": 2
+      },
       {
         "name": "최고집(허브온)",
         "orders": 0,
@@ -2771,7 +2807,7 @@
         "cheapestSkuCount": 2
       },
       {
-        "name": "마니팜(허브온)",
+        "name": "별담마켓(허브온)",
         "orders": 0,
         "quantity": 0,
         "revenue": 0,
@@ -2781,17 +2817,18 @@
         "netProfit": 0,
         "matchedOrders": 0,
         "cheapestSkus": [
-          "제주 타이벡 노지감귤 조생 3kg"
+          "제주 타이벡 노지감귤 대과 5kg"
         ],
         "allSuppliers": [
-          "마니팜(허브온)",
+          "별담마켓(허브온)",
+          "최고집(허브온)",
           "행운프레시"
         ],
         "supplierInfo": [
           {
-            "sku": "제주_타이벡감귤_3kg",
-            "skuName": "제주 타이벡 노지감귤 조생 3kg",
-            "cost": 5900,
+            "sku": "제주_타이벡감귤_5kg",
+            "skuName": "제주 타이벡 노지감귤 대과 5kg",
+            "cost": 6000,
             "isCheapest": true
           }
         ],
@@ -3065,7 +3102,7 @@
           {
             "name": "마니팜(허브온)",
             "cost": 5900,
-            "note": "지연3.6%·불량4.3% (3kg 중과/실측 기준, 이전 8,900원은 5kg 오기입 정정)",
+            "note": "지연3.6%·불량4.3% (3kg 중대과 실측, 8,900원은 5kg 오기입 정정)",
             "shipping": "포함",
             "verifiedAt": "2026-11-25",
             "isCheapest": true
@@ -3086,7 +3123,7 @@
             "productId": "16468547131",
             "option": "3kg 대과",
             "price": 9900,
-            "priceNote": "노출제한 3옵션 중 하나(쿠팡 단위가격 기준)"
+            "priceNote": "쿠팡 추천가 상한(9,900원) 유지"
           },
           {
             "channel": "smartstore",
@@ -3094,6 +3131,119 @@
             "productId": "13888908580",
             "option": "3kg 대과",
             "price": 9900,
+            "priceNote": null
+          }
+        ]
+      },
+      {
+        "sku": "제주_타이벡감귤_로얄_3kg",
+        "name": "제주 타이벡 노지감귤 로얄소과 3kg",
+        "unit": "3kg / 로얄소과",
+        "keywords": [
+          "타이벡",
+          "3kg",
+          "로얄"
+        ],
+        "cheapest": "마니팜(허브온)",
+        "cheapestCost": 6800,
+        "priceGap": 350,
+        "suppliers": [
+          {
+            "name": "마니팜(허브온)",
+            "cost": 6800,
+            "note": "지연3.6%·불량4.3% (로얄소과 3kg 최저가)",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-25",
+            "isCheapest": true
+          },
+          {
+            "name": "최고집(허브온)",
+            "cost": 7150,
+            "note": "우수 · 로얄과 3kg",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-25",
+            "isCheapest": false
+          },
+          {
+            "name": "행운프레시",
+            "cost": 8600,
+            "note": "기존 거래처",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-25",
+            "isCheapest": false
+          }
+        ],
+        "listings": [
+          {
+            "channel": "coupang",
+            "channelLabel": "쿠팡",
+            "productId": "16468547131",
+            "option": "3kg 로얄소과",
+            "price": 12900,
+            "priceNote": null
+          },
+          {
+            "channel": "smartstore",
+            "channelLabel": "스마트스토어",
+            "productId": "13888908580",
+            "option": "3kg 로얄소과",
+            "price": 12900,
+            "priceNote": null
+          }
+        ]
+      },
+      {
+        "sku": "제주_타이벡감귤_5kg",
+        "name": "제주 타이벡 노지감귤 대과 5kg",
+        "unit": "5kg / 대과",
+        "keywords": [
+          "타이벡",
+          "5kg"
+        ],
+        "cheapest": "별담마켓(허브온)",
+        "cheapestCost": 6000,
+        "priceGap": 200,
+        "suppliers": [
+          {
+            "name": "별담마켓(허브온)",
+            "cost": 6000,
+            "note": "우수 · 대과 5kg (지연8.0%·불량4.5%)",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-25",
+            "isCheapest": true
+          },
+          {
+            "name": "최고집(허브온)",
+            "cost": 6200,
+            "note": "우수 · 대과 5kg (지연6.6%·불량3.8%)",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-25",
+            "isCheapest": false
+          },
+          {
+            "name": "행운프레시",
+            "cost": 7600,
+            "note": "기존 거래처",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-25",
+            "isCheapest": false
+          }
+        ],
+        "listings": [
+          {
+            "channel": "coupang",
+            "channelLabel": "쿠팡",
+            "productId": "16468547131",
+            "option": "5kg 대과",
+            "price": 11900,
+            "priceNote": null
+          },
+          {
+            "channel": "smartstore",
+            "channelLabel": "스마트스토어",
+            "productId": "13888908580",
+            "option": "5kg 대과",
+            "price": 11900,
             "priceNote": null
           }
         ]
@@ -3470,6 +3620,94 @@
         "isLoss": false
       },
       {
+        "sku": "제주_타이벡감귤_5kg",
+        "name": "제주 타이벡 노지감귤 대과 5kg",
+        "unit": "5kg / 대과",
+        "channel": "coupang",
+        "channelLabel": "쿠팡",
+        "productId": "16468547131",
+        "option": "5kg 대과",
+        "priceNote": null,
+        "price": 11900,
+        "feeRate": 0.1166,
+        "fee": 1388,
+        "supplier": "별담마켓(허브온)",
+        "supplyCost": 6000,
+        "supplierCount": 3,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 4512,
+        "marginRate": 0.3791596638655462,
+        "breakevenRoas": 2.6374113475177303,
+        "isLoss": false
+      },
+      {
+        "sku": "제주_타이벡감귤_5kg",
+        "name": "제주 타이벡 노지감귤 대과 5kg",
+        "unit": "5kg / 대과",
+        "channel": "smartstore",
+        "channelLabel": "스마트스토어",
+        "productId": "13888908580",
+        "option": "5kg 대과",
+        "priceNote": null,
+        "price": 11900,
+        "feeRate": 0.0563,
+        "fee": 670,
+        "supplier": "별담마켓(허브온)",
+        "supplyCost": 6000,
+        "supplierCount": 3,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 5230,
+        "marginRate": 0.4394957983193277,
+        "breakevenRoas": 2.275334608030593,
+        "isLoss": false
+      },
+      {
+        "sku": "제주_타이벡감귤_로얄_3kg",
+        "name": "제주 타이벡 노지감귤 로얄소과 3kg",
+        "unit": "3kg / 로얄소과",
+        "channel": "coupang",
+        "channelLabel": "쿠팡",
+        "productId": "16468547131",
+        "option": "3kg 로얄소과",
+        "priceNote": null,
+        "price": 12900,
+        "feeRate": 0.1166,
+        "fee": 1504,
+        "supplier": "마니팜(허브온)",
+        "supplyCost": 6800,
+        "supplierCount": 3,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 4596,
+        "marginRate": 0.35627906976744184,
+        "breakevenRoas": 2.8067885117493474,
+        "isLoss": false
+      },
+      {
+        "sku": "제주_타이벡감귤_로얄_3kg",
+        "name": "제주 타이벡 노지감귤 로얄소과 3kg",
+        "unit": "3kg / 로얄소과",
+        "channel": "smartstore",
+        "channelLabel": "스마트스토어",
+        "productId": "13888908580",
+        "option": "3kg 로얄소과",
+        "priceNote": null,
+        "price": 12900,
+        "feeRate": 0.0563,
+        "fee": 726,
+        "supplier": "마니팜(허브온)",
+        "supplyCost": 6800,
+        "supplierCount": 3,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 5374,
+        "marginRate": 0.4165891472868217,
+        "breakevenRoas": 2.4004465947152958,
+        "isLoss": false
+      },
+      {
         "sku": "제주_타이벡감귤_3kg",
         "name": "제주 타이벡 노지감귤 조생 3kg",
         "unit": "3kg / 대과",
@@ -3477,7 +3715,7 @@
         "channelLabel": "쿠팡",
         "productId": "16468547131",
         "option": "3kg 대과",
-        "priceNote": "노출제한 3옵션 중 하나(쿠팡 단위가격 기준)",
+        "priceNote": "쿠팡 추천가 상한(9,900원) 유지",
         "price": 9900,
         "feeRate": 0.1166,
         "fee": 1154,
