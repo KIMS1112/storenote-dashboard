@@ -417,6 +417,16 @@
         '<td class="f-num">' + (m.revenue ? pct1(m.marginRate) + "%" : "—") + '</td></tr>';
     }).join("");
 
+    var skuRows = (fa.skuSummary || []).map(function (r) {
+      return '<tr><td class="f-name"><b>' + esc(r.skuName) + '</b><span class="f-mini">' + esc(r.supplier || "매칭 실패") + '</span></td>' +
+        '<td class="f-num">' + won(r.orders) + '</td>' +
+        '<td class="f-num">' + won(r.quantity) + '</td>' +
+        '<td class="f-num">' + won(r.supplyCost) + '</td>' +
+        '<td class="f-num">' + won(r.revenue) + '</td>' +
+        '<td class="f-num ' + (Number(r.netProfit) > 0 ? "pos" : (Number(r.netProfit) < 0 ? "neg" : "")) + '">' + won(r.netProfit) + '</td>' +
+        '<td class="f-num">' + (r.revenue ? pct1(r.marginRate) + "%" : "—") + '</td></tr>';
+    }).join("");
+
     var recent = fa.recentOrders || [];
     var recentBlock = recent.length
       ? '<div class="p-table-wrap"><table class="f-table"><thead><tr><th>주문</th><th>채널</th><th>상품</th><th class="f-num">수량</th><th class="f-num">결제</th><th>발주처</th><th>매칭 SKU</th><th class="f-num">순수익</th><th>상태</th></tr></thead><tbody>' +
@@ -465,6 +475,8 @@
       '<section class="f-inner"><div class="fsub"><h3>월별 집계</h3><p>결제일 기준</p></div>' +
       (monthRows ? '<div class="p-table-wrap"><table class="f-table"><thead><tr><th>월</th><th class="f-num">주문</th><th class="f-num">매출</th><th class="f-num">도매원가</th><th class="f-num">수수료·광고</th><th class="f-num">순수익</th><th class="f-num">마진율</th></tr></thead><tbody>' + monthRows + '</tbody></table></div>'
         : '<div class="f-empty"><b>집계된 달이 없습니다</b><p>주문이 0건이라 월별 표에 넣을 값이 아직 없습니다.</p></div>') +
+      (skuRows ? '<div class="fsub"><h3>품목별 판매 집계</h3><p>이번 달 · 결제일 기준</p></div>' +
+        '<div class="p-table-wrap"><table class="f-table"><thead><tr><th>품목</th><th class="f-num">주문</th><th class="f-num">수량</th><th class="f-num">매입원가</th><th class="f-num">매출</th><th class="f-num">순수익</th><th class="f-num">마진율</th></tr></thead><tbody>' + skuRows + '</tbody></table></div>' : '') +
       '</section>' +
       '<section class="f-inner"><div class="fsub"><h3>최근 주문 · 자동 발주 매칭</h3><p>조회까지만 자동 — 실제 발주·결제는 확인 후 진행</p></div>' +
       recentBlock + '</section></div>' +
