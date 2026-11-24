@@ -2,10 +2,10 @@
   "meta": {
     "title": "매장경영노트 수익화 파이프라인",
     "subtitle": "블로그 · 클립 · 브랜드커넥트 · 쇼핑커넥트 · 인스타 · 스레드 · 쇼츠 · 모두의 숲",
-    "updated_at": "2026-11-25T06:13:06+09:00",
-    "updated_label": "2026-11-25 06:13",
+    "updated_at": "2026-11-25T06:25:45+09:00",
+    "updated_label": "2026-11-25 06:25",
     "updated_by": "파인",
-    "data_version": 25,
+    "data_version": 26,
     "note": "이 파일(data.json)만 수정해 배포하면 웹과 폰 앱에 같은 내용이 바로 반영됩니다. 수치는 스마트스토어센터·쿠팡 윙·블로그 통계·애드포스트·크리에이터샵 화면에서 직접 확인한 값만 담았습니다."
   },
   "kpis": [
@@ -2598,7 +2598,7 @@
     ]
   },
   "fruitAutomation": {
-    "updatedAt": "2026-11-25 06:13",
+    "updatedAt": "2026-11-25 06:25",
     "engine": {
       "script": "work/fruit_automation/sync_orders.py",
       "version": "2.0.0",
@@ -2621,7 +2621,7 @@
           "status": "blocked",
           "code": "FORBIDDEN",
           "detail": "HTTP 403 · Your ip address 54.191.54.14 is not allowed for this request. If you need service access, please contact the Coupang seller call center. (Tel: +82-1600-9879, Email: openapisupport@coupang.com) 호출 IP 가 허용 목록에 없습니다 — 쿠팡 윙 > 판매자정보 > OpenAPI 에서 이 서버 IP 를 등록해야 조회됩니다.",
-          "checkedAt": "2026-11-25 06:13"
+          "checkedAt": "2026-11-25 06:25"
         },
         {
           "channel": "smartstore",
@@ -2630,7 +2630,7 @@
           "status": "blocked",
           "code": "GW.IP_NOT_ALLOWED",
           "detail": "HTTP 403 · 호출이 허용되지 않은 IP입니다. 호출 IP 가 허용 목록에 없습니다 — 네이버 커머스 API 센터에서 이 서버 IP 를 등록해야 조회됩니다.",
-          "checkedAt": "2026-11-25 06:13"
+          "checkedAt": "2026-11-25 06:25"
         },
         {
           "channel": "manual",
@@ -2639,7 +2639,7 @@
           "status": "ok",
           "code": "local",
           "detail": "orders_manual.json 0건 (스마트스토어 0 · 쿠팡 0)",
-          "checkedAt": "2026-11-25 06:13",
+          "checkedAt": "2026-11-25 06:25",
           "orderLines": 0
         }
       ],
@@ -2791,7 +2791,7 @@
           {
             "sku": "제주_타이벡감귤_3kg",
             "skuName": "제주 타이벡 노지감귤 조생 3kg",
-            "cost": 8900,
+            "cost": 5900,
             "isCheapest": true
           }
         ],
@@ -3059,23 +3059,23 @@
           "3kg"
         ],
         "cheapest": "마니팜(허브온)",
-        "cheapestCost": 8900,
-        "priceGap": 2000,
+        "cheapestCost": 5900,
+        "priceGap": 500,
         "suppliers": [
           {
             "name": "마니팜(허브온)",
-            "cost": 8900,
-            "note": "지연3.6%·불량4.3%",
+            "cost": 5900,
+            "note": "지연3.6%·불량4.3% (3kg 중과/실측 기준, 이전 8,900원은 5kg 오기입 정정)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-18",
+            "verifiedAt": "2026-11-25",
             "isCheapest": true
           },
           {
             "name": "행운프레시",
-            "cost": 10900,
-            "note": "기존 거래처",
+            "cost": 6400,
+            "note": "기존 거래처 (3kg 대과 실단가, CS율 1.12%·당일출고 94.9%)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-18",
+            "verifiedAt": "2026-11-25",
             "isCheapest": false
           }
         ],
@@ -3482,14 +3482,14 @@
         "feeRate": 0.1166,
         "fee": 1154,
         "supplier": "마니팜(허브온)",
-        "supplyCost": 8900,
+        "supplyCost": 5900,
         "supplierCount": 2,
         "adRate": 0.0,
         "adCost": 0,
-        "netProfit": -154,
-        "marginRate": -0.015555555555555555,
-        "breakevenRoas": null,
-        "isLoss": true
+        "netProfit": 2846,
+        "marginRate": 0.2874747474747475,
+        "breakevenRoas": 3.4785664089950807,
+        "isLoss": false
       },
       {
         "sku": "제주_타이벡감귤_3kg",
@@ -3504,13 +3504,13 @@
         "feeRate": 0.0563,
         "fee": 557,
         "supplier": "마니팜(허브온)",
-        "supplyCost": 8900,
+        "supplyCost": 5900,
         "supplierCount": 2,
         "adRate": 0.0,
         "adCost": 0,
-        "netProfit": 443,
-        "marginRate": 0.044747474747474744,
-        "breakevenRoas": 22.34762979683973,
+        "netProfit": 3443,
+        "marginRate": 0.3477777777777778,
+        "breakevenRoas": 2.8753993610223643,
         "isLoss": false
       },
       {
