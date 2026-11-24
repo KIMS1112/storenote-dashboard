@@ -390,7 +390,8 @@
     sim.forEach(function (r) {
       var first = r.sku !== lastSku;
       lastSku = r.sku;
-      var roas = r.breakevenRoas ? Math.round(r.breakevenRoas * 100) + "%" : (r.isLoss ? "적자" : "—");
+      var roasPct = r.breakevenRoas ? r.breakevenRoas * 100 : null;
+      var roas = roasPct === null ? (r.isLoss ? "적자" : "—") : (roasPct >= 1000 ? "1,000%+" : Math.round(roasPct) + "%");
       simRows.push('<tr class="' + (r.isLoss ? "is-loss" : "") + '">' +
         '<td class="f-name">' + (first ? '<b>' + esc(r.name) + '</b>' : '<span class="f-muted">↳</span>') +
         (first && r.unit ? '<span class="f-mini">' + esc(r.unit) + '</span>' : '') + '</td>' +
@@ -434,7 +435,7 @@
         }).join("") + '</tbody></table></div>'
       : '<div class="f-empty"><b>아직 잡힌 주문이 0건입니다</b>' +
         '<p>주문이 들어오는 순간 상품·수량·최저가 도매처·발주 상태가 이 자리에 한 줄씩 쌓입니다. ' +
-        '지금은 실적 0건 그대로이고, 위의 예상 마진표는 실적이 아니라 판매가 기준 예상치입니다.</p></div>';
+        '지금은 실적 0건 그대로입니다. 판매가 기준 예상치는 위 표에만 있습니다.</p></div>';
 
     var notes = (fa.notes || []).map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("");
     var pending = (fa.pending || []).map(function (p) {
