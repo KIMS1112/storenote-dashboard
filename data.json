@@ -2,10 +2,10 @@
   "meta": {
     "title": "매장경영노트 수익화 파이프라인",
     "subtitle": "블로그 · 클립 · 브랜드커넥트 · 쇼핑커넥트 · 인스타 · 스레드 · 쇼츠 · 모두의 숲",
-    "updated_at": "2026-11-24T22:45:48+09:00",
-    "updated_label": "2026-11-24 22:45",
+    "updated_at": "2026-11-25T06:13:06+09:00",
+    "updated_label": "2026-11-25 06:13",
     "updated_by": "파인",
-    "data_version": 24,
+    "data_version": 25,
     "note": "이 파일(data.json)만 수정해 배포하면 웹과 폰 앱에 같은 내용이 바로 반영됩니다. 수치는 스마트스토어센터·쿠팡 윙·블로그 통계·애드포스트·크리에이터샵 화면에서 직접 확인한 값만 담았습니다."
   },
   "kpis": [
@@ -2598,14 +2598,14 @@
     ]
   },
   "fruitAutomation": {
-    "updatedAt": "2026-11-24 22:45",
+    "updatedAt": "2026-11-25 06:13",
     "engine": {
       "script": "work/fruit_automation/sync_orders.py",
       "version": "2.0.0",
       "windowDays": 7,
       "windowLabel": "최근 7일",
-      "catalogUpdatedAt": "2026-11-24",
-      "skuCount": 7,
+      "catalogUpdatedAt": "2026-11-25",
+      "skuCount": 9,
       "fees": {
         "coupang": 0.1166,
         "smartstore": 0.0563
@@ -2620,8 +2620,8 @@
           "label": "쿠팡",
           "status": "blocked",
           "code": "FORBIDDEN",
-          "detail": "HTTP 403 · Your ip address 35.91.246.245 is not allowed for this request. If you need service access, please contact the Coupang seller call center. (Tel: +82-1600-9879, Email: openapisupport@coupang.com) 호출 IP 가 허용 목록에 없습니다 — 쿠팡 윙 > 판매자정보 > OpenAPI 에서 이 서버 IP 를 등록해야 조회됩니다.",
-          "checkedAt": "2026-11-24 22:45"
+          "detail": "HTTP 403 · Your ip address 54.191.54.14 is not allowed for this request. If you need service access, please contact the Coupang seller call center. (Tel: +82-1600-9879, Email: openapisupport@coupang.com) 호출 IP 가 허용 목록에 없습니다 — 쿠팡 윙 > 판매자정보 > OpenAPI 에서 이 서버 IP 를 등록해야 조회됩니다.",
+          "checkedAt": "2026-11-25 06:13"
         },
         {
           "channel": "smartstore",
@@ -2630,7 +2630,7 @@
           "status": "blocked",
           "code": "GW.IP_NOT_ALLOWED",
           "detail": "HTTP 403 · 호출이 허용되지 않은 IP입니다. 호출 IP 가 허용 목록에 없습니다 — 네이버 커머스 API 센터에서 이 서버 IP 를 등록해야 조회됩니다.",
-          "checkedAt": "2026-11-24 22:45"
+          "checkedAt": "2026-11-25 06:13"
         },
         {
           "channel": "manual",
@@ -2639,7 +2639,7 @@
           "status": "ok",
           "code": "local",
           "detail": "orders_manual.json 0건 (스마트스토어 0 · 쿠팡 0)",
-          "checkedAt": "2026-11-24 22:45",
+          "checkedAt": "2026-11-25 06:13",
           "orderLines": 0
         }
       ],
@@ -2727,6 +2727,43 @@
             "sku": "논산_설향딸기_800g_상",
             "skuName": "논산 설향딸기 800g 상",
             "cost": 24500,
+            "isCheapest": true
+          }
+        ],
+        "marginRate": 0.0,
+        "cheapestSkuCount": 2
+      },
+      {
+        "name": "하루팜(허브온)",
+        "orders": 0,
+        "quantity": 0,
+        "revenue": 0,
+        "supplyCost": 0,
+        "fees": 0,
+        "adSpend": 0,
+        "netProfit": 0,
+        "matchedOrders": 0,
+        "cheapestSkus": [
+          "경북 부사사과 5kg",
+          "해남 베니하루카 꿀고구마 2kg 한입"
+        ],
+        "allSuppliers": [
+          "에코앤팜(허브온)",
+          "최고집(허브온)",
+          "팜플로우(허브온)",
+          "하루팜(허브온)"
+        ],
+        "supplierInfo": [
+          {
+            "sku": "경북_부사사과_5kg",
+            "skuName": "경북 부사사과 5kg",
+            "cost": 9200,
+            "isCheapest": true
+          },
+          {
+            "sku": "꿀고구마_2kg_한입",
+            "skuName": "해남 베니하루카 꿀고구마 2kg 한입",
+            "cost": 4300,
             "isCheapest": true
           }
         ],
@@ -3140,10 +3177,166 @@
             "priceNote": null
           }
         ]
+      },
+      {
+        "sku": "경북_부사사과_5kg",
+        "name": "경북 부사사과 5kg",
+        "unit": "5kg / 중과",
+        "keywords": [
+          "사과",
+          "5kg"
+        ],
+        "cheapest": "하루팜(허브온)",
+        "cheapestCost": 9200,
+        "priceGap": 12,
+        "suppliers": [
+          {
+            "name": "하루팜(허브온)",
+            "cost": 9200,
+            "note": "가정용 중과 5kg (지연6.0%·불량6.5%·반품3.7%)",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-25",
+            "isCheapest": true
+          },
+          {
+            "name": "팜플로우(허브온)",
+            "cost": 9212,
+            "note": "가정용 중과 5kg (지연3.4%·불량4.0%·반품2.5%)",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-25",
+            "isCheapest": false
+          },
+          {
+            "name": "에코앤팜(허브온)",
+            "cost": 11000,
+            "note": "우수 · 가정용 중과 5kg (지연7.6%·불량4.1%)",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-25",
+            "isCheapest": false
+          }
+        ],
+        "listings": [
+          {
+            "channel": "coupang",
+            "channelLabel": "쿠팡",
+            "productId": "16461561010",
+            "option": "5kg 중과",
+            "price": 15900,
+            "priceNote": null
+          },
+          {
+            "channel": "smartstore",
+            "channelLabel": "스마트스토어",
+            "productId": "13881502490",
+            "option": "5kg 중과",
+            "price": 13900,
+            "priceNote": null
+          }
+        ]
+      },
+      {
+        "sku": "꿀고구마_2kg_한입",
+        "name": "해남 베니하루카 꿀고구마 2kg 한입",
+        "unit": "2kg / 한입",
+        "keywords": [
+          "고구마",
+          "2kg"
+        ],
+        "cheapest": "하루팜(허브온)",
+        "cheapestCost": 4300,
+        "priceGap": 404,
+        "suppliers": [
+          {
+            "name": "하루팜(허브온)",
+            "cost": 4300,
+            "note": "한입 2kg (지연6.0%·불량6.5%, 일반 2kg 5,200원)",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-25",
+            "isCheapest": true
+          },
+          {
+            "name": "팜플로우(허브온)",
+            "cost": 4704,
+            "note": "한입 2kg (지연3.4%·불량4.0%, 일반 2kg 5,684원)",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-25",
+            "isCheapest": false
+          },
+          {
+            "name": "최고집(허브온)",
+            "cost": 4950,
+            "note": "우수 · 한입 2kg (일반 2kg 5,800원)",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-25",
+            "isCheapest": false
+          }
+        ],
+        "listings": [
+          {
+            "channel": "coupang",
+            "channelLabel": "쿠팡",
+            "productId": "16461600173",
+            "option": "2kg",
+            "price": 8900,
+            "priceNote": null
+          },
+          {
+            "channel": "smartstore",
+            "channelLabel": "스마트스토어",
+            "productId": "13881593947",
+            "option": "2kg",
+            "price": 8900,
+            "priceNote": null
+          }
+        ]
       }
     ],
     "skuSummary": [],
     "simulation": [
+      {
+        "sku": "경북_부사사과_5kg",
+        "name": "경북 부사사과 5kg",
+        "unit": "5kg / 중과",
+        "channel": "coupang",
+        "channelLabel": "쿠팡",
+        "productId": "16461561010",
+        "option": "5kg 중과",
+        "priceNote": null,
+        "price": 15900,
+        "feeRate": 0.1166,
+        "fee": 1854,
+        "supplier": "하루팜(허브온)",
+        "supplyCost": 9200,
+        "supplierCount": 3,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 4846,
+        "marginRate": 0.30477987421383645,
+        "breakevenRoas": 3.2810565414775072,
+        "isLoss": false
+      },
+      {
+        "sku": "경북_부사사과_5kg",
+        "name": "경북 부사사과 5kg",
+        "unit": "5kg / 중과",
+        "channel": "smartstore",
+        "channelLabel": "스마트스토어",
+        "productId": "13881502490",
+        "option": "5kg 중과",
+        "priceNote": null,
+        "price": 13900,
+        "feeRate": 0.0563,
+        "fee": 783,
+        "supplier": "하루팜(허브온)",
+        "supplyCost": 9200,
+        "supplierCount": 3,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 3917,
+        "marginRate": 0.28179856115107915,
+        "breakevenRoas": 3.548634158794996,
+        "isLoss": false
+      },
       {
         "sku": "논산_설향딸기_800g_상",
         "name": "논산 설향딸기 800g 상",
@@ -3365,6 +3558,50 @@
         "isLoss": false
       },
       {
+        "sku": "꿀고구마_2kg_한입",
+        "name": "해남 베니하루카 꿀고구마 2kg 한입",
+        "unit": "2kg / 한입",
+        "channel": "coupang",
+        "channelLabel": "쿠팡",
+        "productId": "16461600173",
+        "option": "2kg",
+        "priceNote": null,
+        "price": 8900,
+        "feeRate": 0.1166,
+        "fee": 1038,
+        "supplier": "하루팜(허브온)",
+        "supplyCost": 4300,
+        "supplierCount": 3,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 3562,
+        "marginRate": 0.4002247191011236,
+        "breakevenRoas": 2.4985962942167323,
+        "isLoss": false
+      },
+      {
+        "sku": "꿀고구마_2kg_한입",
+        "name": "해남 베니하루카 꿀고구마 2kg 한입",
+        "unit": "2kg / 한입",
+        "channel": "smartstore",
+        "channelLabel": "스마트스토어",
+        "productId": "13881593947",
+        "option": "2kg",
+        "priceNote": null,
+        "price": 8900,
+        "feeRate": 0.0563,
+        "fee": 501,
+        "supplier": "하루팜(허브온)",
+        "supplyCost": 4300,
+        "supplierCount": 3,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 4099,
+        "marginRate": 0.460561797752809,
+        "breakevenRoas": 2.1712612832398146,
+        "isLoss": false
+      },
+      {
         "sku": "꿀고구마_3kg_특대",
         "name": "해남 베니하루카 꿀고구마 3kg 특대",
         "unit": "3kg / 특대",
@@ -3474,16 +3711,7 @@
         }
       ]
     },
-    "pending": [
-      {
-        "sku": "경북_부사사과_5kg",
-        "note": "사과(스마트스토어 13881502490·쿠팡 16461561010)는 판매 1순위 상품인데 공급처 단가가 카탈로그에 없습니다. 11-19 행운프레시 기준 역산값은 5kg 소과 9,100원·5kg 중과 12,000원·3kg 소과 6,500원이지만 최신 단가 재확인 전이라 자동 매칭·마진표에서 제외했습니다."
-      },
-      {
-        "sku": "꿀고구마_2kg_한입",
-        "note": "쿠팡 2kg 8,900원·스마트스토어 2kg 8,900원 옵션이 있으나 2kg 공급단가가 확인되지 않아 3kg 기준으로만 매칭합니다."
-      }
-    ],
+    "pending": [],
     "notes": [
       "주문 수집 API 2곳이 응답하지 않아 이번 집계는 0건입니다. 막힌 사유는 연동 상태에 그대로 적었습니다.",
       "이번 달 실제 주문이 0건이라 매출·순수익 칸은 모두 0원입니다. 위의 예상 마진표는 카탈로그 단가와 실제 판매가로 계산한 시뮬레이션이며 실적이 아닙니다.",
