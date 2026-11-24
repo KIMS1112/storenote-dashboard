@@ -42,8 +42,34 @@ dashboard/
 | `blog_stats` | **블로그 방문자 추이 · 예상수익 추이** 차트 | `labels`(14일), `visitors.values`, `views.values`, `revenue.sources[]`(애드포스트·쇼핑커넥트 일별, 집계 전 날은 `null`) |
 | `updates` | **최신 진행 현황** 목록 | `time`, `channel`, `state`(`done`/`waiting`/`scheduled`), `title`, `detail` |
 | `fruit_calendar` | **1년 제철 과일 족보 · 시기별 소싱 추천** (통합·과일 채널) | `months[]`(1~12월: `items`·`supply`·`peak`·`todo`·`prep`·`watch`), `rule`, `supplier_note`, `basis`. 강조 월은 화면을 연 날짜로 자동 계산 |
+| `fruitAutomation` | 과일 채널의 **과일 자동발주 · 순수익** 패널 | `engine`(엔진 버전·조회 기간·카탈로그 SKU 수·`sources[]` 연동 상태), `kpi`(이번 달 주문·매출·도매원가·수수료·광고비·순수익·마진율), `suppliers[]`(도매처별 집계), `skuMatch[]`, `simulation[]`(품목×채널 예상 마진), `monthly[]`, `recentOrders[]`, `adSpend`, `pending[]`, `notes[]`. **`work/fruit_automation/sync_orders.py --sync-dashboard` 가 생성합니다 — 손으로 고치지 않습니다.** |
 | `radar` | **수익화 레이더** (`#/radar`, 통합 화면 요약) | `items[]`: `type`(`brand`/`cpa`/`clip`/`fruit`/`support`)·`title`·`org`·`deadline`(YYYY-MM-DD, 없으면 상시)·`window`·`reward`·`reward_value`·`state`(`decide`/`running`/`open`/`soon`)·`status`·`owner`·`action`·`note`·`link`·`priority`. D-day는 저장하지 않고 **화면을 연 날짜로 자동 계산** |
 | `board` | **진행 작업 보드** (`#/board`) | `columns[]`(`doing`/`waiting`/`done`)와 `tasks[]`: `status`·`title`·`owner`·`channel`(채널 id)·`due`·`due_label`·`detail`·`progress`(0~100, 선택)·`scheduled`(예약 작업 이름) |
+
+### 과일 자동발주 · 순수익 엔진 (`work/fruit_automation/sync_orders.py`)
+
+과일 채널의 `fruitAutomation` 블록은 이 엔진이 만듭니다. 데이터 소스는 셋입니다.
+
+| 소스 | 내용 | 막히면 |
+|---|---|---|
+| 쿠팡 Open API | 발주서(v5 `ordersheets`) — 상품명·수량·결제가·배송비·취소수량 | `403` 호출 IP 미허용이면 연동 상태에 그대로 표시 |
+| 네이버 커머스 API | 변경 주문 → `/v1/pay-order/seller/product-orders/query` 상세(옵션명·결제금액) | 동일 (`GW.IP_NOT_ALLOWED`) |
+| `orders_manual.json` | 판매센터 화면에서 직접 확인해 적은 주문 | 항상 동작 |
+
+- 매칭·계산: `wholesale_catalog.json` 의 SKU(키워드·`notMatch`) → 업체별 공급가 중 최저가 → 수수료(쿠팡 11.66%·스마트스토어 5.63%, 상품금액 기준) − 공급가(택배 포함) − 배분 광고비(`ad_spend.json`) = 순수익·마진율.
+- **확인되지 않은 값은 0으로 채우지 않습니다.** 광고비 `amount` 가 `null` 이면 「집행액 미확인」으로 표시하고, 매칭 실패 주문은 순수익을 `null`(—)로 둡니다.
+- `simulation[]` 은 카탈로그 공급가 × **실제 판매 옵션가**로 계산한 예상치이며 실적이 아닙니다. 화면에도 「예상」으로 표시합니다.
+- API가 모두 막힌 회차에는 과일 채널의 `오늘 신규 주문` 지표를 덮어쓰지 않습니다(화면 실측값 보존).
+
+```bash
+cd work/fruit_automation
+python3 test_sync_orders.py -v          # 모의 주문 27개 테스트
+python3 sync_orders.py                  # 최근 7일 조회 → latest_sync.json
+python3 sync_orders.py --sync-dashboard # dashboard/data.json 의 fruitAutomation 갱신
+python3 sync_orders.py --no-fetch --sync-dashboard   # API 없이 장부·카탈로그만으로 갱신
+```
+
+`sync_orders.py` 가 `data.json` 을 쓸 때는 `meta.updated_label`·`data_version` 도 함께 올립니다. `.env`(API 키)는 이 폴더에만 있고 저장소로 복사하지 않습니다.
 
 - 신규 주문이 1건 이상이면 `sales.new_orders_total`을 올리고 `alert.level`을 `live`로 바꿉니다. 배너가 붉은 알림 배지(펄스)로 바뀌고 채널별 '신규 주문 N건' 배지가 표시됩니다. 0건이면 `idle`로 두고 "신규 주문 0건 · 대기중"으로 표시합니다.
 - 차트는 외부 라이브러리 없이 `app.js`가 SVG로 그립니다(폭 700 기준 viewBox, 좁은 화면은 글자·점을 키워 축소 대응). 값이 없으면 `0` 또는 `null`로 두고 **숫자를 지어내지 않습니다.**

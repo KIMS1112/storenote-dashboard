@@ -2,10 +2,10 @@
   "meta": {
     "title": "매장경영노트 수익화 파이프라인",
     "subtitle": "블로그 · 클립 · 브랜드커넥트 · 쇼핑커넥트 · 인스타 · 스레드 · 쇼츠 · 모두의 숲",
-    "updated_at": "2026-11-24T10:48:00+09:00",
-    "updated_label": "2026-11-24 10:48",
+    "updated_at": "2026-11-24T22:42:50+09:00",
+    "updated_label": "2026-11-24 22:42",
     "updated_by": "파인",
-    "data_version": 22,
+    "data_version": 23,
     "note": "이 파일(data.json)만 수정해 배포하면 웹과 폰 앱에 같은 내용이 바로 반영됩니다. 수치는 스마트스토어센터·쿠팡 윙·블로그 통계·애드포스트·크리에이터샵 화면에서 직접 확인한 값만 담았습니다."
   },
   "kpis": [
@@ -2595,6 +2595,899 @@
         "due_label": "11/19",
         "detail": "월별 품목·출하 시기·검색 정점·할 일을 data.json에 넣고 대시보드에 자동 강조 패널 추가."
       }
+    ]
+  },
+  "fruitAutomation": {
+    "updatedAt": "2026-11-24 22:42",
+    "engine": {
+      "script": "work/fruit_automation/sync_orders.py",
+      "version": "2.0.0",
+      "windowDays": 7,
+      "windowLabel": "최근 7일",
+      "catalogUpdatedAt": "2026-11-24",
+      "skuCount": 7,
+      "fees": {
+        "coupang": 0.1166,
+        "smartstore": 0.0563
+      },
+      "feesNote": "카테고리 수수료율만 반영한 값입니다. 쿠팡은 CS 충당 2%를 더해 13.66%로 보는 것이 보수적이고, 고구마 카테고리는 실제 수수료가 7.6%입니다(2026-11-22 확인). 표의 마진은 수수료를 높게(11.66%) 잡은 보수적 계산입니다.",
+      "matchingRule": "상품명·옵션명에 titleMatch 키워드가 모두 들어 있는 SKU를 찾고, 여러 개가 맞으면 키워드가 많은(더 구체적인) SKU를 고릅니다. 그 SKU의 suppliers 중 cost가 가장 낮은 업체를 발주처로 매칭합니다.",
+      "listingsNote": "listings[].price 는 실제 판매중인 옵션 가격입니다(2026-11-24 10:45 스마트스토어센터·쿠팡 윙 확인). 마진 시뮬레이션은 이 가격으로 계산합니다.",
+      "sources": [
+        {
+          "channel": "coupang",
+          "name": "쿠팡 Open API",
+          "label": "쿠팡",
+          "status": "blocked",
+          "code": "FORBIDDEN",
+          "detail": "HTTP 403 · Your ip address 35.91.246.245 is not allowed for this request. If you need service access, please contact the Coupang seller call center. (Tel: +82-1600-9879, Email: openapisupport@coupang.com) 호출 IP 가 허용 목록에 없습니다 — 쿠팡 윙 > 판매자정보 > OpenAPI 에서 이 서버 IP 를 등록해야 조회됩니다.",
+          "checkedAt": "2026-11-24 22:42"
+        },
+        {
+          "channel": "smartstore",
+          "name": "네이버 커머스 API",
+          "label": "스마트스토어",
+          "status": "blocked",
+          "code": "GW.IP_NOT_ALLOWED",
+          "detail": "HTTP 403 · 호출이 허용되지 않은 IP입니다. 호출 IP 가 허용 목록에 없습니다 — 네이버 커머스 API 센터에서 이 서버 IP 를 등록해야 조회됩니다.",
+          "checkedAt": "2026-11-24 22:42"
+        },
+        {
+          "channel": "manual",
+          "name": "판매센터 실조회 장부",
+          "label": "판매센터 실조회 장부",
+          "status": "ok",
+          "code": "local",
+          "detail": "orders_manual.json 0건 (스마트스토어 0 · 쿠팡 0)",
+          "checkedAt": "2026-11-24 22:42",
+          "orderLines": 0
+        }
+      ],
+      "allOk": false,
+      "orderLines": 0
+    },
+    "kpi": {
+      "month": "2026-11",
+      "label": "2026년 11월",
+      "orders": 0,
+      "quantity": 0,
+      "revenue": 0,
+      "supplyCost": 0,
+      "fees": 0,
+      "adSpend": 0,
+      "netProfit": 0,
+      "marginRate": 0.0,
+      "avgOrderValue": 0,
+      "matchedOrders": 0,
+      "unmatchedOrders": 0,
+      "adSpendRecorded": 0,
+      "adSpendKnown": false
+    },
+    "suppliers": [
+      {
+        "name": "최고집(허브온)",
+        "orders": 0,
+        "quantity": 0,
+        "revenue": 0,
+        "supplyCost": 0,
+        "fees": 0,
+        "adSpend": 0,
+        "netProfit": 0,
+        "matchedOrders": 0,
+        "cheapestSkus": [
+          "제주 황금향 3kg",
+          "제주 조생 노지감귤 5kg"
+        ],
+        "allSuppliers": [
+          "최고집(허브온)",
+          "행운프레시"
+        ],
+        "supplierInfo": [
+          {
+            "sku": "제주_황금향_3kg",
+            "skuName": "제주 황금향 3kg",
+            "cost": 12700,
+            "isCheapest": true
+          },
+          {
+            "sku": "제주_노지감귤_5kg",
+            "skuName": "제주 조생 노지감귤 5kg",
+            "cost": 8500,
+            "isCheapest": true
+          }
+        ],
+        "marginRate": 0.0,
+        "cheapestSkuCount": 2
+      },
+      {
+        "name": "캄므",
+        "orders": 0,
+        "quantity": 0,
+        "revenue": 0,
+        "supplyCost": 0,
+        "fees": 0,
+        "adSpend": 0,
+        "netProfit": 0,
+        "matchedOrders": 0,
+        "cheapestSkus": [
+          "논산 설향딸기 800g 특",
+          "논산 설향딸기 800g 상"
+        ],
+        "allSuppliers": [
+          "캄므"
+        ],
+        "supplierInfo": [
+          {
+            "sku": "논산_설향딸기_800g_특",
+            "skuName": "논산 설향딸기 800g 특",
+            "cost": 27950,
+            "isCheapest": true
+          },
+          {
+            "sku": "논산_설향딸기_800g_상",
+            "skuName": "논산 설향딸기 800g 상",
+            "cost": 24500,
+            "isCheapest": true
+          }
+        ],
+        "marginRate": 0.0,
+        "cheapestSkuCount": 2
+      },
+      {
+        "name": "마니팜(허브온)",
+        "orders": 0,
+        "quantity": 0,
+        "revenue": 0,
+        "supplyCost": 0,
+        "fees": 0,
+        "adSpend": 0,
+        "netProfit": 0,
+        "matchedOrders": 0,
+        "cheapestSkus": [
+          "제주 타이벡 노지감귤 조생 3kg"
+        ],
+        "allSuppliers": [
+          "마니팜(허브온)",
+          "행운프레시"
+        ],
+        "supplierInfo": [
+          {
+            "sku": "제주_타이벡감귤_3kg",
+            "skuName": "제주 타이벡 노지감귤 조생 3kg",
+            "cost": 8900,
+            "isCheapest": true
+          }
+        ],
+        "marginRate": 0.0,
+        "cheapestSkuCount": 1
+      },
+      {
+        "name": "팜플로우(허브온)",
+        "orders": 0,
+        "quantity": 0,
+        "revenue": 0,
+        "supplyCost": 0,
+        "fees": 0,
+        "adSpend": 0,
+        "netProfit": 0,
+        "matchedOrders": 0,
+        "cheapestSkus": [
+          "해남 베니하루카 꿀고구마 3kg 한입"
+        ],
+        "allSuppliers": [
+          "팜플로우(허브온)",
+          "행운프레시"
+        ],
+        "supplierInfo": [
+          {
+            "sku": "꿀고구마_한입_3kg",
+            "skuName": "해남 베니하루카 꿀고구마 3kg 한입",
+            "cost": 7600,
+            "isCheapest": true
+          }
+        ],
+        "marginRate": 0.0,
+        "cheapestSkuCount": 1
+      },
+      {
+        "name": "행운프레시",
+        "orders": 0,
+        "quantity": 0,
+        "revenue": 0,
+        "supplyCost": 0,
+        "fees": 0,
+        "adSpend": 0,
+        "netProfit": 0,
+        "matchedOrders": 0,
+        "cheapestSkus": [
+          "해남 베니하루카 꿀고구마 3kg 특대"
+        ],
+        "allSuppliers": [
+          "팜플로우(허브온)",
+          "행운프레시"
+        ],
+        "supplierInfo": [
+          {
+            "sku": "꿀고구마_3kg_특대",
+            "skuName": "해남 베니하루카 꿀고구마 3kg 특대",
+            "cost": 9200,
+            "isCheapest": true
+          }
+        ],
+        "marginRate": 0.0,
+        "cheapestSkuCount": 1
+      }
+    ],
+    "skuMatch": [
+      {
+        "sku": "꿀고구마_3kg_특대",
+        "name": "해남 베니하루카 꿀고구마 3kg 특대",
+        "unit": "3kg / 특대",
+        "keywords": [
+          "고구마",
+          "3kg",
+          "특대"
+        ],
+        "cheapest": "행운프레시",
+        "cheapestCost": 9200,
+        "priceGap": 1600,
+        "suppliers": [
+          {
+            "name": "행운프레시",
+            "cost": 9200,
+            "note": "특대/긴고구마 최저가",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-18",
+            "isCheapest": true
+          },
+          {
+            "name": "팜플로우(허브온)",
+            "cost": 10800,
+            "note": "지연3.4%·불량4.0%",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-18",
+            "isCheapest": false
+          }
+        ],
+        "listings": [
+          {
+            "channel": "coupang",
+            "channelLabel": "쿠팡",
+            "productId": "16461600173",
+            "option": "3kg 특대",
+            "price": 14400,
+            "priceNote": null
+          },
+          {
+            "channel": "smartstore",
+            "channelLabel": "스마트스토어",
+            "productId": "13881593947",
+            "option": "3kg 특대",
+            "price": 12900,
+            "priceNote": null
+          }
+        ]
+      },
+      {
+        "sku": "꿀고구마_한입_3kg",
+        "name": "해남 베니하루카 꿀고구마 3kg 한입",
+        "unit": "3kg / 한입",
+        "keywords": [
+          "고구마",
+          "한입",
+          "3kg"
+        ],
+        "cheapest": "팜플로우(허브온)",
+        "cheapestCost": 7600,
+        "priceGap": 1300,
+        "suppliers": [
+          {
+            "name": "팜플로우(허브온)",
+            "cost": 7600,
+            "note": "한입 최저가",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-18",
+            "isCheapest": true
+          },
+          {
+            "name": "행운프레시",
+            "cost": 8900,
+            "note": "기존 거래처",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-18",
+            "isCheapest": false
+          }
+        ],
+        "listings": [
+          {
+            "channel": "coupang",
+            "channelLabel": "쿠팡",
+            "productId": "16461600173",
+            "option": "3kg 한입",
+            "price": 12250,
+            "priceNote": null
+          },
+          {
+            "channel": "smartstore",
+            "channelLabel": "스마트스토어",
+            "productId": "13881593947",
+            "option": "3kg 한입",
+            "price": 12900,
+            "priceNote": null
+          }
+        ]
+      },
+      {
+        "sku": "제주_황금향_3kg",
+        "name": "제주 황금향 3kg",
+        "unit": "3kg",
+        "keywords": [
+          "황금향",
+          "3kg"
+        ],
+        "cheapest": "최고집(허브온)",
+        "cheapestCost": 12700,
+        "priceGap": 2700,
+        "suppliers": [
+          {
+            "name": "최고집(허브온)",
+            "cost": 12700,
+            "note": "지연6.6%·불량3.8% (초록빛 박스 참고)",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-18",
+            "isCheapest": true
+          },
+          {
+            "name": "행운프레시",
+            "cost": 15400,
+            "note": "기존 거래처",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-18",
+            "isCheapest": false
+          }
+        ],
+        "listings": [
+          {
+            "channel": "coupang",
+            "channelLabel": "쿠팡",
+            "productId": "16470255288",
+            "option": "3kg",
+            "price": 14900,
+            "priceNote": null
+          },
+          {
+            "channel": "smartstore",
+            "channelLabel": "스마트스토어",
+            "productId": "13890550089",
+            "option": "3kg",
+            "price": 14900,
+            "priceNote": null
+          }
+        ]
+      },
+      {
+        "sku": "제주_노지감귤_5kg",
+        "name": "제주 조생 노지감귤 5kg",
+        "unit": "5kg / 중대과",
+        "keywords": [
+          "노지감귤",
+          "5kg"
+        ],
+        "cheapest": "최고집(허브온)",
+        "cheapestCost": 8500,
+        "priceGap": 2000,
+        "suppliers": [
+          {
+            "name": "최고집(허브온)",
+            "cost": 8500,
+            "note": "지연6.6%·불량3.8%",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-18",
+            "isCheapest": true
+          },
+          {
+            "name": "행운프레시",
+            "cost": 10500,
+            "note": "기존 거래처",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-18",
+            "isCheapest": false
+          }
+        ],
+        "listings": [
+          {
+            "channel": "coupang",
+            "channelLabel": "쿠팡",
+            "productId": "16461587478",
+            "option": "5kg 중대과",
+            "price": 14400,
+            "priceNote": null
+          },
+          {
+            "channel": "smartstore",
+            "channelLabel": "스마트스토어",
+            "productId": "13881577935",
+            "option": "5kg 중대과",
+            "price": 12900,
+            "priceNote": null
+          }
+        ]
+      },
+      {
+        "sku": "제주_타이벡감귤_3kg",
+        "name": "제주 타이벡 노지감귤 조생 3kg",
+        "unit": "3kg / 대과",
+        "keywords": [
+          "타이벡",
+          "3kg"
+        ],
+        "cheapest": "마니팜(허브온)",
+        "cheapestCost": 8900,
+        "priceGap": 2000,
+        "suppliers": [
+          {
+            "name": "마니팜(허브온)",
+            "cost": 8900,
+            "note": "지연3.6%·불량4.3%",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-18",
+            "isCheapest": true
+          },
+          {
+            "name": "행운프레시",
+            "cost": 10900,
+            "note": "기존 거래처",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-18",
+            "isCheapest": false
+          }
+        ],
+        "listings": [
+          {
+            "channel": "coupang",
+            "channelLabel": "쿠팡",
+            "productId": "16468547131",
+            "option": "3kg 대과",
+            "price": 9900,
+            "priceNote": "노출제한 3옵션 중 하나(쿠팡 단위가격 기준)"
+          },
+          {
+            "channel": "smartstore",
+            "channelLabel": "스마트스토어",
+            "productId": "13888908580",
+            "option": "3kg 대과",
+            "price": 9900,
+            "priceNote": null
+          }
+        ]
+      },
+      {
+        "sku": "논산_설향딸기_800g_특",
+        "name": "논산 설향딸기 800g 특",
+        "unit": "800g / 특",
+        "keywords": [
+          "설향딸기",
+          "특"
+        ],
+        "cheapest": "캄므",
+        "cheapestCost": 27950,
+        "priceGap": 0,
+        "suppliers": [
+          {
+            "name": "캄므",
+            "cost": 27950,
+            "note": "800g 특 27,950원 그대로 (무료배송·비과세)",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-22",
+            "isCheapest": true
+          }
+        ],
+        "listings": [
+          {
+            "channel": "coupang",
+            "channelLabel": "쿠팡",
+            "productId": "16469753324",
+            "option": "800g 특 15구",
+            "price": 36900,
+            "priceNote": null
+          },
+          {
+            "channel": "smartstore",
+            "channelLabel": "스마트스토어",
+            "productId": "13890314825",
+            "option": "800g 특 15구",
+            "price": 36900,
+            "priceNote": null
+          }
+        ]
+      },
+      {
+        "sku": "논산_설향딸기_800g_상",
+        "name": "논산 설향딸기 800g 상",
+        "unit": "800g / 상",
+        "keywords": [
+          "설향딸기",
+          "상"
+        ],
+        "cheapest": "캄므",
+        "cheapestCost": 24500,
+        "priceGap": 0,
+        "suppliers": [
+          {
+            "name": "캄므",
+            "cost": 24500,
+            "note": "800g 상 24,500원 그대로 (무료배송·비과세)",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-22",
+            "isCheapest": true
+          }
+        ],
+        "listings": [
+          {
+            "channel": "coupang",
+            "channelLabel": "쿠팡",
+            "productId": "16469753324",
+            "option": "800g 상 20구",
+            "price": 32900,
+            "priceNote": null
+          },
+          {
+            "channel": "smartstore",
+            "channelLabel": "스마트스토어",
+            "productId": "13890314825",
+            "option": "800g 상 20구",
+            "price": 32900,
+            "priceNote": null
+          }
+        ]
+      }
+    ],
+    "skuSummary": [],
+    "simulation": [
+      {
+        "sku": "논산_설향딸기_800g_상",
+        "name": "논산 설향딸기 800g 상",
+        "unit": "800g / 상",
+        "channel": "coupang",
+        "channelLabel": "쿠팡",
+        "productId": "16469753324",
+        "option": "800g 상 20구",
+        "priceNote": null,
+        "price": 32900,
+        "feeRate": 0.1166,
+        "fee": 3836,
+        "supplier": "캄므",
+        "supplyCost": 24500,
+        "supplierCount": 1,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 4564,
+        "marginRate": 0.13872340425531915,
+        "breakevenRoas": 7.208588957055214,
+        "isLoss": false
+      },
+      {
+        "sku": "논산_설향딸기_800g_상",
+        "name": "논산 설향딸기 800g 상",
+        "unit": "800g / 상",
+        "channel": "smartstore",
+        "channelLabel": "스마트스토어",
+        "productId": "13890314825",
+        "option": "800g 상 20구",
+        "priceNote": null,
+        "price": 32900,
+        "feeRate": 0.0563,
+        "fee": 1852,
+        "supplier": "캄므",
+        "supplyCost": 24500,
+        "supplierCount": 1,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 6548,
+        "marginRate": 0.1990273556231003,
+        "breakevenRoas": 5.024434941967013,
+        "isLoss": false
+      },
+      {
+        "sku": "논산_설향딸기_800g_특",
+        "name": "논산 설향딸기 800g 특",
+        "unit": "800g / 특",
+        "channel": "coupang",
+        "channelLabel": "쿠팡",
+        "productId": "16469753324",
+        "option": "800g 특 15구",
+        "priceNote": null,
+        "price": 36900,
+        "feeRate": 0.1166,
+        "fee": 4303,
+        "supplier": "캄므",
+        "supplyCost": 27950,
+        "supplierCount": 1,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 4647,
+        "marginRate": 0.1259349593495935,
+        "breakevenRoas": 7.940606843124597,
+        "isLoss": false
+      },
+      {
+        "sku": "논산_설향딸기_800g_특",
+        "name": "논산 설향딸기 800g 특",
+        "unit": "800g / 특",
+        "channel": "smartstore",
+        "channelLabel": "스마트스토어",
+        "productId": "13890314825",
+        "option": "800g 특 15구",
+        "priceNote": null,
+        "price": 36900,
+        "feeRate": 0.0563,
+        "fee": 2077,
+        "supplier": "캄므",
+        "supplyCost": 27950,
+        "supplierCount": 1,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 6873,
+        "marginRate": 0.186260162601626,
+        "breakevenRoas": 5.368834570056744,
+        "isLoss": false
+      },
+      {
+        "sku": "제주_노지감귤_5kg",
+        "name": "제주 조생 노지감귤 5kg",
+        "unit": "5kg / 중대과",
+        "channel": "coupang",
+        "channelLabel": "쿠팡",
+        "productId": "16461587478",
+        "option": "5kg 중대과",
+        "priceNote": null,
+        "price": 14400,
+        "feeRate": 0.1166,
+        "fee": 1679,
+        "supplier": "최고집(허브온)",
+        "supplyCost": 8500,
+        "supplierCount": 2,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 4221,
+        "marginRate": 0.293125,
+        "breakevenRoas": 3.411513859275053,
+        "isLoss": false
+      },
+      {
+        "sku": "제주_노지감귤_5kg",
+        "name": "제주 조생 노지감귤 5kg",
+        "unit": "5kg / 중대과",
+        "channel": "smartstore",
+        "channelLabel": "스마트스토어",
+        "productId": "13881577935",
+        "option": "5kg 중대과",
+        "priceNote": null,
+        "price": 12900,
+        "feeRate": 0.0563,
+        "fee": 726,
+        "supplier": "최고집(허브온)",
+        "supplyCost": 8500,
+        "supplierCount": 2,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 3674,
+        "marginRate": 0.2848062015503876,
+        "breakevenRoas": 3.511159499183451,
+        "isLoss": false
+      },
+      {
+        "sku": "제주_타이벡감귤_3kg",
+        "name": "제주 타이벡 노지감귤 조생 3kg",
+        "unit": "3kg / 대과",
+        "channel": "coupang",
+        "channelLabel": "쿠팡",
+        "productId": "16468547131",
+        "option": "3kg 대과",
+        "priceNote": "노출제한 3옵션 중 하나(쿠팡 단위가격 기준)",
+        "price": 9900,
+        "feeRate": 0.1166,
+        "fee": 1154,
+        "supplier": "마니팜(허브온)",
+        "supplyCost": 8900,
+        "supplierCount": 2,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": -154,
+        "marginRate": -0.015555555555555555,
+        "breakevenRoas": null,
+        "isLoss": true
+      },
+      {
+        "sku": "제주_타이벡감귤_3kg",
+        "name": "제주 타이벡 노지감귤 조생 3kg",
+        "unit": "3kg / 대과",
+        "channel": "smartstore",
+        "channelLabel": "스마트스토어",
+        "productId": "13888908580",
+        "option": "3kg 대과",
+        "priceNote": null,
+        "price": 9900,
+        "feeRate": 0.0563,
+        "fee": 557,
+        "supplier": "마니팜(허브온)",
+        "supplyCost": 8900,
+        "supplierCount": 2,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 443,
+        "marginRate": 0.044747474747474744,
+        "breakevenRoas": 22.34762979683973,
+        "isLoss": false
+      },
+      {
+        "sku": "제주_황금향_3kg",
+        "name": "제주 황금향 3kg",
+        "unit": "3kg",
+        "channel": "coupang",
+        "channelLabel": "쿠팡",
+        "productId": "16470255288",
+        "option": "3kg",
+        "priceNote": null,
+        "price": 14900,
+        "feeRate": 0.1166,
+        "fee": 1737,
+        "supplier": "최고집(허브온)",
+        "supplyCost": 12700,
+        "supplierCount": 2,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 463,
+        "marginRate": 0.031073825503355704,
+        "breakevenRoas": 32.18142548596112,
+        "isLoss": false
+      },
+      {
+        "sku": "제주_황금향_3kg",
+        "name": "제주 황금향 3kg",
+        "unit": "3kg",
+        "channel": "smartstore",
+        "channelLabel": "스마트스토어",
+        "productId": "13890550089",
+        "option": "3kg",
+        "priceNote": null,
+        "price": 14900,
+        "feeRate": 0.0563,
+        "fee": 839,
+        "supplier": "최고집(허브온)",
+        "supplyCost": 12700,
+        "supplierCount": 2,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 1361,
+        "marginRate": 0.09134228187919463,
+        "breakevenRoas": 10.9478324761205,
+        "isLoss": false
+      },
+      {
+        "sku": "꿀고구마_3kg_특대",
+        "name": "해남 베니하루카 꿀고구마 3kg 특대",
+        "unit": "3kg / 특대",
+        "channel": "coupang",
+        "channelLabel": "쿠팡",
+        "productId": "16461600173",
+        "option": "3kg 특대",
+        "priceNote": null,
+        "price": 14400,
+        "feeRate": 0.1166,
+        "fee": 1679,
+        "supplier": "행운프레시",
+        "supplyCost": 9200,
+        "supplierCount": 2,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 3521,
+        "marginRate": 0.2445138888888889,
+        "breakevenRoas": 4.089747230900312,
+        "isLoss": false
+      },
+      {
+        "sku": "꿀고구마_3kg_특대",
+        "name": "해남 베니하루카 꿀고구마 3kg 특대",
+        "unit": "3kg / 특대",
+        "channel": "smartstore",
+        "channelLabel": "스마트스토어",
+        "productId": "13881593947",
+        "option": "3kg 특대",
+        "priceNote": null,
+        "price": 12900,
+        "feeRate": 0.0563,
+        "fee": 726,
+        "supplier": "행운프레시",
+        "supplyCost": 9200,
+        "supplierCount": 2,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 2974,
+        "marginRate": 0.23054263565891472,
+        "breakevenRoas": 4.3375924680564895,
+        "isLoss": false
+      },
+      {
+        "sku": "꿀고구마_한입_3kg",
+        "name": "해남 베니하루카 꿀고구마 3kg 한입",
+        "unit": "3kg / 한입",
+        "channel": "coupang",
+        "channelLabel": "쿠팡",
+        "productId": "16461600173",
+        "option": "3kg 한입",
+        "priceNote": null,
+        "price": 12250,
+        "feeRate": 0.1166,
+        "fee": 1428,
+        "supplier": "팜플로우(허브온)",
+        "supplyCost": 7600,
+        "supplierCount": 2,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 3222,
+        "marginRate": 0.26302040816326533,
+        "breakevenRoas": 3.801986343885785,
+        "isLoss": false
+      },
+      {
+        "sku": "꿀고구마_한입_3kg",
+        "name": "해남 베니하루카 꿀고구마 3kg 한입",
+        "unit": "3kg / 한입",
+        "channel": "smartstore",
+        "channelLabel": "스마트스토어",
+        "productId": "13881593947",
+        "option": "3kg 한입",
+        "priceNote": null,
+        "price": 12900,
+        "feeRate": 0.0563,
+        "fee": 726,
+        "supplier": "팜플로우(허브온)",
+        "supplyCost": 7600,
+        "supplierCount": 2,
+        "adRate": 0.0,
+        "adCost": 0,
+        "netProfit": 4574,
+        "marginRate": 0.35457364341085273,
+        "breakevenRoas": 2.820288587669436,
+        "isLoss": false
+      }
+    ],
+    "monthly": [],
+    "recentOrders": [],
+    "adSpend": {
+      "month": "2026-11",
+      "total": 0,
+      "known": false,
+      "unknownChannels": [
+        "coupang"
+      ],
+      "entries": [
+        {
+          "channel": "coupang",
+          "channelLabel": "쿠팡",
+          "campaign": "제철과일_첫광고_5만지원_1124",
+          "amount": null,
+          "budgetPerDay": 10000,
+          "startedAt": "2026-11-24 12:22",
+          "note": "11/24 12:22 등록·12:42부터 노출. 당일 실제 집행액은 광고센터 '집행 광고비'에서 확인해 이 값을 채워야 합니다."
+        }
+      ]
+    },
+    "pending": [
+      {
+        "sku": "경북_부사사과_5kg",
+        "note": "사과(스마트스토어 13881502490·쿠팡 16461561010)는 판매 1순위 상품인데 공급처 단가가 카탈로그에 없습니다. 11-19 행운프레시 기준 역산값은 5kg 소과 9,100원·5kg 중과 12,000원·3kg 소과 6,500원이지만 최신 단가 재확인 전이라 자동 매칭·마진표에서 제외했습니다."
+      },
+      {
+        "sku": "꿀고구마_2kg_한입",
+        "note": "쿠팡 2kg 8,900원·스마트스토어 2kg 8,900원 옵션이 있으나 2kg 공급단가가 확인되지 않아 3kg 기준으로만 매칭합니다."
+      }
+    ],
+    "notes": [
+      "주문 수집 API 2곳이 응답하지 않아 이번 집계는 0건입니다. 막힌 사유는 연동 상태에 그대로 적었습니다.",
+      "이번 달 실제 주문이 0건이라 매출·순수익 칸은 모두 0원입니다. 아래 예상 마진표는 카탈로그 단가와 실제 판매가로 계산한 시뮬레이션이며 실적이 아닙니다.",
+      "광고비 집행액이 아직 확인되지 않은 채널이 있습니다(쿠팡). 순수익에는 광고비 0원으로 들어가 있습니다."
     ]
   }
 }

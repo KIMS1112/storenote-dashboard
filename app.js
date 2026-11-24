@@ -327,6 +327,153 @@
       '</section>';
   }
 
+  /* ---------------- 과일 자동발주 · 순수익 (data.json → fruitAutomation) ---------------- */
+  function pct1(v) {
+    var n = Number(v || 0) * 100;
+    return (Math.round(n * 10) / 10).toFixed(1);
+  }
+
+  function fruitSection(d) {
+    var fa = d.fruitAutomation;
+    if (!fa || !fa.engine) return "";
+    var k = fa.kpi || {};
+    var eng = fa.engine;
+    var srcs = eng.sources || [];
+    var okN = srcs.filter(function (s) { return s.status === "ok"; }).length;
+    var monthLabel = k.label || "";
+
+    var kpis = [
+      { label: "이번 달 주문", value: won(k.orders), unit: "건",
+        note: monthLabel + " · 매칭 " + won(k.matchedOrders) + "건 · 미매칭 " + won(k.unmatchedOrders) + "건" },
+      { label: "매출", value: won(k.revenue), unit: "원", note: "상품금액 기준(배송비 제외)" },
+      { label: "도매원가", value: won(k.supplyCost), unit: "원", note: "택배 포함 공급가 × 수량" },
+      { label: "수수료·광고비", value: won(Number(k.fees || 0) + Number(k.adSpend || 0)), unit: "원",
+        note: "수수료 " + won(k.fees) + " + 광고 " + won(k.adSpend) + (k.adSpendKnown === false ? " (집행액 미확인)" : "") },
+      { label: "순수익", value: won(k.netProfit), unit: "원", cls: Number(k.netProfit) > 0 ? "pos" : "",
+        note: "매출 − 원가 − 수수료 − 광고" },
+      { label: "마진율", value: k.revenue ? pct1(k.marginRate) : "—", unit: k.revenue ? "%" : "", note: k.revenue ? "순수익 ÷ 매출" : "주문 0건 · 계산값 없음" }
+    ].map(function (c) {
+      return '<div class="fk-card ' + (c.cls || "") + '">' +
+        '<span>' + esc(c.label) + '</span>' +
+        '<b>' + esc(c.value) + (c.unit ? '<small>' + esc(c.unit) + '</small>' : '') + '</b>' +
+        '<em>' + esc(c.note) + '</em></div>';
+    }).join("");
+
+    var sourceRows = srcs.map(function (s) {
+      var ok = s.status === "ok";
+      return '<div class="fsrc-row ' + (ok ? "is-ok" : "is-blocked") + '">' +
+        '<span class="fsrc-dot"></span>' +
+        '<div class="fsrc-body"><b>' + esc(s.name) + '</b>' +
+        '<p>' + esc(s.detail || "") + '</p></div>' +
+        '<span class="fsrc-state">' + (ok ? "정상" : "차단") + '</span>' +
+        '<span class="fsrc-time">' + esc(s.checkedAt || "") + '</span></div>';
+    }).join("");
+
+    var supplierRows = (fa.suppliers || []).map(function (s) {
+      var skus = s.cheapestSkus || [];
+      return '<tr>' +
+        '<td class="f-name"><b>' + esc(s.name) + '</b>' +
+        (skus.length ? '<span class="f-mini">최저가 ' + skus.length + '개 SKU</span>' : '<span class="f-mini">최저가 SKU 없음</span>') + '</td>' +
+        '<td class="f-skus">' + (skus.length ? esc(skus.join(" · ")) : "—") + '</td>' +
+        '<td class="f-num">' + won(s.orders) + '</td>' +
+        '<td class="f-num">' + won(s.quantity) + '</td>' +
+        '<td class="f-num">' + won(s.supplyCost) + '</td>' +
+        '<td class="f-num">' + won(s.revenue) + '</td>' +
+        '<td class="f-num">' + won(Number(s.fees || 0)) + '</td>' +
+        '<td class="f-num ' + (Number(s.netProfit) > 0 ? "pos" : (Number(s.netProfit) < 0 ? "neg" : "")) + '">' + won(s.netProfit) + '</td>' +
+        '<td class="f-num">' + (s.revenue ? pct1(s.marginRate) + "%" : "—") + '</td></tr>';
+    }).join("");
+
+    var sim = fa.simulation || [];
+    var simRows = [];
+    var lastSku = null;
+    sim.forEach(function (r) {
+      var first = r.sku !== lastSku;
+      lastSku = r.sku;
+      var roas = r.breakevenRoas ? Math.round(r.breakevenRoas * 100) + "%" : (r.isLoss ? "적자" : "—");
+      simRows.push('<tr class="' + (r.isLoss ? "is-loss" : "") + '">' +
+        '<td class="f-name">' + (first ? '<b>' + esc(r.name) + '</b>' : '<span class="f-muted">↳</span>') +
+        (first && r.unit ? '<span class="f-mini">' + esc(r.unit) + '</span>' : '') + '</td>' +
+        '<td><span class="f-ch" style="--c:' + (r.channel === "coupang" ? "#f97316" : "#03c75a") + '">' + esc(r.channelLabel) + '</span>' +
+        '<span class="f-mini">' + esc(r.option || "") + '</span></td>' +
+        '<td class="f-sup">' + esc(r.supplier || "—") + (r.supplierCount > 1 ? ' <span class="f-mini">' + r.supplierCount + '곳 중 최저</span>' : '') + '</td>' +
+        '<td class="f-num">' + won(r.supplyCost) + '</td>' +
+        '<td class="f-num">' + won(r.price) + '</td>' +
+        '<td class="f-num">' + won(r.fee) + '<span class="f-mini">' + pct1(r.feeRate) + '%</span></td>' +
+        '<td class="f-num">' + (Number(r.adCost) > 0 ? won(r.adCost) : "0") + '</td>' +
+        '<td class="f-num ' + (r.isLoss ? "neg" : (r.netProfit > 0 ? "pos" : "")) + '">' + won(r.netProfit) + '</td>' +
+        '<td class="f-num">' + pct1(r.marginRate) + '%</td>' +
+        '<td class="f-num">' + esc(roas) + '</td></tr>');
+    });
+
+    var monthRows = (fa.monthly || []).map(function (m) {
+      return '<tr><td class="f-name"><b>' + esc(m.name) + '</b></td>' +
+        '<td class="f-num">' + won(m.orders) + '</td>' +
+        '<td class="f-num">' + won(m.revenue) + '</td>' +
+        '<td class="f-num">' + won(m.supplyCost) + '</td>' +
+        '<td class="f-num">' + won(Number(m.fees || 0)) + '</td>' +
+        '<td class="f-num ' + (Number(m.netProfit) > 0 ? "pos" : "") + '">' + won(m.netProfit) + '</td>' +
+        '<td class="f-num">' + (m.revenue ? pct1(m.marginRate) + "%" : "—") + '</td></tr>';
+    }).join("");
+
+    var recent = fa.recentOrders || [];
+    var recentBlock = recent.length
+      ? '<div class="p-table-wrap"><table class="f-table"><thead><tr><th>주문</th><th>채널</th><th>상품</th><th class="f-num">수량</th><th class="f-num">결제</th><th>발주처</th><th>매칭 SKU</th><th class="f-num">순수익</th><th>상태</th></tr></thead><tbody>' +
+        recent.map(function (o) {
+          return '<tr>' +
+            '<td class="f-name"><b>' + esc(o.orderedLabel || "—") + '</b><span class="f-mini">' + esc(o.orderLine || "") + '</span></td>' +
+            '<td><span class="f-ch" style="--c:' + (o.channel === "coupang" ? "#f97316" : "#03c75a") + '">' + esc(o.channelLabel) + '</span></td>' +
+            '<td class="f-skus">' + esc(o.productName || "") + (o.optionName ? '<span class="f-mini">' + esc(o.optionName) + '</span>' : '') + '</td>' +
+            '<td class="f-num">' + won(o.quantity) + '</td>' +
+            '<td class="f-num">' + won(o.goodsAmount) + '</td>' +
+            '<td class="f-sup">' + (o.supplier ? esc(o.supplier) : '<span class="neg">매칭 실패</span>') + '</td>' +
+            '<td class="f-skus">' + esc(o.skuName || "—") + '</td>' +
+            '<td class="f-num ' + (Number(o.netProfit) > 0 ? "pos" : (o.netProfit == null ? "" : "neg")) + '">' +
+              (o.netProfit == null ? "—" : won(o.netProfit)) + '</td>' +
+            '<td><span class="f-state">' + esc(o.status || "—") + '</span></td></tr>';
+        }).join("") + '</tbody></table></div>'
+      : '<div class="f-empty"><b>아직 잡힌 주문이 0건입니다</b>' +
+        '<p>주문이 들어오는 순간 상품·수량·최저가 도매처·발주 상태가 이 자리에 한 줄씩 쌓입니다. ' +
+        '지금은 실적 0건 그대로이고, 위의 예상 마진표는 실적이 아니라 판매가 기준 예상치입니다.</p></div>';
+
+    var notes = (fa.notes || []).map(function (n) { return '<li>' + esc(n) + '</li>'; }).join("");
+    var pending = (fa.pending || []).map(function (p) {
+      return '<li><b>' + esc(p.sku || "") + '</b> ' + esc(p.note || "") + '</li>';
+    }).join("");
+
+    return '<section class="panel panel-fruit">' +
+      '<div class="panel-head"><div><h2>과일 자동발주 · 순수익</h2>' +
+      '<p>주문 수집 → 최저가 도매처 매칭 → 수수료·광고비 반영 순수익 · ' + esc(eng.windowLabel || "") +
+      ' · 카탈로그 ' + esc(String(eng.skuCount || 0)) + '개 SKU</p></div>' +
+      '<div class="panel-tools"><span class="chip">엔진 v' + esc(eng.version) + '</span>' +
+      '<span class="chip ' + (eng.allOk ? "operating" : "waiting") + '"><span class="d"></span>연동 ' + okN + '/' + srcs.length + ' 정상</span>' +
+      '<span class="chip">' + esc(fa.updatedAt) + ' 집계</span></div></div>' +
+      '<div class="fk-grid">' + kpis + '</div>' +
+      '<div class="fsub"><h3>연동 상태</h3><p>주문을 어디서 받아왔는지 그대로 적습니다 — 막히면 막혔다고 표시하고 0으로 채우지 않습니다.</p></div>' +
+      '<div class="fsrc">' + sourceRows + '</div>' +
+      '<div class="fsub"><h3>도매처별 발주 · 수익</h3><p>' + esc(monthLabel) + ' 기준 · 최저가 보유 SKU는 카탈로그 단가 비교 결과입니다.</p></div>' +
+      '<div class="p-table-wrap"><table class="f-table"><thead><tr><th>도매처</th><th>최저가 보유 SKU</th><th class="f-num">주문</th><th class="f-num">수량</th><th class="f-num">매입원가</th><th class="f-num">매출</th><th class="f-num">수수료·광고</th><th class="f-num">순수익</th><th class="f-num">마진율</th></tr></thead><tbody>' +
+      (supplierRows || '<tr><td colspan="9" class="f-muted">카탈로그에 도매처가 없습니다.</td></tr>') + '</tbody></table></div>' +
+      '<div class="fsub"><h3>품목별 최저가 도매처 매칭 · 예상 마진</h3>' +
+      '<p>카탈로그 공급가(택배 포함)와 지금 판매 중인 옵션가로 계산한 <b>예상치</b>입니다. 실적이 아닙니다.</p></div>' +
+      '<div class="p-table-wrap"><table class="f-table f-table-sim"><thead><tr><th>품목</th><th>채널 · 옵션</th><th>최저가 도매처</th><th class="f-num">공급가</th><th class="f-num">판매가</th><th class="f-num">수수료</th><th class="f-num">광고비</th><th class="f-num">순수익</th><th class="f-num">마진율</th><th class="f-num">BEP ROAS</th></tr></thead><tbody>' +
+      (simRows.join("") || '<tr><td colspan="10" class="f-muted">카탈로그에 판매 옵션가가 없습니다.</td></tr>') + '</tbody></table></div>' +
+      '<div class="f-foot"><span>공급가는 택배 포함 · 수수료는 상품금액 기준 · BEP ROAS는 그 아래로 광고를 돌리면 적자가 되는 선</span>' +
+      '<span>' + esc(eng.feesNote || "") + '</span></div>' +
+      '<div class="duo f-duo">' +
+      '<section class="f-inner"><div class="fsub"><h3>월별 집계</h3><p>결제일 기준</p></div>' +
+      (monthRows ? '<div class="p-table-wrap"><table class="f-table"><thead><tr><th>월</th><th class="f-num">주문</th><th class="f-num">매출</th><th class="f-num">도매원가</th><th class="f-num">수수료·광고</th><th class="f-num">순수익</th><th class="f-num">마진율</th></tr></thead><tbody>' + monthRows + '</tbody></table></div>'
+        : '<div class="f-empty"><b>집계된 달이 없습니다</b><p>주문이 0건이라 월별 표에 넣을 값이 아직 없습니다.</p></div>') +
+      '</section>' +
+      '<section class="f-inner"><div class="fsub"><h3>최근 주문 · 자동 발주 매칭</h3><p>조회까지만 자동 — 실제 발주·결제는 확인 후 진행</p></div>' +
+      recentBlock + '</section></div>' +
+      ((notes || pending) ? '<div class="f-notes">' +
+        (notes ? '<ul class="note-list">' + notes + '</ul>' : '') +
+        (pending ? '<div class="f-pending"><b>카탈로그에 아직 없는 품목</b><ul class="note-list">' + pending + '</ul></div>' : '') +
+        '</div>' : '') +
+      '</section>';
+  }
+
   function blogStatsSection(d, opts) {
     var bs = d.blog_stats;
     if (!bs) return "";
@@ -834,6 +981,7 @@
       '<div class="rev-cell"><div class="rev-label">' + esc(ch.revenue.pending_label) + '</div><div class="rev-value pending-num">' + esc(ch.revenue.pending) + '</div></div>' +
       '<div class="rev-cell"><p class="rev-note">' + esc(ch.revenue.note) + '</p></div></div>' +
       (ch.id === "forest" ? salesSection(d) : "") +
+      (ch.id === "forest" ? fruitSection(d) : "") +
       (ch.id === "forest" ? seasonSection(d) : "") +
       (ch.id === "blog" ? blogStatsSection(d) : "") +
       cols +
