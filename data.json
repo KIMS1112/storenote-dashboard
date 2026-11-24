@@ -2,10 +2,10 @@
   "meta": {
     "title": "매장경영노트 수익화 파이프라인",
     "subtitle": "블로그 · 클립 · 브랜드커넥트 · 쇼핑커넥트 · 인스타 · 스레드 · 쇼츠 · 모두의 숲",
-    "updated_at": "2026-11-25T06:28:36+09:00",
-    "updated_label": "2026-11-25 06:28",
+    "updated_at": "2026-11-25T07:40:55+09:00",
+    "updated_label": "2026-11-25 07:40",
     "updated_by": "파인",
-    "data_version": 27,
+    "data_version": 28,
     "note": "이 파일(data.json)만 수정해 배포하면 웹과 폰 앱에 같은 내용이 바로 반영됩니다. 수치는 스마트스토어센터·쿠팡 윙·블로그 통계·애드포스트·크리에이터샵 화면에서 직접 확인한 값만 담았습니다."
   },
   "kpis": [
@@ -1087,7 +1087,7 @@
           "label": "오늘 신규 주문",
           "value": "0",
           "unit": "건",
-          "note": "스마트스토어 0 · 쿠팡 0 (14:52 동기화)"
+          "note": "과일 자동화 엔진 집계 · 스마트스토어 0 · 쿠팡 0 (07:40 엔진 실행)"
         },
         {
           "label": "누적 매출",
@@ -2598,7 +2598,7 @@
     ]
   },
   "fruitAutomation": {
-    "updatedAt": "2026-11-25 06:28",
+    "updatedAt": "2026-11-25 07:40",
     "engine": {
       "script": "work/fruit_automation/sync_orders.py",
       "version": "2.0.0",
@@ -2615,22 +2615,13 @@
       "listingsNote": "listings[].price 는 실제 판매중인 옵션 가격입니다(2026-11-24 10:45 스마트스토어센터·쿠팡 윙 확인). 마진 시뮬레이션은 이 가격으로 계산합니다.",
       "sources": [
         {
-          "channel": "coupang",
-          "name": "쿠팡 Open API",
-          "label": "쿠팡",
-          "status": "blocked",
-          "code": "FORBIDDEN",
-          "detail": "HTTP 403 · Your ip address 54.191.54.14 is not allowed for this request. If you need service access, please contact the Coupang seller call center. (Tel: +82-1600-9879, Email: openapisupport@coupang.com) 호출 IP 가 허용 목록에 없습니다 — 쿠팡 윙 > 판매자정보 > OpenAPI 에서 이 서버 IP 를 등록해야 조회됩니다.",
-          "checkedAt": "2026-11-25 06:28"
-        },
-        {
-          "channel": "smartstore",
-          "name": "네이버 커머스 API",
-          "label": "스마트스토어",
-          "status": "blocked",
-          "code": "GW.IP_NOT_ALLOWED",
-          "detail": "HTTP 403 · 호출이 허용되지 않은 IP입니다. 호출 IP 가 허용 목록에 없습니다 — 네이버 커머스 API 센터에서 이 서버 IP 를 등록해야 조회됩니다.",
-          "checkedAt": "2026-11-25 06:28"
+          "channel": "engine",
+          "name": "API 조회 생략(--no-fetch)",
+          "label": "API 조회 생략(--no-fetch)",
+          "status": "ok",
+          "code": "skipped",
+          "detail": "장부·카탈로그만으로 계산했습니다",
+          "checkedAt": "2026-11-25 07:40"
         },
         {
           "channel": "manual",
@@ -2639,11 +2630,11 @@
           "status": "ok",
           "code": "local",
           "detail": "orders_manual.json 0건 (스마트스토어 0 · 쿠팡 0)",
-          "checkedAt": "2026-11-25 06:28",
+          "checkedAt": "2026-11-25 07:40",
           "orderLines": 0
         }
       ],
-      "allOk": false,
+      "allOk": true,
       "orderLines": 0
     },
     "kpi": {
@@ -2665,42 +2656,6 @@
     },
     "suppliers": [
       {
-        "name": "마니팜(허브온)",
-        "orders": 0,
-        "quantity": 0,
-        "revenue": 0,
-        "supplyCost": 0,
-        "fees": 0,
-        "adSpend": 0,
-        "netProfit": 0,
-        "matchedOrders": 0,
-        "cheapestSkus": [
-          "제주 타이벡 노지감귤 조생 3kg",
-          "제주 타이벡 노지감귤 로얄소과 3kg"
-        ],
-        "allSuppliers": [
-          "마니팜(허브온)",
-          "최고집(허브온)",
-          "행운프레시"
-        ],
-        "supplierInfo": [
-          {
-            "sku": "제주_타이벡감귤_3kg",
-            "skuName": "제주 타이벡 노지감귤 조생 3kg",
-            "cost": 5900,
-            "isCheapest": true
-          },
-          {
-            "sku": "제주_타이벡감귤_로얄_3kg",
-            "skuName": "제주 타이벡 노지감귤 로얄소과 3kg",
-            "cost": 6800,
-            "isCheapest": true
-          }
-        ],
-        "marginRate": 0.0,
-        "cheapestSkuCount": 2
-      },
-      {
         "name": "최고집(허브온)",
         "orders": 0,
         "quantity": 0,
@@ -2712,28 +2667,37 @@
         "matchedOrders": 0,
         "cheapestSkus": [
           "제주 황금향 3kg",
-          "제주 조생 노지감귤 5kg"
+          "제주 조생 노지감귤 5kg",
+          "제주 타이벡 노지감귤 조생 3kg"
         ],
         "allSuppliers": [
+          "마니팜(허브온)",
           "최고집(허브온)",
+          "팜플로우(허브온)",
           "행운프레시"
         ],
         "supplierInfo": [
           {
             "sku": "제주_황금향_3kg",
             "skuName": "제주 황금향 3kg",
-            "cost": 12700,
+            "cost": 8200,
             "isCheapest": true
           },
           {
             "sku": "제주_노지감귤_5kg",
             "skuName": "제주 조생 노지감귤 5kg",
-            "cost": 8500,
+            "cost": 6200,
+            "isCheapest": true
+          },
+          {
+            "sku": "제주_타이벡감귤_3kg",
+            "skuName": "제주 타이벡 노지감귤 조생 3kg",
+            "cost": 5450,
             "isCheapest": true
           }
         ],
         "marginRate": 0.0,
-        "cheapestSkuCount": 2
+        "cheapestSkuCount": 3
       },
       {
         "name": "캄므",
@@ -2805,6 +2769,35 @@
         ],
         "marginRate": 0.0,
         "cheapestSkuCount": 2
+      },
+      {
+        "name": "마니팜(허브온)",
+        "orders": 0,
+        "quantity": 0,
+        "revenue": 0,
+        "supplyCost": 0,
+        "fees": 0,
+        "adSpend": 0,
+        "netProfit": 0,
+        "matchedOrders": 0,
+        "cheapestSkus": [
+          "제주 타이벡 노지감귤 로얄소과 3kg"
+        ],
+        "allSuppliers": [
+          "마니팜(허브온)",
+          "최고집(허브온)",
+          "행운프레시"
+        ],
+        "supplierInfo": [
+          {
+            "sku": "제주_타이벡감귤_로얄_3kg",
+            "skuName": "제주 타이벡 노지감귤 로얄소과 3kg",
+            "cost": 6800,
+            "isCheapest": true
+          }
+        ],
+        "marginRate": 0.0,
+        "cheapestSkuCount": 1
       },
       {
         "name": "별담마켓(허브온)",
@@ -3000,16 +2993,24 @@
           "3kg"
         ],
         "cheapest": "최고집(허브온)",
-        "cheapestCost": 12700,
-        "priceGap": 2700,
+        "cheapestCost": 8200,
+        "priceGap": 800,
         "suppliers": [
           {
             "name": "최고집(허브온)",
-            "cost": 12700,
-            "note": "지연6.6%·불량3.8% (초록빛 박스 참고)",
+            "cost": 8200,
+            "note": "[제휴B] 가정용 박스포함 3kg (즉시발주 가능, 지연6.6%·불량3.8%)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-18",
+            "verifiedAt": "2026-11-25",
             "isCheapest": true
+          },
+          {
+            "name": "팜플로우(허브온)",
+            "cost": 9000,
+            "note": "가성비 3kg 혼합 9,000원 / 정품 비가림 중소과 9,700원 (즉시발주 가능)",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-25",
+            "isCheapest": false
           },
           {
             "name": "행운프레시",
@@ -3048,16 +3049,24 @@
           "5kg"
         ],
         "cheapest": "최고집(허브온)",
-        "cheapestCost": 8500,
-        "priceGap": 2000,
+        "cheapestCost": 6200,
+        "priceGap": 600,
         "suppliers": [
           {
             "name": "최고집(허브온)",
-            "cost": 8500,
-            "note": "지연6.6%·불량3.8%",
+            "cost": 6200,
+            "note": "[제휴D] 조생감귤 중과/대과 5kg (실중량 4.5kg, 즉시발주 가능)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-18",
+            "verifiedAt": "2026-11-25",
             "isCheapest": true
+          },
+          {
+            "name": "팜플로우(허브온)",
+            "cost": 6800,
+            "note": "특가 조생 노지감귤 중대과 5kg 박스포함 (즉시발주 가능)",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-25",
+            "isCheapest": false
           },
           {
             "name": "행운프레시",
@@ -3095,17 +3104,25 @@
           "타이벡",
           "3kg"
         ],
-        "cheapest": "마니팜(허브온)",
-        "cheapestCost": 5900,
-        "priceGap": 500,
+        "cheapest": "최고집(허브온)",
+        "cheapestCost": 5450,
+        "priceGap": 450,
         "suppliers": [
           {
-            "name": "마니팜(허브온)",
-            "cost": 5900,
-            "note": "지연3.6%·불량4.3% (3kg 중대과 실측, 8,900원은 5kg 오기입 정정)",
+            "name": "최고집(허브온)",
+            "cost": 5450,
+            "note": "[제휴D] 타이벡 대과 3kg (실중량 2.5kg, 즉시발주 가능, 지연6.6%·불량3.8%)",
             "shipping": "포함",
             "verifiedAt": "2026-11-25",
             "isCheapest": true
+          },
+          {
+            "name": "마니팜(허브온)",
+            "cost": 5900,
+            "note": "승인대기 · 지연3.6%·불량4.3% (3kg 중대과 실측)",
+            "shipping": "포함",
+            "verifiedAt": "2026-11-25",
+            "isCheapest": false
           },
           {
             "name": "행운프레시",
@@ -3588,13 +3605,13 @@
         "feeRate": 0.1166,
         "fee": 1679,
         "supplier": "최고집(허브온)",
-        "supplyCost": 8500,
-        "supplierCount": 2,
+        "supplyCost": 6200,
+        "supplierCount": 3,
         "adRate": 0.0,
         "adCost": 0,
-        "netProfit": 4221,
-        "marginRate": 0.293125,
-        "breakevenRoas": 3.411513859275053,
+        "netProfit": 6521,
+        "marginRate": 0.45284722222222223,
+        "breakevenRoas": 2.2082502683637477,
         "isLoss": false
       },
       {
@@ -3610,13 +3627,13 @@
         "feeRate": 0.0563,
         "fee": 726,
         "supplier": "최고집(허브온)",
-        "supplyCost": 8500,
-        "supplierCount": 2,
+        "supplyCost": 6200,
+        "supplierCount": 3,
         "adRate": 0.0,
         "adCost": 0,
-        "netProfit": 3674,
-        "marginRate": 0.2848062015503876,
-        "breakevenRoas": 3.511159499183451,
+        "netProfit": 5974,
+        "marginRate": 0.46310077519379844,
+        "breakevenRoas": 2.1593572145965854,
         "isLoss": false
       },
       {
@@ -3719,14 +3736,14 @@
         "price": 9900,
         "feeRate": 0.1166,
         "fee": 1154,
-        "supplier": "마니팜(허브온)",
-        "supplyCost": 5900,
-        "supplierCount": 2,
+        "supplier": "최고집(허브온)",
+        "supplyCost": 5450,
+        "supplierCount": 3,
         "adRate": 0.0,
         "adCost": 0,
-        "netProfit": 2846,
-        "marginRate": 0.2874747474747475,
-        "breakevenRoas": 3.4785664089950807,
+        "netProfit": 3296,
+        "marginRate": 0.3329292929292929,
+        "breakevenRoas": 3.003640776699029,
         "isLoss": false
       },
       {
@@ -3741,14 +3758,14 @@
         "price": 9900,
         "feeRate": 0.0563,
         "fee": 557,
-        "supplier": "마니팜(허브온)",
-        "supplyCost": 5900,
-        "supplierCount": 2,
+        "supplier": "최고집(허브온)",
+        "supplyCost": 5450,
+        "supplierCount": 3,
         "adRate": 0.0,
         "adCost": 0,
-        "netProfit": 3443,
-        "marginRate": 0.3477777777777778,
-        "breakevenRoas": 2.8753993610223643,
+        "netProfit": 3893,
+        "marginRate": 0.3932323232323232,
+        "breakevenRoas": 2.543025944002055,
         "isLoss": false
       },
       {
@@ -3764,13 +3781,13 @@
         "feeRate": 0.1166,
         "fee": 1737,
         "supplier": "최고집(허브온)",
-        "supplyCost": 12700,
-        "supplierCount": 2,
+        "supplyCost": 8200,
+        "supplierCount": 3,
         "adRate": 0.0,
         "adCost": 0,
-        "netProfit": 463,
-        "marginRate": 0.031073825503355704,
-        "breakevenRoas": 32.18142548596112,
+        "netProfit": 4963,
+        "marginRate": 0.33308724832214764,
+        "breakevenRoas": 3.002216401370139,
         "isLoss": false
       },
       {
@@ -3786,13 +3803,13 @@
         "feeRate": 0.0563,
         "fee": 839,
         "supplier": "최고집(허브온)",
-        "supplyCost": 12700,
-        "supplierCount": 2,
+        "supplyCost": 8200,
+        "supplierCount": 3,
         "adRate": 0.0,
         "adCost": 0,
-        "netProfit": 1361,
-        "marginRate": 0.09134228187919463,
-        "breakevenRoas": 10.9478324761205,
+        "netProfit": 5861,
+        "marginRate": 0.3933557046979866,
+        "breakevenRoas": 2.5422282886879373,
         "isLoss": false
       },
       {
@@ -3951,7 +3968,6 @@
     },
     "pending": [],
     "notes": [
-      "주문 수집 API 2곳이 응답하지 않아 이번 집계는 0건입니다. 막힌 사유는 연동 상태에 그대로 적었습니다.",
       "이번 달 실제 주문이 0건이라 매출·순수익 칸은 모두 0원입니다. 위의 예상 마진표는 카탈로그 단가와 실제 판매가로 계산한 시뮬레이션이며 실적이 아닙니다.",
       "광고비 집행액이 아직 확인되지 않은 채널이 있습니다(쿠팡). 순수익에는 광고비 0원으로 들어가 있습니다."
     ]
