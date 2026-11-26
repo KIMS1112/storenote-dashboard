@@ -2,10 +2,10 @@
   "meta": {
     "title": "매장경영노트 수익화 파이프라인",
     "subtitle": "블로그 · 클립 · 브랜드커넥트 · 쇼핑커넥트 · 인스타 · 스레드 · 쇼츠 · 모두의 숲",
-    "updated_at": "2026-11-26T22:49:00+09:00",
-    "updated_label": "2026-11-26 22:49",
+    "updated_at": "2026-11-26T23:29:04+09:00",
+    "updated_label": "2026-11-26 23:29",
     "updated_by": "파인",
-    "data_version": 39,
+    "data_version": 40,
     "note": "이 파일(data.json)만 수정해 배포하면 웹과 폰 앱에 같은 내용이 바로 반영됩니다. 수치는 스마트스토어센터·쿠팡 윙·블로그 통계·애드포스트·크리에이터샵 화면에서 직접 확인한 값만 담았습니다."
   },
   "kpis": [
@@ -2351,13 +2351,13 @@
     ]
   },
   "fruitAutomation": {
-    "updatedAt": "2026-11-26 22:49",
+    "updatedAt": "2026-11-26 23:29",
     "engine": {
       "script": "work/fruit_automation/sync_orders.py",
       "version": "2.0.0",
       "windowDays": 7,
       "windowLabel": "최근 7일",
-      "catalogUpdatedAt": "2026-11-25",
+      "catalogUpdatedAt": "2026-11-26",
       "skuCount": 11,
       "fees": {
         "coupang": 0.1166,
@@ -2373,8 +2373,8 @@
           "label": "쿠팡",
           "status": "blocked",
           "code": "FORBIDDEN",
-          "detail": "HTTP 403 · Your ip address 35.93.24.127 is not allowed for this request. If you need service access, please contact the Coupang seller call center. (Tel: +82-1600-9879, Email: openapisupport@coupang.com) 호출 IP 가 허용 목록에 없습니다 — 쿠팡 윙 > 판매자정보 > OpenAPI 에서 이 서버 IP 를 등록해야 조회됩니다.",
-          "checkedAt": "2026-11-26 22:49"
+          "detail": "HTTP 403 · Your ip address 16.147.80.124 is not allowed for this request. If you need service access, please contact the Coupang seller call center. (Tel: +82-1600-9879, Email: openapisupport@coupang.com) 호출 IP 가 허용 목록에 없습니다 — 쿠팡 윙 > 판매자정보 > OpenAPI 에서 이 서버 IP 를 등록해야 조회됩니다.",
+          "checkedAt": "2026-11-26 23:29"
         },
         {
           "channel": "smartstore",
@@ -2383,7 +2383,7 @@
           "status": "blocked",
           "code": "GW.IP_NOT_ALLOWED",
           "detail": "HTTP 403 · 호출이 허용되지 않은 IP입니다. 호출 IP 가 허용 목록에 없습니다 — 네이버 커머스 API 센터에서 이 서버 IP 를 등록해야 조회됩니다.",
-          "checkedAt": "2026-11-26 22:49"
+          "checkedAt": "2026-11-26 23:29"
         },
         {
           "channel": "manual",
@@ -2392,7 +2392,7 @@
           "status": "ok",
           "code": "local",
           "detail": "orders_manual.json 0건 (스마트스토어 0 · 쿠팡 0)",
-          "checkedAt": "2026-11-26 22:49",
+          "checkedAt": "2026-11-26 23:29",
           "orderLines": 0
         }
       ],
@@ -2496,6 +2496,41 @@
         "cheapestSkuCount": 2
       },
       {
+        "name": "팜플로우(허브온)",
+        "orders": 0,
+        "quantity": 0,
+        "revenue": 0,
+        "supplyCost": 0,
+        "fees": 0,
+        "adSpend": 0,
+        "netProfit": 0,
+        "matchedOrders": 0,
+        "cheapestSkus": [
+          "해남 베니하루카 꿀고구마 3kg 특대",
+          "해남 베니하루카 꿀고구마 3kg 한입"
+        ],
+        "allSuppliers": [
+          "팜플로우(허브온)",
+          "행운프레시"
+        ],
+        "supplierInfo": [
+          {
+            "sku": "꿀고구마_3kg_특대",
+            "skuName": "해남 베니하루카 꿀고구마 3kg 특대",
+            "cost": 7400,
+            "isCheapest": true
+          },
+          {
+            "sku": "꿀고구마_한입_3kg",
+            "skuName": "해남 베니하루카 꿀고구마 3kg 한입",
+            "cost": 5600,
+            "isCheapest": true
+          }
+        ],
+        "marginRate": 0.0,
+        "cheapestSkuCount": 2
+      },
+      {
         "name": "하루팜(허브온)",
         "orders": 0,
         "quantity": 0,
@@ -2519,7 +2554,7 @@
           {
             "sku": "경북_부사사과_5kg",
             "skuName": "경북 부사사과 5kg",
-            "cost": 9200,
+            "cost": 8800,
             "isCheapest": true
           },
           {
@@ -2554,7 +2589,7 @@
           {
             "sku": "제주_타이벡감귤_로얄_3kg",
             "skuName": "제주 타이벡 노지감귤 로얄소과 3kg",
-            "cost": 6800,
+            "cost": 5800,
             "isCheapest": true
           }
         ],
@@ -2589,62 +2624,6 @@
         ],
         "marginRate": 0.0,
         "cheapestSkuCount": 1
-      },
-      {
-        "name": "팜플로우(허브온)",
-        "orders": 0,
-        "quantity": 0,
-        "revenue": 0,
-        "supplyCost": 0,
-        "fees": 0,
-        "adSpend": 0,
-        "netProfit": 0,
-        "matchedOrders": 0,
-        "cheapestSkus": [
-          "해남 베니하루카 꿀고구마 3kg 한입"
-        ],
-        "allSuppliers": [
-          "팜플로우(허브온)",
-          "행운프레시"
-        ],
-        "supplierInfo": [
-          {
-            "sku": "꿀고구마_한입_3kg",
-            "skuName": "해남 베니하루카 꿀고구마 3kg 한입",
-            "cost": 7600,
-            "isCheapest": true
-          }
-        ],
-        "marginRate": 0.0,
-        "cheapestSkuCount": 1
-      },
-      {
-        "name": "행운프레시",
-        "orders": 0,
-        "quantity": 0,
-        "revenue": 0,
-        "supplyCost": 0,
-        "fees": 0,
-        "adSpend": 0,
-        "netProfit": 0,
-        "matchedOrders": 0,
-        "cheapestSkus": [
-          "해남 베니하루카 꿀고구마 3kg 특대"
-        ],
-        "allSuppliers": [
-          "팜플로우(허브온)",
-          "행운프레시"
-        ],
-        "supplierInfo": [
-          {
-            "sku": "꿀고구마_3kg_특대",
-            "skuName": "해남 베니하루카 꿀고구마 3kg 특대",
-            "cost": 9200,
-            "isCheapest": true
-          }
-        ],
-        "marginRate": 0.0,
-        "cheapestSkuCount": 1
       }
     ],
     "skuMatch": [
@@ -2657,24 +2636,24 @@
           "3kg",
           "특대"
         ],
-        "cheapest": "행운프레시",
-        "cheapestCost": 9200,
-        "priceGap": 1600,
+        "cheapest": "팜플로우(허브온)",
+        "cheapestCost": 7400,
+        "priceGap": 200,
         "suppliers": [
           {
-            "name": "행운프레시",
-            "cost": 9200,
-            "note": "특대/긴고구마 최저가",
+            "name": "팜플로우(허브온)",
+            "cost": 7400,
+            "note": "대(300g이상) 3kg · 최저가로 변경",
             "shipping": "포함",
-            "verifiedAt": "2026-11-18",
+            "verifiedAt": "2026-11-26",
             "isCheapest": true
           },
           {
-            "name": "팜플로우(허브온)",
-            "cost": 10800,
-            "note": "지연3.4%·불량4.0%",
+            "name": "행운프레시",
+            "cost": 7600,
+            "note": "(300g이상) 특대 3kg 실측",
             "shipping": "포함",
-            "verifiedAt": "2026-11-18",
+            "verifiedAt": "2026-11-26",
             "isCheapest": false
           }
         ],
@@ -2707,23 +2686,23 @@
           "3kg"
         ],
         "cheapest": "팜플로우(허브온)",
-        "cheapestCost": 7600,
-        "priceGap": 1300,
+        "cheapestCost": 5600,
+        "priceGap": 1200,
         "suppliers": [
           {
             "name": "팜플로우(허브온)",
-            "cost": 7600,
-            "note": "한입 최저가",
+            "cost": 5600,
+            "note": "한입 3kg · 최저가 유지",
             "shipping": "포함",
-            "verifiedAt": "2026-11-18",
+            "verifiedAt": "2026-11-26",
             "isCheapest": true
           },
           {
             "name": "행운프레시",
-            "cost": 8900,
-            "note": "기존 거래처",
+            "cost": 6800,
+            "note": "(50g미만) 한입 3kg 실측",
             "shipping": "포함",
-            "verifiedAt": "2026-11-18",
+            "verifiedAt": "2026-11-26",
             "isCheapest": false
           }
         ],
@@ -2761,25 +2740,25 @@
           {
             "name": "최고집(허브온)",
             "cost": 8200,
-            "note": "[제휴B] 가정용 박스포함 3kg (즉시발주 가능, 지연6.6%·불량3.8%)",
+            "note": "[제휴B] 가정용 박스포함 3kg (즉시발주, 지연6.6%·불량3.8%)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": true
           },
           {
             "name": "팜플로우(허브온)",
             "cost": 9000,
-            "note": "가성비 3kg 혼합 9,000원 / 정품 비가림 중소과 9,700원 (즉시발주 가능)",
+            "note": "가성비 3kg 혼합 9,000 / 정품 비가림 중소과 9,700 / ★특가★ 노지 로얄과 7,100(한정)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": false
           },
           {
             "name": "행운프레시",
-            "cost": 15400,
-            "note": "기존 거래처",
+            "cost": 9500,
+            "note": "3kg 가정용 혼합과 (15,400→9,500)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-18",
+            "verifiedAt": "2026-11-26",
             "isCheapest": false
           }
         ],
@@ -2812,30 +2791,30 @@
         ],
         "cheapest": "최고집(허브온)",
         "cheapestCost": 6200,
-        "priceGap": 600,
+        "priceGap": 100,
         "suppliers": [
           {
             "name": "최고집(허브온)",
             "cost": 6200,
-            "note": "[제휴D] 조생감귤 중과/대과 5kg (실중량 4.5kg, 즉시발주 가능)",
+            "note": "조생감귤 중과 6,200 / 대과 6,100 (실중량 4.5kg, 즉시발주)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": true
           },
           {
             "name": "팜플로우(허브온)",
-            "cost": 6800,
-            "note": "특가 조생 노지감귤 중대과 5kg 박스포함 (즉시발주 가능)",
+            "cost": 6300,
+            "note": "💗특가💗 조생 중대과 5kg 박스포함 (6,800→6,300)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": false
           },
           {
             "name": "행운프레시",
-            "cost": 10500,
-            "note": "기존 거래처",
+            "cost": 8100,
+            "note": "조생 중대과(L-2L) 5kg 실측 / 대과(2L이상) 7,000",
             "shipping": "포함",
-            "verifiedAt": "2026-11-18",
+            "verifiedAt": "2026-11-26",
             "isCheapest": false
           }
         ],
@@ -2868,30 +2847,30 @@
         ],
         "cheapest": "최고집(허브온)",
         "cheapestCost": 5450,
-        "priceGap": 450,
+        "priceGap": 50,
         "suppliers": [
           {
             "name": "최고집(허브온)",
             "cost": 5450,
-            "note": "[제휴D] 타이벡 대과 3kg (실중량 2.5kg, 즉시발주 가능, 지연6.6%·불량3.8%)",
+            "note": "[제휴D] 타이벡 대과 3kg (실중량 2.5kg, 즉시발주 · 단 귤 소과·로얄과 5일 내외 지연 공지)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": true
           },
           {
             "name": "마니팜(허브온)",
-            "cost": 5900,
-            "note": "승인대기 · 지연3.6%·불량4.3% (3kg 중대과 실측)",
+            "cost": 5500,
+            "note": "승인완료(11-26) · 🔥핫딜 가정용 타이벡 3kg 중과 5,500 (대과 옵션 없음, 소과 6,000·로얄과 5,800)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": false
           },
           {
             "name": "행운프레시",
             "cost": 6400,
-            "note": "기존 거래처 (3kg 대과 실단가, CS율 1.12%·당일출고 94.9%)",
+            "note": "맛없으면 환불 타이벡 대과(2L) 3kg (CS율 1.12%·당일출고 94.9%)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": false
           }
         ],
@@ -2924,31 +2903,31 @@
           "로얄"
         ],
         "cheapest": "마니팜(허브온)",
-        "cheapestCost": 6800,
-        "priceGap": 350,
+        "cheapestCost": 5800,
+        "priceGap": 1050,
         "suppliers": [
           {
             "name": "마니팜(허브온)",
-            "cost": 6800,
-            "note": "지연3.6%·불량4.3% (로얄소과 3kg 최저가)",
+            "cost": 5800,
+            "note": "승인완료(11-26) · 🔥핫딜 가정용 로얄과 3kg 5,800 (6,800→5,800)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": true
           },
           {
             "name": "최고집(허브온)",
-            "cost": 7150,
-            "note": "우수 · 로얄과 3kg",
+            "cost": 6850,
+            "note": "로얄과 3kg (7,150→6,850)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": false
           },
           {
             "name": "행운프레시",
             "cost": 8600,
-            "note": "기존 거래처",
+            "note": "맛없으면 환불 로얄소과(2S-S) 3kg 실측",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": false
           }
         ],
@@ -2981,30 +2960,30 @@
         ],
         "cheapest": "별담마켓(허브온)",
         "cheapestCost": 6000,
-        "priceGap": 200,
+        "priceGap": 100,
         "suppliers": [
           {
             "name": "별담마켓(허브온)",
             "cost": 6000,
-            "note": "우수 · 대과 5kg (지연8.0%·불량4.5%)",
+            "note": "우수 · 대과 5kg (지연8.0%·불량4.5%) — 허브온 표시가, 11-26 직접 재확인 안 함",
             "shipping": "포함",
             "verifiedAt": "2026-11-25",
             "isCheapest": true
           },
           {
             "name": "최고집(허브온)",
-            "cost": 6200,
-            "note": "우수 · 대과 5kg (지연6.6%·불량3.8%)",
+            "cost": 6100,
+            "note": "타이벡 대과 5kg (6,200→6,100, 중과 5kg 6,200)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": false
           },
           {
             "name": "행운프레시",
             "cost": 7600,
-            "note": "기존 거래처",
+            "note": "맛없으면 환불 타이벡 대과(2L) 5kg 실측",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": false
           }
         ],
@@ -3042,7 +3021,7 @@
           {
             "name": "캄므",
             "cost": 27950,
-            "note": "800g 특 27,950원 그대로 (무료배송·비과세)",
+            "note": "800g 특 27,950원 그대로 (무료배송·비과세) (2026-11-26 재확인 불가: 사이트 로그인 비밀번호 미보관, 상품은 판매중)",
             "shipping": "포함",
             "verifiedAt": "2026-11-22",
             "isCheapest": true
@@ -3082,7 +3061,7 @@
           {
             "name": "캄므",
             "cost": 24500,
-            "note": "800g 상 24,500원 그대로 (무료배송·비과세)",
+            "note": "800g 상 24,500원 그대로 (무료배송·비과세) (2026-11-26 재확인 불가: 사이트 로그인 비밀번호 미보관, 상품은 판매중)",
             "shipping": "포함",
             "verifiedAt": "2026-11-22",
             "isCheapest": true
@@ -3116,29 +3095,29 @@
           "5kg"
         ],
         "cheapest": "하루팜(허브온)",
-        "cheapestCost": 9200,
-        "priceGap": 12,
+        "cheapestCost": 8800,
+        "priceGap": 600,
         "suppliers": [
           {
             "name": "하루팜(허브온)",
-            "cost": 9200,
-            "note": "가정용 중과 5kg (지연6.0%·불량6.5%·반품3.7%)",
+            "cost": 8800,
+            "note": "부사사과 가정용 중과 5kg 박스포함 (9,200→8,800, 지연6.0%·불량6.5%) · 3개 이상부터 수량별 배송비",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": true
           },
           {
             "name": "팜플로우(허브온)",
-            "cost": 9212,
-            "note": "가정용 중과 5kg (지연3.4%·불량4.0%·반품2.5%)",
+            "cost": 9400,
+            "note": "부사사과 가정용 중과 5kg 박스포함 9,400 / 중소과 9,200 / A급 중과 11,600",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": false
           },
           {
             "name": "에코앤팜(허브온)",
             "cost": 11000,
-            "note": "우수 · 가정용 중과 5kg (지연7.6%·불량4.1%)",
+            "note": "우수 · 가정용 중과 5kg (지연7.6%·불량4.1%) — 허브온 표시가, 11-26 직접 재확인 안 함",
             "shipping": "포함",
             "verifiedAt": "2026-11-25",
             "isCheapest": false
@@ -3173,30 +3152,30 @@
         ],
         "cheapest": "하루팜(허브온)",
         "cheapestCost": 4300,
-        "priceGap": 404,
+        "priceGap": 500,
         "suppliers": [
           {
             "name": "하루팜(허브온)",
             "cost": 4300,
-            "note": "한입 2kg (지연6.0%·불량6.5%, 일반 2kg 5,200원)",
+            "note": "특가 꿀고구마 한입 2kg (일반 한입 5,400·중 5,200) · 3개 이상부터 수량별 배송비",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": true
           },
           {
             "name": "팜플로우(허브온)",
-            "cost": 4704,
-            "note": "한입 2kg (지연3.4%·불량4.0%, 일반 2kg 5,684원)",
+            "cost": 4800,
+            "note": "꿀고구마 한입 2kg (4,704→4,800, 중상 6,300)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": false
           },
           {
             "name": "최고집(허브온)",
             "cost": 4950,
-            "note": "우수 · 한입 2kg (일반 2kg 5,800원)",
+            "note": "꿀밤고구마(비세척) 2kg 한입 4,950 (해남 햇 꿀고구마 한입 2kg은 5,600)",
             "shipping": "포함",
-            "verifiedAt": "2026-11-25",
+            "verifiedAt": "2026-11-26",
             "isCheapest": false
           }
         ],
@@ -3235,13 +3214,13 @@
         "feeRate": 0.1166,
         "fee": 1854,
         "supplier": "하루팜(허브온)",
-        "supplyCost": 9200,
+        "supplyCost": 8800,
         "supplierCount": 3,
         "adRate": 0.0,
         "adCost": 0,
-        "netProfit": 4846,
-        "marginRate": 0.30477987421383645,
-        "breakevenRoas": 3.2810565414775072,
+        "netProfit": 5246,
+        "marginRate": 0.329937106918239,
+        "breakevenRoas": 3.030880670987419,
         "isLoss": false
       },
       {
@@ -3257,13 +3236,13 @@
         "feeRate": 0.0563,
         "fee": 783,
         "supplier": "하루팜(허브온)",
-        "supplyCost": 9200,
+        "supplyCost": 8800,
         "supplierCount": 3,
         "adRate": 0.0,
         "adCost": 0,
-        "netProfit": 3917,
-        "marginRate": 0.28179856115107915,
-        "breakevenRoas": 3.548634158794996,
+        "netProfit": 4317,
+        "marginRate": 0.3105755395683453,
+        "breakevenRoas": 3.2198285846652768,
         "isLoss": false
       },
       {
@@ -3455,13 +3434,13 @@
         "feeRate": 0.1166,
         "fee": 1504,
         "supplier": "마니팜(허브온)",
-        "supplyCost": 6800,
+        "supplyCost": 5800,
         "supplierCount": 3,
         "adRate": 0.0,
         "adCost": 0,
-        "netProfit": 4596,
-        "marginRate": 0.35627906976744184,
-        "breakevenRoas": 2.8067885117493474,
+        "netProfit": 5596,
+        "marginRate": 0.4337984496124031,
+        "breakevenRoas": 2.305218012866333,
         "isLoss": false
       },
       {
@@ -3477,13 +3456,13 @@
         "feeRate": 0.0563,
         "fee": 726,
         "supplier": "마니팜(허브온)",
-        "supplyCost": 6800,
+        "supplyCost": 5800,
         "supplierCount": 3,
         "adRate": 0.0,
         "adCost": 0,
-        "netProfit": 5374,
-        "marginRate": 0.4165891472868217,
-        "breakevenRoas": 2.4004465947152958,
+        "netProfit": 6374,
+        "marginRate": 0.49410852713178294,
+        "breakevenRoas": 2.023846877941638,
         "isLoss": false
       },
       {
@@ -3630,14 +3609,14 @@
         "price": 14400,
         "feeRate": 0.1166,
         "fee": 1679,
-        "supplier": "행운프레시",
-        "supplyCost": 9200,
+        "supplier": "팜플로우(허브온)",
+        "supplyCost": 7400,
         "supplierCount": 2,
         "adRate": 0.0,
         "adCost": 0,
-        "netProfit": 3521,
-        "marginRate": 0.2445138888888889,
-        "breakevenRoas": 4.089747230900312,
+        "netProfit": 5321,
+        "marginRate": 0.36951388888888886,
+        "breakevenRoas": 2.706258222138696,
         "isLoss": false
       },
       {
@@ -3652,14 +3631,14 @@
         "price": 12900,
         "feeRate": 0.0563,
         "fee": 726,
-        "supplier": "행운프레시",
-        "supplyCost": 9200,
+        "supplier": "팜플로우(허브온)",
+        "supplyCost": 7400,
         "supplierCount": 2,
         "adRate": 0.0,
         "adCost": 0,
-        "netProfit": 2974,
-        "marginRate": 0.23054263565891472,
-        "breakevenRoas": 4.3375924680564895,
+        "netProfit": 4774,
+        "marginRate": 0.37007751937984495,
+        "breakevenRoas": 2.702136573104315,
         "isLoss": false
       },
       {
@@ -3675,13 +3654,13 @@
         "feeRate": 0.1166,
         "fee": 1428,
         "supplier": "팜플로우(허브온)",
-        "supplyCost": 7600,
+        "supplyCost": 5600,
         "supplierCount": 2,
         "adRate": 0.0,
         "adCost": 0,
-        "netProfit": 3222,
-        "marginRate": 0.26302040816326533,
-        "breakevenRoas": 3.801986343885785,
+        "netProfit": 5222,
+        "marginRate": 0.42628571428571427,
+        "breakevenRoas": 2.3458445040214477,
         "isLoss": false
       },
       {
@@ -3697,13 +3676,13 @@
         "feeRate": 0.0563,
         "fee": 726,
         "supplier": "팜플로우(허브온)",
-        "supplyCost": 7600,
+        "supplyCost": 5600,
         "supplierCount": 2,
         "adRate": 0.0,
         "adCost": 0,
-        "netProfit": 4574,
-        "marginRate": 0.35457364341085273,
-        "breakevenRoas": 2.820288587669436,
+        "netProfit": 6574,
+        "marginRate": 0.5096124031007752,
+        "breakevenRoas": 1.9622756312747185,
         "isLoss": false
       }
     ],
